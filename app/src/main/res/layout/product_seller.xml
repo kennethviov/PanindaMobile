@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="321dp"
+    android:layout_height="100dp"
+    android:padding="10dp"
+    android:background="@drawable/product_seller_bg">
+
+    <!-- Product Image -->
+    <!--<androidx.cardview.widget.CardView
+        android:id="@+id/imageContainer"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:elevation="0dp"
+        android:background="@color/transparent"
+        app:cardCornerRadius="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/piattos"
+            android:background="@drawable/product_seller_photo_bg"/>
+
+    </androidx.cardview.widget.CardView>-->
+
+    <ImageView
+        android:id="@+id/productImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/piattos"
+        android:background="@drawable/product_seller_photo_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- Product Name -->
+    <TextView
+        android:id="@+id/productName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/product_name"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="14dp"
+        app:layout_constraintStart_toEndOf="@id/productImage"
+        app:layout_constraintTop_toTopOf="@id/productImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"/>
+
+    <!-- Product Price -->
+    <TextView
+        android:id="@+id/productPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/product_price"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@id/productName"
+        app:layout_constraintTop_toBottomOf="@id/productName" />
+
+    <!-- Product Stock -->
+    <TextView
+        android:id="@+id/stockText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stock_text"
+        android:textColor="@color/gray"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/productPrice"
+        app:layout_constraintTop_toBottomOf="@id/productPrice"/>
+
+    <TextView
+        android:id="@+id/productStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/product_stock"
+        android:textColor="@color/gray"
+        android:textSize="11sp"
+        app:layout_constraintStart_toEndOf="@id/stockText"
+        app:layout_constraintTop_toTopOf="@id/stockText"/>
+
+    <!-- numeric stepper -->
+    <LinearLayout
+        android:id="@+id/numericStepper"
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/sellBtn"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- decrease -->
+        <ImageButton
+            android:id="@+id/decreaseBtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/minus"
+            android:background="@drawable/inc_dec_btn_bg"/>
+
+        <!-- numbers -->
+        <EditText
+            android:id="@+id/quantity"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
+            android:padding="0dp"
+            android:hint="1"
+            android:textAlignment="center"
+            android:textSize="11sp"
+            android:background="@color/white"/>
+
+        <!-- increase -->
+        <ImageButton
+            android:id="@+id/increaseBtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/plus"
+            android:background="@drawable/inc_dec_btn_bg"/>
+
+    </LinearLayout>
+
+    <!-- Sell Button -->
+    <Button
+        style="?android:attr/borderlessButtonStyle"
+        android:id="@+id/sellBtn"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:text="Sell"
+        android:textSize="12sp"
+        android:textAllCaps="false"
+        android:padding="0dp"
+        android:background="@drawable/product_seller_btn_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

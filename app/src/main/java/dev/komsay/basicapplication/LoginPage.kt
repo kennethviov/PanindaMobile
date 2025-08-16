@@ -24,6 +24,8 @@ class LoginPage : AppCompatActivity() {
         val txtPassword = findViewById<EditText>(R.id.editTextPassword)
         val btnLogin = findViewById<Button>(R.id.BtnLogin)
 
+        val canBeNull: String
+
 
         btnLogin.setOnClickListener {
             if(txtUsername.text.toString() == "jampong" && txtPassword.text.toString() == "jampong123"){
