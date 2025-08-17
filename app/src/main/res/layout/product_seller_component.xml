@@ -2,34 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/productSellerComponent"
     android:layout_width="321dp"
     android:layout_height="100dp"
     android:padding="10dp"
     android:background="@drawable/product_seller_bg">
 
     <!-- Product Image -->
-    <!--<androidx.cardview.widget.CardView
-        android:id="@+id/imageContainer"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:elevation="0dp"
-        android:background="@color/transparent"
-        app:cardCornerRadius="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <ImageView
-            android:id="@+id/productImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/piattos"
-            android:background="@drawable/product_seller_photo_bg"/>
-
-    </androidx.cardview.widget.CardView>-->
-
     <ImageView
         android:id="@+id/productImage"
         android:layout_width="80dp"
@@ -50,6 +29,7 @@
         android:textSize="12sp"
         android:textColor="@color/black"
         android:layout_marginStart="14dp"
+        android:fontFamily="@font/inter_regular"
         app:layout_constraintStart_toEndOf="@id/productImage"
         app:layout_constraintTop_toTopOf="@id/productImage"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,6 +44,7 @@
         android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="15sp"
+        android:fontFamily="@font/inter_bold"
         app:layout_constraintStart_toStartOf="@id/productName"
         app:layout_constraintTop_toBottomOf="@id/productName" />
 
@@ -75,6 +56,7 @@
         android:text="@string/stock_text"
         android:textColor="@color/gray"
         android:textSize="11sp"
+        android:fontFamily="@font/inter_regular"
         app:layout_constraintStart_toStartOf="@id/productPrice"
         app:layout_constraintTop_toBottomOf="@id/productPrice"/>
 
@@ -85,6 +67,7 @@
         android:text="@string/product_stock"
         android:textColor="@color/gray"
         android:textSize="11sp"
+        android:fontFamily="@font/inter_regular"
         app:layout_constraintStart_toEndOf="@id/stockText"
         app:layout_constraintTop_toTopOf="@id/stockText"/>
 
@@ -96,15 +79,17 @@
         android:layout_marginEnd="9dp"
         android:layout_marginBottom="4dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/sellBtn"
+        app:layout_constraintTop_toTopOf="@id/productPrice"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- decrease -->
-        <ImageButton
+        <!-- increase -->
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/decreaseBtn"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/minus"
+            android:text="—"
+            android:textSize="12dp"
+            android:padding="0dp"
             android:background="@drawable/inc_dec_btn_bg"/>
 
         <!-- numbers -->
@@ -112,34 +97,41 @@
             android:id="@+id/quantity"
             android:layout_width="20dp"
             android:layout_height="18dp"
-            android:padding="0dp"
+            android:background="@color/transparent"
+            android:fontFamily="@font/inter_regular"
             android:hint="1"
+            android:padding="0dp"
             android:textAlignment="center"
-            android:textSize="11sp"
-            android:background="@color/white"/>
+            android:textColor="@color/gray"
+            android:textSize="11sp" />
 
-        <!-- increase -->
-        <ImageButton
+        <!-- decrease -->
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/increaseBtn"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/plus"
+            android:text="+"
+            android:textSize="12dp"
+            android:padding="0dp"
             android:background="@drawable/inc_dec_btn_bg"/>
 
     </LinearLayout>
 
     <!-- Sell Button -->
-    <Button
-        style="?android:attr/borderlessButtonStyle"
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sellBtn"
         android:layout_width="80dp"
         android:layout_height="30dp"
         android:text="Sell"
         android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:fontFamily="@font/inter_bold"
         android:textAllCaps="false"
         android:padding="0dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/product_seller_btn_bg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/numericStepper"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

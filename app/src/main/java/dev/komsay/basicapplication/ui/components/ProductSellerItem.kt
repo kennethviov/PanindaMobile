@@ -8,7 +8,7 @@ data class ProductSellerItem(
     val imageResId: Int? = null, // subject to change
     // or
     val imageURL: String? = null
-) {
+    ) {
     fun getFormattedPrice(): String {
         return "₱%.2f".format(price)
     }

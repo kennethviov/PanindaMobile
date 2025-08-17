@@ -13,7 +13,7 @@
         android:theme="@style/Theme.BasicApplication">
         <activity
             android:name=".HomePage"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".LoginPage"
             android:exported="true">
