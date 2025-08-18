@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import dev.komsay.basicapplication.ui.components.ProductSellerCard
+import dev.komsay.basicapplication.ui.components.ProductSellerItem
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -33,5 +36,28 @@ class HomePage : AppCompatActivity() {
 
         userTxtView.text = "Hello, $receivedUsername"
         dateTime.text =formattedDateTime.toString()
+
+        val product = ProductSellerItem(
+            id = "1",
+            name = "Piattos",
+            price = 10.50,
+            stock = 15,
+            imageResId = R.drawable.piattos
+        )
+
+        val viewHolder = ProductSellerCard(findViewById(R.id.productSellerContainer))
+        viewHolder.bind(product) { selectedProduct, quantity ->
+            handleSellClick(selectedProduct, quantity)
+        }
+    }
+
+    private fun handleSellClick(product: ProductSellerItem, quantity: Int) {
+        val totalAmount = product.price * quantity
+
+        Toast.makeText(
+            this,
+            "Selling ${quantity}x ${product.name} for ${String.format("₱%.2f", totalAmount)}",
+            Toast.LENGTH_LONG
+        ).show()
     }
 }
