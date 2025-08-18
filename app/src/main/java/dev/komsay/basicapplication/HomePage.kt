@@ -9,7 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import dev.komsay.basicapplication.ui.components.ProductSellerCard
+import dev.komsay.basicapplication.ui.components.ProductSellerComponent
 import dev.komsay.basicapplication.ui.components.ProductSellerItem
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -37,22 +37,48 @@ class HomePage : AppCompatActivity() {
         userTxtView.text = "Hello, $receivedUsername"
         dateTime.text =formattedDateTime.toString()
 
-        val product = ProductSellerItem(
-            id = "1",
-            name = "Piattos",
-            price = 10.50,
-            stock = 15,
-            imageResId = R.drawable.piattos
+        val products = mutableListOf<ProductSellerItem>(
+            ProductSellerItem(
+                id = "1",
+                name = "Piattos",
+                price = 10.50,
+                stock = 20,
+                imageResId = R.drawable.piattos
+            ),
+            ProductSellerItem(
+                id = "2",
+                name = "Banana",
+                price = 15.00,
+                stock = 15,
+                imageResId = R.drawable.placeholder
+            ),
+            ProductSellerItem(
+                id = "3",
+                name = "Apple",
+                price = 10.00,
+                stock = 12,
+                imageResId = R.drawable.placeholder
+            ),
+            ProductSellerItem(
+                id = "4",
+                name = "Mango",
+                price = 25.00,
+                stock = 8,
+                imageResId = R.drawable.placeholder
+            )
         )
 
-        val viewHolder = ProductSellerCard(findViewById(R.id.productSellerContainer))
-        viewHolder.bind(product) { selectedProduct, quantity ->
-            handleSellClick(selectedProduct, quantity)
+        for (product in products) {
+            val component = ProductSellerComponent(findViewById(R.id.productSellerContainer))
+            component.bind(product) { selectedProduct, quantity ->
+                handleSellClick(selectedProduct, quantity)
+            }
         }
     }
 
     private fun handleSellClick(product: ProductSellerItem, quantity: Int) {
         val totalAmount = product.price * quantity
+        product.stock - quantity
 
         Toast.makeText(
             this,

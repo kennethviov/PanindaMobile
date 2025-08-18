@@ -4,7 +4,7 @@ data class ProductSellerItem(
     val id: String,
     val name: String,
     val price: Double,
-    val stock: Int,
+    var stock: Int,
     val imageResId: Int? = null, // subject to change
     // or
     val imageURL: String? = null
@@ -23,5 +23,14 @@ data class ProductSellerItem(
 
     fun getStockText(): String {
         return "Stock: $stock"
+    }
+
+    fun deductStock(quantity: Int): Boolean {
+        return if (isQuantityAvailable(quantity)) {
+            stock -= quantity
+            true
+        } else {
+            false
+        }
     }
 }

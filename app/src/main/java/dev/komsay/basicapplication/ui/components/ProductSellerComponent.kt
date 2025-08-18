@@ -1,50 +1,86 @@
 package dev.komsay.basicapplication.ui.components
 
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import dev.komsay.basicapplication.R
 
-class ProductSellerCard(private val container: LinearLayout) {
+class ProductSellerComponent {
 
-    private val view: View = View.inflate(container.context, R.layout.product_seller_component, container)
-
-    private val productImage: ImageView = view.findViewById(R.id.productImage)
-    private val productName: TextView = view.findViewById(R.id.productName)
-    private val productPrice: TextView = view.findViewById(R.id.productPrice)
-    private val productStock: TextView = view.findViewById(R.id.productStock)
-    private val quantity: EditText = view.findViewById(R.id.quantity)
-    private val increaseBtn: Button = view.findViewById(R.id.increaseBtn)
-    private val decreaseBtn: Button = view.findViewById(R.id.decreaseBtn)
-    private val sellBtn: Button = view.findViewById(R.id.sellBtn)
+    private val view: View
+    private val productImage: ImageView
+    private val productName: TextView
+    private val productPrice: TextView
+    private val productStock: TextView
+    private val quantity: EditText
+    private val increaseBtn: Button
+    private val decreaseBtn: Button
+    private val sellBtn: Button
 
     private var currentQuantity: Int = 1
     private var maxStock: Int = 0
+    private var currentProduct: ProductSellerItem? = null
+
+    constructor(container: LinearLayout) {
+        view = LayoutInflater.from(container.context)
+            .inflate(R.layout.product_seller_component, container, false)
+
+        container.addView(view)
+
+        productImage = view.findViewById(R.id.productImage)
+        productName = view.findViewById(R.id.productName)
+        productPrice = view.findViewById(R.id.productPrice)
+        productStock = view.findViewById(R.id.productStock)
+        quantity = view.findViewById(R.id.quantity)
+        increaseBtn = view.findViewById(R.id.increaseBtn)
+        decreaseBtn = view.findViewById(R.id.decreaseBtn)
+        sellBtn = view.findViewById(R.id.sellBtn)
+    }
 
     fun bind(product: ProductSellerItem, onSellClick: (ProductSellerItem, Int) -> Unit) {
-        maxStock = product.stock
 
-        productName.text = product.name
-        productPrice.text = product.getFormattedPrice()
-        productStock.text = product.stock.toString()
-
-        product.imageResId?.let { resourceId ->
-            productImage.setImageResource(resourceId)
-        }
-
-        currentQuantity = 1
-        quantity.setText(currentQuantity.toString())
+        currentProduct = product
+        refreshUI()
 
         setUpQuantityControls()
 
         sellBtn.setOnClickListener {
             if (product.isQuantityAvailable(currentQuantity)) {
-                onSellClick(product, currentQuantity)
+                if (product.deductStock(currentQuantity)) {
+                    onSellClick(product, currentQuantity)
+                    refreshUI()
+                } else {
+                    Toast.makeText(view.context, "Failed to process sale", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(view.context, "Insufficient stock available", Toast.LENGTH_SHORT).show()
             }
         }
 
         updateUIState(product)
+
+    }
+
+    private fun refreshUI() {
+        currentProduct?.let { product ->
+            maxStock = product.stock
+
+            productName.text = product.name
+            productPrice.text = product.getFormattedPrice()
+            productStock.text = product.stock.toString()
+
+            product.imageResId?.let { resourceId ->
+                productImage.setImageResource(resourceId)
+            }
+
+            // Reset quantity to 1 or adjust if current quantity exceeds new stock
+            currentQuantity = if (currentQuantity > maxStock && maxStock > 0) maxStock else 1
+            if (maxStock == 0) currentQuantity = 0
+
+            quantity.setText(if (maxStock > 0) currentQuantity.toString() else "0")
+
+            updateUIState(product)
+        }
     }
 
     private fun setUpQuantityControls() {
@@ -72,7 +108,7 @@ class ProductSellerCard(private val container: LinearLayout) {
                     inputQuantity > maxStock -> maxStock
                     else -> inputQuantity
                 }
-                quantity.setText(currentQuantity.toString())
+                quantity.setText(if (maxStock > 0) currentQuantity.toString() else "0")
                 updateButtonStates()
             }
         }
@@ -104,5 +140,4 @@ class ProductSellerCard(private val container: LinearLayout) {
 
         updateButtonStates()
     }
-
 }
