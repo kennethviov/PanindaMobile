@@ -19,7 +19,7 @@ class ProductSellerComponent {
 
     private var currentQuantity: Int = 1
     private var maxStock: Int = 0
-    private var currentProduct: ProductSellerItem? = null
+    private var currentProduct: Product? = null
 
     constructor(container: LinearLayout) {
         view = LayoutInflater.from(container.context)
@@ -37,7 +37,7 @@ class ProductSellerComponent {
         sellBtn = view.findViewById(R.id.sellBtn)
     }
 
-    fun bind(product: ProductSellerItem, onSellClick: (ProductSellerItem, Int) -> Unit) {
+    fun bind(product: Product, onSellClick: (Product, Int) -> Unit) {
 
         currentProduct = product
         refreshUI()
@@ -122,7 +122,7 @@ class ProductSellerComponent {
         increaseBtn.alpha = if (currentQuantity < maxStock) 1.0f else 0.5f
     }
 
-    private fun updateUIState(product: ProductSellerItem) {
+    private fun updateUIState(product: Product) {
         val isInStock = product.isInStock()
 
         decreaseBtn.isEnabled = isInStock

@@ -10,7 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import dev.komsay.basicapplication.ui.components.ProductSellerComponent
-import dev.komsay.basicapplication.ui.components.ProductSellerItem
+import dev.komsay.basicapplication.ui.components.Product
+import dev.komsay.basicapplication.ui.components.TopSellingProductComponent
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -37,29 +38,29 @@ class HomePage : AppCompatActivity() {
         userTxtView.text = "Hello, $receivedUsername"
         dateTime.text =formattedDateTime.toString()
 
-        val products = mutableListOf<ProductSellerItem>(
-            ProductSellerItem(
+        val products = mutableListOf<Product>(
+            Product(
                 id = "1",
                 name = "Piattos",
                 price = 10.50,
                 stock = 20,
                 imageResId = R.drawable.piattos
             ),
-            ProductSellerItem(
+            Product(
                 id = "2",
                 name = "Banana",
                 price = 15.00,
                 stock = 15,
                 imageResId = R.drawable.placeholder
             ),
-            ProductSellerItem(
+            Product(
                 id = "3",
                 name = "Apple",
                 price = 10.00,
                 stock = 12,
                 imageResId = R.drawable.placeholder
             ),
-            ProductSellerItem(
+            Product(
                 id = "4",
                 name = "Mango",
                 price = 25.00,
@@ -67,6 +68,9 @@ class HomePage : AppCompatActivity() {
                 imageResId = R.drawable.placeholder
             )
         )
+
+        val comp = TopSellingProductComponent(findViewById(R.id.productSellerContainer))
+        comp.bind(products[0])
 
         for (product in products) {
             val component = ProductSellerComponent(findViewById(R.id.productSellerContainer))
@@ -76,7 +80,7 @@ class HomePage : AppCompatActivity() {
         }
     }
 
-    private fun handleSellClick(product: ProductSellerItem, quantity: Int) {
+    private fun handleSellClick(product: Product, quantity: Int) {
         val totalAmount = product.price * quantity
         product.stock - quantity
 
