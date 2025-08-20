@@ -6,4 +6,8 @@
     <string name="product_price">₱20.00</string>
     <string name="stock_text">Stock:</string>
     <string name="product_stock">12</string>
+    <string name="title_activity_navogation_bar">NavogationBar</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
