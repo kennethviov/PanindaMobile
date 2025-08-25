@@ -3,6 +3,7 @@ package dev.komsay.basicapplication.ui.components
 import android.view.*
 import android.widget.*
 import dev.komsay.basicapplication.R
+import dev.komsay.basicapplication.ui.data.ProductSales
 
 class TopSellingProductComponent {
 
@@ -23,9 +24,9 @@ class TopSellingProductComponent {
 
     }
 
-    fun bind(product: Product) {
+    fun bind(product: ProductSales) {
         productName.text = product.name
-        productPercentage.text = "${product.stock}% of the sales for the last 7 days"
+        productPercentage.text = "${product.getFormattedPercentage()}% of the sales for the last 7 days"
 
         product.imageResId?.let { resourceId ->
             productImage.setImageResource(resourceId)

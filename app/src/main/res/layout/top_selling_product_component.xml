@@ -4,20 +4,28 @@
     android:id="@+id/topSellingProductComponent"
     android:layout_width="match_parent"
     android:layout_height="138dp"
-    android:layout_marginTop="3dp"
+    android:layout_marginTop="6dp"
     android:layout_marginBottom="3dp"
     android:clickable="true"
     android:focusable="true"
     android:background="@drawable/product_seller_bg">
 
-    <ImageView
-        android:id="@+id/topProductImage"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/topProductCard"
         android:layout_width="138dp"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/placeholder"
-        android:scaleType="centerCrop"/>
+        app:cardCornerRadius="10dp"
+        app:layout_constraintStart_toStartOf="parent">
 
+        <ImageView
+            android:id="@+id/topProductImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/placeholder"
+            android:scaleType="centerCrop"/>
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/topProductName"
@@ -29,7 +37,7 @@
         android:text="TextView"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@id/topProductImage"
+        app:layout_constraintStart_toEndOf="@id/topProductCard"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
