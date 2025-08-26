@@ -1,10 +1,10 @@
-package dev.komsay.basicapplication.ui.components
+package dev.komsay.panindamobile.ui.components
 
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import dev.komsay.basicapplication.R
-import dev.komsay.basicapplication.ui.data.Product
+import dev.komsay.panindamobile.R
+import dev.komsay.panindamobile.ui.data.Product
 
 class ProductSellerComponent {
 

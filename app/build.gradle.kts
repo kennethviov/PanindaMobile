@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "dev.komsay.basicapplication"
+    namespace = "dev.komsay.panindamobile"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "dev.komsay.basicapplication"
+        applicationId = "dev.komsay.panindamobile"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

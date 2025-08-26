@@ -1,4 +1,4 @@
-package dev.komsay.basicapplication
+package dev.komsay.panindamobile
 
 import android.os.Build
 import android.os.Bundle
@@ -9,12 +9,12 @@ import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import dev.komsay.basicapplication.ui.components.CategoryComponent
-import dev.komsay.basicapplication.ui.components.ProductSellerComponent
-import dev.komsay.basicapplication.ui.data.Product
-import dev.komsay.basicapplication.ui.components.TopSellingProductComponent
-import dev.komsay.basicapplication.ui.data.Category
-import dev.komsay.basicapplication.ui.data.ProductSales
+import dev.komsay.panindamobile.ui.components.CategoryComponent
+import dev.komsay.panindamobile.ui.components.ProductSellerComponent
+import dev.komsay.panindamobile.ui.data.Product
+import dev.komsay.panindamobile.ui.components.TopSellingProductComponent
+import dev.komsay.panindamobile.ui.data.Category
+import dev.komsay.panindamobile.ui.data.ProductSales
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import android.widget.LinearLayout

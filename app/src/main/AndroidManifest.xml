@@ -11,20 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BasicApplication">
-
-        <!--HomePage-->
+        <activity
+            android:name=".SalesPage"
+            android:exported="false" />
+        <!-- HomePage -->
         <activity
             android:name=".HomePage"
-            android:exported="true" />
-
-        <!--SignupPage-->
-        <activity android:name=".SignupPage"
-            android:exported="true"/>
-
-        <!--Forgot passPage-->
-        <activity android:name=".ForgotPassPage"
-            android:exported="true"/>
-        <!--LoginPage-->
+            android:exported="true" /> <!-- SignupPage -->
+        <activity
+            android:name=".SignupPage"
+            android:exported="true" /> <!-- Forgot passPage -->
+        <activity
+            android:name=".ForgotPassPage"
+            android:exported="true" /> <!-- LoginPage -->
         <activity
             android:name=".LoginPage"
             android:exported="true">

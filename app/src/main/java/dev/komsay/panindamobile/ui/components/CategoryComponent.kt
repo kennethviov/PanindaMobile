@@ -1,11 +1,11 @@
-package dev.komsay.basicapplication.ui.components
+package dev.komsay.panindamobile.ui.components
 
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import dev.komsay.basicapplication.R
-import dev.komsay.basicapplication.ui.data.Category
+import dev.komsay.panindamobile.R
+import dev.komsay.panindamobile.ui.data.Category
 
 class CategoryComponent {
 

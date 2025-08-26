@@ -1,4 +1,4 @@
-package dev.komsay.basicapplication.ui.data
+package dev.komsay.panindamobile.ui.data
 
 data class Category(
     val id: String,
