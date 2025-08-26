@@ -13,6 +13,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+<<<<<<< HEAD
       <SelectionState runConfigName="HomePage">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
@@ -47,6 +48,8 @@
       <SelectionState runConfigName="HomePage (4)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+=======
+>>>>>>> c4e64bb (Refactor: Rename package and update app name)
     </selectionStates>
   </component>
 </project>

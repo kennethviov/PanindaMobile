@@ -1,4 +1,4 @@
-package dev.komsay.basicapplication
+package dev.komsay.panindamobile
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

@@ -1,4 +1,4 @@
-package dev.komsay.basicapplication
+package dev.komsay.panindamobile
 
 import org.junit.Test
 

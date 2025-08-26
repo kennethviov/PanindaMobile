@@ -1,4 +1,4 @@
-package dev.komsay.basicapplication
+package dev.komsay.panindamobile
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

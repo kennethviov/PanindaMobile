@@ -1,9 +1,9 @@
-package dev.komsay.basicapplication.ui.components
+package dev.komsay.panindamobile.ui.components
 
 import android.view.*
 import android.widget.*
-import dev.komsay.basicapplication.R
-import dev.komsay.basicapplication.ui.data.ProductSales
+import dev.komsay.panindamobile.R
+import dev.komsay.panindamobile.ui.data.ProductSales
 
 class TopSellingProductComponent {
 
