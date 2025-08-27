@@ -11,5 +11,7 @@
     <color name="opaqueColor"> #FF7D29 </color>
 
     <color name="accentColor"> #FFF4C8 </color>
+
     <color name="sliderColor"> #FFC6AE </color>
+    <color name="buttonColor">#FEAC00</color>
 </resources>
