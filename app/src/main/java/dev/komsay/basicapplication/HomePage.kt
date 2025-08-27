@@ -74,7 +74,47 @@ class HomePage : AppCompatActivity() {
                 stock = 8,
                 category = "Snacks",
                 imageResId = R.drawable.placeholder
-            )
+            ),
+            Product(
+                id = "5",
+                name = "Orange",
+                price = 15.00,
+                stock = 10,
+                category = "Snacks",
+                imageResId = R.drawable.placeholder
+            ),
+            Product(
+                id = "6",
+                name = "Coffee",
+                price = 20.00,
+                stock = 5,
+                category = "Beverages",
+                imageResId = R.drawable.placeholder
+            ),
+            Product(
+                id = "7",
+                name = "Tea",
+                price = 15.00,
+                stock = 10,
+                category = "Beverages",
+                imageResId = R.drawable.placeholder
+            ),
+            Product(
+                id = "8",
+                name = "Water",
+                price = 10.00,
+                stock = 20,
+                category = "Beverages",
+                imageResId = R.drawable.placeholder
+            ),
+            Product(
+                id = "9",
+                name = "Coke",
+                price = 15.00,
+                stock = 15,
+                category = "Beverages",
+                imageResId = R.drawable.placeholder
+            ),
         )
 
         val categories = mutableListOf<Category>(

@@ -129,7 +129,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#D4A373" />
+            android:background="@color/black" />
 
 
         <RelativeLayout
@@ -163,7 +163,7 @@
         android:layout_marginTop="20dp"
         android:backgroundTint="#FFA500"
         android:text="Log out"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 
 
