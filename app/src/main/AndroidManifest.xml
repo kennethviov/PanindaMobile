@@ -12,16 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BasicApplication">
         <activity
-            android:name=".SalesPage"
-            android:exported="false" />
+            android:name=".InventoryPage"
+            android:exported="true" />
         <activity
-            android:name=".StatisticsPage"
-            android:exported="false" /> <!-- HomePage -->
+            android:name=".SalesPage"
+            android:exported="true" /> <!-- HomePage -->
         <activity
             android:name=".HomePage"
-            android:exported="true" /> <!-- ProfilePage -->
-        <activity
-            android:name=".ProfilePage"
             android:exported="true" /> <!-- SignupPage -->
         <activity
             android:name=".SignupPage"

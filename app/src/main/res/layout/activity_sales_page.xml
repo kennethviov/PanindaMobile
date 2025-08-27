@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainBackgroundColor"
     tools:context=".SalesPage">
 
     <ScrollView
@@ -36,7 +37,7 @@
                 android:id="@+id/userTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hello, User"
+                android:text="Review your sales"
                 android:textColor="@color/black"
                 android:textColorLink="@color/black"
                 android:textSize="30sp"
@@ -74,6 +75,7 @@
                     android:orientation="horizontal"
                     android:layout_gravity="start">
 
+                    <include layout="@layout/component_category"/>
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -89,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Product"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:fontFamily="@font/inter_regular"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
@@ -104,9 +106,9 @@
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/inter_regular"
                     android:text="Stocks Sold"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.6"
+                    app:layout_constraintHorizontal_bias="0.55"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -115,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sales Total"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:fontFamily="@font/inter_regular"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
@@ -124,10 +126,23 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <include layout="@layout/component_product_sales"/>
+            <include layout="@layout/component_product_sales"/>
+            <include layout="@layout/component_product_sales"/>
+            <include layout="@layout/component_product_sales"/>
+            <include layout="@layout/component_product_sales"/>
+            <include layout="@layout/component_product_sales"/>
+            <include layout="@layout/component_product_sales"/>
+
         </LinearLayout>
 
     </ScrollView>
 
+    <!--
+    -
+    - Navigation Bar
+    -
+    -->
     <LinearLayout
         android:id="@+id/navbar"
         android:layout_width="match_parent"
