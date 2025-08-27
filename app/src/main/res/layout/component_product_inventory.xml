@@ -54,31 +54,28 @@
     </LinearLayout>
 
     <TextView
-       android:id="@+id/stocksSold"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="32"
-       android:textSize="14sp"
-       android:fontFamily="@font/inter_regular"
-       android:textColor="@color/black"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintTop_toTopOf="parent"
-       app:layout_constraintBottom_toBottomOf="parent"
-       app:layout_constraintHorizontal_bias="0.55"/>
-
-    <TextView
-        android:id="@+id/salesTotal"
+        android:id="@+id/stocksSold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="P960.00"
+        android:text="32"
         android:textSize="14sp"
-        android:fontFamily="@font/inter_bold"
+        android:fontFamily="@font/inter_regular"
         android:textColor="@color/black"
-        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.96"/>
+        app:layout_constraintHorizontal_bias="0.55"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/updateButton"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:text="Update"
+        android:textColor="@color/black"
+        android:fontFamily="@font/inter_regular"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
