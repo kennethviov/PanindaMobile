@@ -14,7 +14,7 @@ class TopSellingProductComponent {
 
     constructor(container: LinearLayout) {
         view = LayoutInflater.from(container.context)
-            .inflate(R.layout.top_selling_product_component, container, false)
+            .inflate(R.layout.component_top_selling_product, container, false)
 
         container.addView(view)
 

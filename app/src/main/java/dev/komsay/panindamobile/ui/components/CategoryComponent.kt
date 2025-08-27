@@ -15,7 +15,7 @@ class CategoryComponent {
     constructor(container: LinearLayout) {
 
         view = LayoutInflater.from(container.context)
-            .inflate(R.layout.category, container, false)
+            .inflate(R.layout.component_category, container, false)
 
         container.addView(view)
 
