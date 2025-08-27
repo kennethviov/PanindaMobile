@@ -9,11 +9,15 @@ import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import dev.komsay.basicapplication.ui.components.CategoryComponent
 import dev.komsay.basicapplication.ui.components.ProductSellerComponent
-import dev.komsay.basicapplication.ui.components.Product
+import dev.komsay.basicapplication.ui.data.Product
 import dev.komsay.basicapplication.ui.components.TopSellingProductComponent
+import dev.komsay.basicapplication.ui.data.Category
+import dev.komsay.basicapplication.ui.data.ProductSales
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import android.widget.LinearLayout
 
 class HomePage : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -44,6 +48,7 @@ class HomePage : AppCompatActivity() {
                 name = "Piattos",
                 price = 10.50,
                 stock = 20,
+                category = "Snacks",
                 imageResId = R.drawable.piattos
             ),
             Product(
@@ -51,6 +56,7 @@ class HomePage : AppCompatActivity() {
                 name = "Banana",
                 price = 15.00,
                 stock = 15,
+                category = "Snacks",
                 imageResId = R.drawable.placeholder
             ),
             Product(
@@ -58,6 +64,7 @@ class HomePage : AppCompatActivity() {
                 name = "Apple",
                 price = 10.00,
                 stock = 12,
+                category = "Snacks",
                 imageResId = R.drawable.placeholder
             ),
             Product(
@@ -65,15 +72,69 @@ class HomePage : AppCompatActivity() {
                 name = "Mango",
                 price = 25.00,
                 stock = 8,
+                category = "Snacks",
                 imageResId = R.drawable.placeholder
             )
         )
 
-        val comp = TopSellingProductComponent(findViewById(R.id.productSellerContainer))
-        comp.bind(products[0])
+        val categories = mutableListOf<Category>(
+
+            Category(
+                id = "1",
+                name = "Snacks"
+            ),
+            Category(
+                id = "2",
+                name = "Beverages"
+            ),
+            Category(
+                id = "3",
+                name = "Fruits"
+            ),
+            Category(
+                id = "4",
+                name = "Vegetables"
+            ),
+            Category(
+                id = "5",
+                name = "Dairy"
+            ),
+            Category(
+                id = "6",
+                name = "Bakery"
+            ),
+            Category(
+                id = "7",
+                name = "Frozen Foods"
+            ),
+            Category(
+                id = "8",
+                name = "Meat"
+            )
+
+        )
+
+        val product = ProductSales(
+            id = "1",
+            name = "Piattos",
+            stockSold = 10,
+            totalSales = 100.00,
+            imageResId = R.drawable.piattos,
+            overAllStocksSold = 67
+        )
+
+        val container = findViewById<LinearLayout>(R.id.productSellerContainer)
+
+        val topSellComp = TopSellingProductComponent(container)
+        topSellComp.bind(product)
+
+        for (cat in categories) {
+            val catComp = CategoryComponent(findViewById(R.id.categorySlider))
+            catComp.bind(cat)
+        }
 
         for (product in products) {
-            val component = ProductSellerComponent(findViewById(R.id.productSellerContainer))
+            val component = ProductSellerComponent(container)
             component.bind(product) { selectedProduct, quantity ->
                 handleSellClick(selectedProduct, quantity)
             }

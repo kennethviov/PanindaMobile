@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import dev.komsay.basicapplication.R
+import dev.komsay.basicapplication.ui.data.Product
 
 class ProductSellerComponent {
 

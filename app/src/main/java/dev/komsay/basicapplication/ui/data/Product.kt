@@ -1,10 +1,12 @@
-package dev.komsay.basicapplication.ui.components
+package dev.komsay.basicapplication.ui.data
 
 data class Product(
     val id: String,
-    val name: String,
-    val price: Double,
+    var name: String,
+    var price: Double,
     var stock: Int,
+    var category: String,
+
     val imageResId: Int? = null, // subject to change
     // or
     val imageURL: String? = null
@@ -19,10 +21,6 @@ data class Product(
 
     fun isQuantityAvailable(quantity: Int): Boolean {
         return quantity <= stock && quantity > 0
-    }
-
-    fun getStockText(): String {
-        return "Stock: $stock"
     }
 
     fun deductStock(quantity: Int): Boolean {
