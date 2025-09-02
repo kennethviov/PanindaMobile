@@ -1,5 +1,6 @@
 package dev.komsay.basicapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -38,6 +39,8 @@ class SignupPage : AppCompatActivity() {
             val pwd = password.text.toString()
             val cpwd = confirmpwd.text.toString()
             Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, LoginPage::class.java)
+            startActivity(intent)
         }
 
     }

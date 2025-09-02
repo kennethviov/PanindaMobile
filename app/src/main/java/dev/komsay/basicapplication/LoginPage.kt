@@ -23,12 +23,12 @@ class LoginPage : AppCompatActivity() {
         val txtUsername = findViewById<EditText>(R.id.editTextUsername)
         val txtPassword = findViewById<EditText>(R.id.editTextPassword)
         val btnLogin = findViewById<Button>(R.id.BtnLogin)
-
+        val btnSignUp = findViewById<Button>(R.id.BtnSignUp)
         val canBeNull: String
 
 
         btnLogin.setOnClickListener {
-            if(txtUsername.text.toString() == "jampong" && txtPassword.text.toString() == "jampong123"){
+            if(txtUsername.text.toString() == "admin" && txtPassword.text.toString() == "admin"){
                 val intent = Intent(this, HomePage::class.java)
                 intent.putExtra("USERNAME_KEY", txtUsername.text.toString())
                 startActivity(intent)
@@ -36,6 +36,13 @@ class LoginPage : AppCompatActivity() {
                 Toast.makeText(this, "Bayot Ka", Toast.LENGTH_LONG).show()
             }
         }
+
+
+        btnSignUp.setOnClickListener {
+            val intent = Intent(this, SignupPage::class.java)
+            startActivity(intent)
+        }
+
 
     }
 }
