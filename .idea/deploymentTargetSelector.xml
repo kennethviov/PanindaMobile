@@ -11,9 +11,6 @@
       <SelectionState runConfigName="SalesPage">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SalesPage (1)">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="InventoryPage">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

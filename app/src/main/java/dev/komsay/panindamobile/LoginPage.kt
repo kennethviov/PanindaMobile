@@ -28,12 +28,12 @@ class LoginPage : AppCompatActivity() {
 
 
         btnLogin.setOnClickListener {
-            if(txtUsername.text.toString() == "jampong" && txtPassword.text.toString() == "jampong123"){
+            if(txtUsername.text.toString() == "jamill" && txtPassword.text.toString() == "pahak"){
                 val intent = Intent(this, HomePage::class.java)
                 intent.putExtra("USERNAME_KEY", txtUsername.text.toString())
                 startActivity(intent)
             }else{
-                Toast.makeText(this, "Bayot Ka", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Jam Bayot", Toast.LENGTH_LONG).show()
             }
         }
 

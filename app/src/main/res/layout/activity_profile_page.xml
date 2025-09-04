@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/panindalogo_background" />
+        android:src="@drawable/bg_panindalogo_background" />
 
 
     <RelativeLayout
@@ -23,7 +23,7 @@
         android:layout_height="200dp"
         android:layout_below="@id/logoImage"
         android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_bg"
+        android:background="@drawable/bg_rounded"
         android:padding="16dp">
 
 
@@ -33,7 +33,7 @@
             android:layout_height="120dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            android:background="@drawable/circle_bg"
+            android:background="@drawable/bg_circle"
             android:clipToOutline="true"
             android:scaleType="centerCrop" />
 
@@ -64,7 +64,7 @@
                 android:id="@+id/editUserProfile"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@drawable/useredit" />
+                android:src="@drawable/ic_useredit" />
         </LinearLayout>
 
 
@@ -89,7 +89,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
             android:padding="6dp"
-            android:src="@drawable/camera" />
+            android:src="@drawable/ic_camera" />
     </RelativeLayout>
 
 
@@ -100,7 +100,7 @@
         android:layout_below="@id/profileCard"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
-        android:background="@drawable/rounded_bg"
+        android:background="@drawable/bg_rounded"
         android:padding="10dp">
 
 
@@ -122,7 +122,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/tabler__edit" />
+                android:src="@drawable/ic_edit" />
         </RelativeLayout>
 
 
@@ -150,7 +150,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/tabler__edit" />
+                android:src="@drawable/ic_edit" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -172,7 +172,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/navigation_bar"
+        android:background="@drawable/bg_navigation_bar"
         android:elevation="8dp"
         android:gravity="center"
         android:orientation="horizontal"
@@ -185,7 +185,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Home"
-            android:src="@drawable/home" />
+            android:src="@drawable/ic_home" />
 
         <ImageButton
             android:id="@+id/navSales"
@@ -194,7 +194,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Sales"
-            android:src="@drawable/sales" />
+            android:src="@drawable/ic_sales" />
 
         <ImageButton
             android:id="@+id/navProfile"
@@ -203,7 +203,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Profile"
-            android:src="@drawable/profile" />
+            android:src="@drawable/ic_profile" />
 
         <ImageButton
             android:id="@+id/navBox"
@@ -212,7 +212,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Box"
-            android:src="@drawable/box" />
+            android:src="@drawable/ic_box" />
 
         <ImageButton
             android:id="@+id/navStats"
@@ -221,7 +221,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Stats"
-            android:src="@drawable/statistics" />
+            android:src="@drawable/ic_statistics" />
     </LinearLayout>
 
 </RelativeLayout>
