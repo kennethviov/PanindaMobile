@@ -47,6 +47,6 @@
             android:layout_weight="1"
             android:backgroundTint="#F4A300"
             android:text="Log out"
-            android:textColor="#000"/>
+            android:textColor="@color/white"/>
     </LinearLayout>
 </LinearLayout>
