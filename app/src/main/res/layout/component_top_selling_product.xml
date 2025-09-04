@@ -8,7 +8,7 @@
     android:layout_marginBottom="3dp"
     android:clickable="true"
     android:focusable="true"
-    android:background="@drawable/product_seller_bg">
+    android:background="@drawable/bg_product_seller">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/topProductCard"
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/placeholder"
+            android:src="@drawable/img_placeholder"
             android:scaleType="centerCrop"/>
 
     </androidx.cardview.widget.CardView>
@@ -67,7 +67,7 @@
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textAlignment="center"
-        android:background="@drawable/ribbon"
+        android:background="@drawable/bg_ribbon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

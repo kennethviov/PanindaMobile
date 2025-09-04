@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackgroundColor"
-    tools:context=".SalesPage">
+    tools:context=".AnalyticsPage">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -37,105 +37,27 @@
                 android:id="@+id/userTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Review your sales"
+                android:text="Analytics"
                 android:textColor="@color/black"
                 android:textColorLink="@color/black"
                 android:textSize="30sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/inter_bold"/>
 
-            <EditText
-                android:id="@+id/searchBar"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lineGraphCard"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_marginTop="6dp"
-                android:drawableStart="@drawable/ic_search"
-                android:drawablePadding="10dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:background="@drawable/bg_product_seller"
-                android:autofillHints="Snacks"
-                android:hint="Search"
-                android:inputType="text"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray"
-                android:textSize="14sp"
-                />
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:scrollbars="none">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/categorySlider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:orientation="horizontal"
-                    android:layout_gravity="start">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFF4C8">
 
-                    <include layout="@layout/component_category"/>
+
 
                 </LinearLayout>
-            </HorizontalScrollView>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp">
-
-                <TextView
-                    android:id="@+id/productText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Product"
-                    android:textSize="12sp"
-                    android:textColor="@color/gray"
-                    android:fontFamily="@font/inter_regular"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <TextView
-                    android:id="@+id/stocksSoldText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="Stocks Sold"
-                    android:textSize="12sp"
-                    android:textColor="@color/gray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.55"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/salesTotalText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sales Total"
-                    android:textSize="12sp"
-                    android:textColor="@color/gray"
-                    android:fontFamily="@font/inter_regular"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <include layout="@layout/component_product_sales"/>
-            <include layout="@layout/component_product_sales"/>
-            <include layout="@layout/component_product_sales"/>
-            <include layout="@layout/component_product_sales"/>
-            <include layout="@layout/component_product_sales"/>
-            <include layout="@layout/component_product_sales"/>
-            <include layout="@layout/component_product_sales"/>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

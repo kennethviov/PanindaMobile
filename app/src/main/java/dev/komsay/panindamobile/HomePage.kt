@@ -98,7 +98,7 @@ class HomePage : AppCompatActivity() {
                 price = 10.50,
                 stock = 20,
                 category = "Snacks",
-                imageResId = R.drawable.piattos
+                imageResId = R.drawable.img_piattos
             ),
             Product(
                 id = "2",
@@ -106,7 +106,7 @@ class HomePage : AppCompatActivity() {
                 price = 15.00,
                 stock = 15,
                 category = "Snacks",
-                imageResId = R.drawable.placeholder
+                imageResId = R.drawable.img_placeholder
             ),
             Product(
                 id = "3",
@@ -114,7 +114,7 @@ class HomePage : AppCompatActivity() {
                 price = 10.00,
                 stock = 12,
                 category = "Snacks",
-                imageResId = R.drawable.placeholder
+                imageResId = R.drawable.img_placeholder
             ),
             Product(
                 id = "4",
@@ -122,7 +122,7 @@ class HomePage : AppCompatActivity() {
                 price = 25.00,
                 stock = 8,
                 category = "Snacks",
-                imageResId = R.drawable.placeholder
+                imageResId = R.drawable.img_placeholder
             ),
             Product(
                 id = "5",
@@ -130,7 +130,7 @@ class HomePage : AppCompatActivity() {
                 price = 15.00,
                 stock = 10,
                 category = "Snacks",
-                imageResId = R.drawable.placeholder
+                imageResId = R.drawable.img_placeholder
             ),
             Product(
                 id = "6",
@@ -138,7 +138,7 @@ class HomePage : AppCompatActivity() {
                 price = 20.00,
                 stock = 5,
                 category = "Beverages",
-                imageResId = R.drawable.placeholder
+                imageResId = R.drawable.img_placeholder
             ),
             Product(
                 id = "7",
@@ -146,7 +146,7 @@ class HomePage : AppCompatActivity() {
                 price = 15.00,
                 stock = 10,
                 category = "Beverages",
-                imageResId = R.drawable.placeholder
+                imageResId = R.drawable.img_placeholder
             ),
             Product(
                 id = "8",
@@ -154,7 +154,7 @@ class HomePage : AppCompatActivity() {
                 price = 10.00,
                 stock = 20,
                 category = "Beverages",
-                imageResId = R.drawable.placeholder
+                imageResId = R.drawable.img_placeholder
             ),
             Product(
                 id = "9",
@@ -162,7 +162,7 @@ class HomePage : AppCompatActivity() {
                 price = 15.00,
                 stock = 15,
                 category = "Beverages",
-                imageResId = R.drawable.placeholder
+                imageResId = R.drawable.img_placeholder
             ),
         )
 
@@ -208,7 +208,7 @@ class HomePage : AppCompatActivity() {
             name = "Piattos",
             stockSold = 10,
             totalSales = 100.00,
-            imageResId = R.drawable.piattos,
+            imageResId = R.drawable.img_piattos,
             overAllStocksSold = 67
         )
 
