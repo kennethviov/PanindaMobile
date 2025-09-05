@@ -12,8 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BasicApplication">
         <activity
+            android:name=".ProfilePage"
+            android:exported="true" />
+        <activity
             android:name=".AnalyticsPage"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".InventoryPage"
             android:exported="true" />

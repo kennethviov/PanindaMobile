@@ -5,7 +5,7 @@
     <color name="white"> #FFFFFFFF </color>
     <color name="transparent"> #00000000 </color>
 
-    <color name="mainBackgroundColor"> #FEFFD2 </color>
+    <color name="mainBackgroundColor"> #FFF9D9 </color>
     <color name="secondaryColor"> #FFEEA9 </color>
     <color name="tertiaryColor"> #FFBF78 </color>
     <color name="opaqueColor"> #FF7D29 </color>
