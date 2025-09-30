@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="70dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_navigation_bar">
 
     <LinearLayout
         android:id="@+id/navbar"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@drawable/navigation_bar"
-        android:elevation="8dp"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="5"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/navHome"
@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Home"
-            android:src="@drawable/home" />
+            android:src="@drawable/ic_home" />
 
         <ImageButton
             android:id="@+id/navSales"
@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Sales"
-            android:src="@drawable/sales" />
+            android:src="@drawable/ic_sales" />
 
         <ImageButton
             android:id="@+id/navProfile"
@@ -40,7 +40,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Profile"
-            android:src="@drawable/profile" />
+            android:src="@drawable/ic_profile" />
 
         <ImageButton
             android:id="@+id/navBox"
@@ -49,7 +49,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Box"
-            android:src="@drawable/box" />
+            android:src="@drawable/ic_box" />
 
         <ImageButton
             android:id="@+id/navStats"
@@ -58,7 +58,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Stats"
-            android:src="@drawable/statistics" />
+            android:src="@drawable/ic_statistics" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

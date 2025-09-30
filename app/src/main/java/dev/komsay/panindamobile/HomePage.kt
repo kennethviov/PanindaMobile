@@ -27,7 +27,7 @@ class HomePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_home_page)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.homePage)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -80,8 +80,8 @@ class HomePage : AppCompatActivity() {
         }
 
         navStats.setOnClickListener {
-            if (this::class.java != StatisticsPage::class.java) {
-                val intent = Intent(this, StatisticsPage::class.java)
+            if (this::class.java != AnalyticsPage::class.java) {
+                val intent = Intent(this, AnalyticsPage::class.java)
                 startActivity(intent)
                 overridePendingTransition(0, 0)
             }

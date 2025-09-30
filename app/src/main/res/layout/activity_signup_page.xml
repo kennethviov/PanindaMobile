@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF9D9"
+    android:background="@color/mainBackgroundColor"
     tools:context=".SignupPage">
 
     <!-- Logo ni-->
@@ -12,7 +12,8 @@
         android:id="@+id/logoImage"
         android:layout_width="286dp"
         android:layout_height="227dp"
-        android:src="@drawable/bg_panindalogo_background"
+        android:src="@drawable/logo_paninda_wordmark"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@id/editTextUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
