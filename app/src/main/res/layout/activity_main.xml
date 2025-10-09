@@ -1,91 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loginPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackgroundColor"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
     tools:context=".LoginPage">
+
+    <!-- Logo -->
+
+    <!-- Username -->
 
     <ImageView
         android:id="@+id/Logo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/logo_paninda_wordmark"
-        app:layout_constraintStart_toStartOf="@id/editTextUsername"
-        app:layout_constraintEnd_toEndOf="@id/editTextUsername"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/editTextUsername"/>
-
-    <Button
-        android:id="@+id/BtnLogin"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/black"
-        android:foregroundTint="@color/white"
-        android:text="Login"
-        android:textColor="@color/white"
-        android:textColorLink="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.747" />
-
-    <Button
-        android:id="@+id/BtnSignUp"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:backgroundTint="#FEAC00"
-        android:foregroundTint="@color/black"
-        android:text="Sign Up"
-        android:textColor="@color/black"
-        android:textColorLink="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.838" />
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="32dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="App Logo"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo_paninda_wordmark" />
 
     <EditText
         android:id="@+id/editTextUsername"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:background="@drawable/bg_rounded_edittext"
-        android:ems="10"
         android:hint="Username"
         android:inputType="text"
         android:paddingStart="45dp"
+        android:layout_marginBottom="16dp"
         android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textColorLink="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.518"
-        tools:text="Username" />
+        android:textColorHint="@color/black" />
 
+    <!-- Password -->
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:background="@drawable/bg_rounded_edittext"
-        android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:paddingStart="45dp"
+        android:layout_marginBottom="24dp"
         android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textColorLink="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.607" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textColorHint="@color/black" />
+
+    <!-- Login Button -->
+    <Button
+        android:id="@+id/BtnLogin"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/black"
+        android:text="Login"
+        android:textColor="@color/white"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Sign Up Button -->
+    <Button
+        android:id="@+id/BtnSignUp"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#FEAC00"
+        android:text="Sign Up"
+        android:textColor="@color/black" />
+
+</LinearLayout>

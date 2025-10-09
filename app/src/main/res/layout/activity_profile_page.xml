@@ -63,7 +63,7 @@
                         android:layout_height="match_parent"
                         android:src="@drawable/img_placeholder_photo"
                         android:scaleType="centerCrop"
-                        android:contentDescription="Profile Picture"/>
+                        android:contentDescription="bgPicture"/>
 
                 </androidx.cardview.widget.CardView>
 
@@ -75,7 +75,7 @@
                     android:background="@color/transparent"
                     app:layout_constraintEnd_toEndOf="@id/profilePicHolder"
                     app:layout_constraintBottom_toBottomOf="@id/profilePicHolder"
-                    android:contentDescription="Change Picture"/>
+                    android:contentDescription="chngprofileBtn"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -154,6 +154,7 @@
         </androidx.cardview.widget.CardView>
         
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/logoutBtn"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:text="Log Out"
