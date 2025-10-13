@@ -233,7 +233,16 @@ class HomePage : AppCompatActivity() {
     private fun handleSellClick(product: Product, quantity: Int) {
         val totalAmount = product.price * quantity
 
-        if (quantity > product.stock) {
+        if(quantity <= 0) {
+            Toast.makeText(
+                this,
+                "Quantity must be greater then 0",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+
+        if (quantity <= product.stock) {
             Toast.makeText(
                 this,
                 "Not enough stock for ${product.name}",
