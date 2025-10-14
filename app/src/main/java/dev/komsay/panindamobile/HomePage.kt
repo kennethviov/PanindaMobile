@@ -1,5 +1,6 @@
 package dev.komsay.panindamobile
 import android.content.Intent
+import android.content.res.Configuration
 
 import android.os.Build
 import android.os.Bundle
@@ -20,8 +21,12 @@ import dev.komsay.panindamobile.ui.data.ProductSales
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import android.widget.LinearLayout
+import androidx.activity.OnBackPressedCallback
 
 class HomePage : AppCompatActivity() {
+
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +37,8 @@ class HomePage : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+
 
         val currentDateTime = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
@@ -46,6 +53,8 @@ class HomePage : AppCompatActivity() {
         val navProfile = findViewById<ImageButton>(R.id.navProfile)
         val navInventory = findViewById<ImageButton>(R.id.navBox)
         val navStats = findViewById<ImageButton>(R.id.navStats)
+
+
 
         navHome.setOnClickListener {
             if (this::class.java != HomePage::class.java) {
@@ -85,7 +94,9 @@ class HomePage : AppCompatActivity() {
                 startActivity(intent)
                 overridePendingTransition(0, 0)
             }
+
         }
+
 
 
         userTxtView.text = "Hello, $receivedUsername"
@@ -260,5 +271,4 @@ class HomePage : AppCompatActivity() {
             Toast.LENGTH_LONG
         ).show()
     }
-
 }

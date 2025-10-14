@@ -22,13 +22,15 @@
 
         <ImageView
             android:id="@+id/panindalogo"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
+            android:layout_width="193dp"
+            android:layout_height="163dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Paninda"
             android:src="@drawable/logo_paninda_wordmark"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="Paninda"/>
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/profileHolder"
