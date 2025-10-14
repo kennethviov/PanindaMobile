@@ -13,7 +13,7 @@ class LoginPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login_page)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.loginPage)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -32,6 +32,12 @@ class LoginPage : AppCompatActivity() {
                 val intent = Intent(this, HomePage::class.java)
                 intent.putExtra("USERNAME_KEY", txtUsername.text.toString())
                 startActivity(intent)
+
+                // to prevent going back to login kenesu
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                startActivity(intent)
+                finish()
             }else{
                 Toast.makeText(this, "Bayot Ka", Toast.LENGTH_LONG).show()
             }
@@ -39,8 +45,7 @@ class LoginPage : AppCompatActivity() {
 
 
         btnSignUp.setOnClickListener {
-            val intent = Intent(this, SignupPage::class.java)
-            startActivity(intent)
+            val intent = Intent(this, HomePage::class.java)
         }
 
 
