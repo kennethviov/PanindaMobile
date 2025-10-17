@@ -24,12 +24,14 @@
 
 
 
+
             <LinearLayout
                 android:id="@+id/productSalesContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="top">
+
 
                 <TextView
                     android:id="@+id/dateTimeView"
@@ -39,6 +41,7 @@
                     android:text="TextView"
                     android:textColor="@color/gray"
                     android:fontFamily="@font/inter_regular"/>
+
 
                 <TextView
                     android:id="@+id/userTextView"
@@ -50,6 +53,23 @@
                     android:textSize="30sp"
                     android:textStyle="bold"
                     android:fontFamily="@font/inter_bold"/>
+                <EditText
+                    android:id="@+id/searchBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="6dp"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:background="@drawable/bg_product_seller"
+                    android:autofillHints="Snacks"
+                    android:hint="Search"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
+                    android:textSize="14sp"
+                    />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/lineGraphCard"
@@ -60,7 +80,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#FFF4C8">
-
 
 
                     </LinearLayout>
