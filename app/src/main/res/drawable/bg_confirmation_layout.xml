@@ -1,6 +1,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="#FFFFE0"/> <!-- pale yellow -->
+    <solid android:color="@color/secondaryColor"/> <!-- pale yellow -->
     <corners android:radius="16dp"/> <!-- rounded corners -->
     <padding android:left="20dp"
         android:top="20dp"

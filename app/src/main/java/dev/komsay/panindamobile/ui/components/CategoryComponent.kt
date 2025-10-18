@@ -5,12 +5,11 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import dev.komsay.panindamobile.R
-import dev.komsay.panindamobile.ui.data.Category
 
 class CategoryComponent {
 
     private val view: View
-    private val categoryname: TextView
+    private val categoryName: TextView
 
     constructor(container: LinearLayout) {
 
@@ -19,11 +18,11 @@ class CategoryComponent {
 
         container.addView(view)
 
-        categoryname = view.findViewById(R.id.categoryName)
+        categoryName = view.findViewById(R.id.categoryName)
     }
 
-    fun bind(category: Category) {
-        categoryname.text = category.name
+    fun bind(category: String) {
+        categoryName.text = category
     }
 
 }
