@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".AddProduct">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_confirmation_layout"
+        android:elevation="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/productImage"
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:src="@drawable/img_placeholder"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:contentDescription="product photo"/>
+
+                    <EditText
+                        android:id="@+id/productName"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:hint="Name"
+                        android:textSize="12sp"
+                        android:textColorHint="@color/gray"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter_regular"
+                        android:background="@drawable/bg_add_product_field"
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/productImage"/>
+
+                    <EditText
+                        android:id="@+id/productPrice"
+                        android:layout_width="135dp"
+                        android:layout_height="36dp"
+                        android:hint="Price"
+                        android:textSize="12sp"
+                        android:textColorHint="@color/gray"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter_regular"
+                        android:background="@drawable/bg_add_product_field"
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/productName"/>
+
+                    <EditText
+                        android:id="@+id/productStock"
+                        android:layout_width="135dp"
+                        android:layout_height="36dp"
+                        android:hint="Stock"
+                        android:textSize="12sp"
+                        android:textColorHint="@color/gray"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter_regular"
+                        android:background="@drawable/bg_add_product_field"
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/productName"/>
+
+                    <AutoCompleteTextView
+                        android:id="@+id/categories"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:layout_marginTop="10dp"
+                        android:hint="Category"
+                        android:textSize="12sp"
+                        android:textColorHint="@color/gray"
+                        android:textColor="@color/black"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        android:background="@drawable/bg_add_product_field"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/productPrice"/>
+
+                    <LinearLayout
+                        android:id="@+id/buttonRow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintTop_toBottomOf="@id/categories"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <!-- Cancel Button -->
+                        <Button
+                            android:id="@+id/btnCancel"
+                            android:layout_width="130dp"
+                            android:layout_height="56dp"
+                            android:backgroundTint="@color/black"
+                            android:textSize="14sp"
+                            android:text="Cancel"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/inter_bold"
+                            />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            />
+
+                        <!-- Confirm Button -->
+                        <Button
+                            android:id="@+id/btnConfirm"
+                            android:layout_width="130dp"
+                            android:layout_height="56dp"
+                            android:backgroundTint="#FEAC00"
+                            android:text="Confirm"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/inter_bold"
+                            />
+
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

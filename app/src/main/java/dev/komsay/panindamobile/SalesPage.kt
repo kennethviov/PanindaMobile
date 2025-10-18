@@ -19,12 +19,14 @@ class SalesPage : AppCompatActivity() {
             insets
         }
 
+        // navbar
         val navHome = findViewById<ImageButton>(R.id.navHome)
         val navSales = findViewById<ImageButton>(R.id.navSales)
         val navProfile = findViewById<ImageButton>(R.id.navProfile)
         val navInventory = findViewById<ImageButton>(R.id.navBox)
         val navStats = findViewById<ImageButton>(R.id.navStats)
 
+        // navbar onclick
         navHome.setOnClickListener {
             if (this::class.java != HomePage::class.java) {
                 val intent = Intent(this, HomePage::class.java)

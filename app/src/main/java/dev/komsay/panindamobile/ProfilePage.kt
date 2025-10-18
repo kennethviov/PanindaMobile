@@ -2,7 +2,6 @@ package dev.komsay.panindamobile
 
 import android.net.Uri
 import android.content.Intent
-import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -60,11 +59,6 @@ class ProfilePage : AppCompatActivity() {
             }
         }
 
-        // Animated background
-        rootLayout.setBackgroundResource(R.drawable.animation_bg)
-        val animationDrawable = rootLayout.background as AnimationDrawable
-        animationDrawable.start()
-
         // Change picture
         changePicBtn.setOnClickListener {
             pickImageLauncher.launch("image/*")
@@ -116,17 +110,5 @@ class ProfilePage : AppCompatActivity() {
             startActivity(Intent(this, AnalyticsPage::class.java))
             overridePendingTransition(0, 0)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val rootLayout = findViewById<ConstraintLayout>(R.id.profilePage)
-        (rootLayout.background as AnimationDrawable).start()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        val rootLayout = findViewById<ConstraintLayout>(R.id.profilePage)
-        (rootLayout.background as AnimationDrawable).stop()
     }
 }

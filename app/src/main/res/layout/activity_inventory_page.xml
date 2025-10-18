@@ -23,7 +23,7 @@
             app:layout_constraintBottom_toTopOf="@id/navbar">
 
             <LinearLayout
-                android:id="@+id/productSalesContainer"
+                android:id="@+id/productInventoryContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -141,16 +141,16 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <include layout="@layout/component_product_inventory"/>
-                <include layout="@layout/component_product_inventory"/>
-                <include layout="@layout/component_product_inventory"/>
-                <include layout="@layout/component_product_inventory"/>
-                <include layout="@layout/component_product_inventory"/>
-                <include layout="@layout/component_product_inventory"/>
-                <include layout="@layout/component_product_inventory"/>
-                <include layout="@layout/component_product_inventory"/>
-                <include layout="@layout/component_product_inventory"/>
-                <include layout="@layout/component_product_inventory"/>
+<!--                <include layout="@layout/component_product_inventory"/>-->
+<!--                <include layout="@layout/component_product_inventory"/>-->
+<!--                <include layout="@layout/component_product_inventory"/>-->
+<!--                <include layout="@layout/component_product_inventory"/>-->
+<!--                <include layout="@layout/component_product_inventory"/>-->
+<!--                <include layout="@layout/component_product_inventory"/>-->
+<!--                <include layout="@layout/component_product_inventory"/>-->
+<!--                <include layout="@layout/component_product_inventory"/>-->
+<!--                <include layout="@layout/component_product_inventory"/>-->
+<!--                <include layout="@layout/component_product_inventory"/>-->
 
             </LinearLayout>
 
@@ -164,7 +164,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+        
+        <ImageButton
+            android:id="@+id/addBtn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/bg_navigation_bar"
+            android:src="@drawable/ic_add"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/navbar"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

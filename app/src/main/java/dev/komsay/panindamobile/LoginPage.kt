@@ -22,8 +22,8 @@ class LoginPage : AppCompatActivity() {
 
         val txtUsername = findViewById<EditText>(R.id.editTextUsername)
         val txtPassword = findViewById<EditText>(R.id.editTextPassword)
-        val btnLogin = findViewById<Button>(R.id.BtnLogin)
-        val btnSignUp = findViewById<Button>(R.id.BtnSignUp)
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
+        val btnSignUp = findViewById<Button>(R.id.btnSignUp)
         val canBeNull: String
 
 
@@ -31,7 +31,6 @@ class LoginPage : AppCompatActivity() {
             if(txtUsername.text.toString() == "admin" && txtPassword.text.toString() == "admin"){
                 val intent = Intent(this, HomePage::class.java)
                 intent.putExtra("USERNAME_KEY", txtUsername.text.toString())
-                startActivity(intent)
 
                 // to prevent going back to login kenesu
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
