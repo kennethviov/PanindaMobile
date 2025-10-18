@@ -1,32 +1,23 @@
 package dev.komsay.panindamobile
 
-import android.net.Uri
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import dev.komsay.panindamobile.ui.components.NavigationBarManager
 
 class ProfilePage : AppCompatActivity() {
 
-    private lateinit var profilePicture: ImageView
-    private lateinit var changePicBtn: ImageButton
-
-    private val pickImageLauncher = registerForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
+    private val profilePic: ImageView by lazy { findViewById(R.id.profilePicture) }
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
-            profilePicture.setImageURI(it)
-            // Save URI string to SharedPreferences
-            val prefs = getSharedPreferences("user_profile", MODE_PRIVATE)
-            prefs.edit().putString("profile_image_uri", it.toString()).apply()
+            profilePic.setImageURI(it)
         }
     }
 
@@ -34,81 +25,43 @@ class ProfilePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_profile_page)
-
-        // Initialize views FIRST
-        val rootLayout = findViewById<ConstraintLayout>(R.id.profilePage)
-        profilePicture = findViewById(R.id.profilePicture)
-        changePicBtn = findViewById(R.id.changePicBtn)
-        val logoutBtn = findViewById<AppCompatButton>(R.id.logoutBtn)
-
-        // Apply system insets
-        ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Load saved profile image (if any)
-        val prefs = getSharedPreferences("user_profile", MODE_PRIVATE)
-        val savedUri = prefs.getString("profile_image_uri", null)
-        if (savedUri != null) {
-            try {
-                profilePicture.setImageURI(Uri.parse(savedUri))
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
+        navigationBarManager.setup()
 
-        // Change picture
-        changePicBtn.setOnClickListener {
-            pickImageLauncher.launch("image/*")
-        }
+        val changePicBtn = findViewById<ImageButton>(R.id.editProfilePic)
+        val changeNameBtn = findViewById<ImageButton>(R.id.changeNameBtn)
+        val changePassBtn = findViewById<Button>(R.id.changePassBtn)
+        val logoutBtn = findViewById<Button>(R.id.logoutBtn)
 
-        // Logout button
-        logoutBtn.setOnClickListener {
-            val logoutDialog = LogoutConfirmation(this)
-            logoutDialog.setOnLogoutConfirmed {
-                prefs.edit().clear().apply()
-                startActivity(Intent(this, LoginPage::class.java))
-                finish()
-            }
-            logoutDialog.show()
-        }
-
-        // Navbar setup (✅ FIXED VERSION)
-        setupNavBar()
+        changePicBtn.setOnClickListener { changePicture(profilePic, ) }
+        changeNameBtn.setOnClickListener { changeName() }
+        changePassBtn.setOnClickListener { changePassword() }
+        logoutBtn.setOnClickListener { logout() }
     }
 
-    private fun setupNavBar() {
-        // ✅ Access buttons inside the included layout
-        val navBar = findViewById<View>(R.id.navbar)
-        val navHome = navBar.findViewById<ImageButton>(R.id.navHome)
-        val navSales = navBar.findViewById<ImageButton>(R.id.navSales)
-        val navProfile = navBar.findViewById<ImageButton>(R.id.navProfile)
-        val navInventory = navBar.findViewById<ImageButton>(R.id.navBox)
-        val navStats = navBar.findViewById<ImageButton>(R.id.navStats)
+    private fun changePicture(profilePic: ImageView) {
 
-        navHome.setOnClickListener {
-            startActivity(Intent(this, HomePage::class.java))
-            overridePendingTransition(0, 0)
-        }
 
-        navSales.setOnClickListener {
-            startActivity(Intent(this, SalesPage::class.java))
-            overridePendingTransition(0, 0)
-        }
+        pickImageLauncher.launch("image/*")
+    }
 
-        // Already on ProfilePage
-        navProfile.setOnClickListener { }
+    private fun changeName() {
 
-        navInventory.setOnClickListener {
-            startActivity(Intent(this, InventoryPage::class.java))
-            overridePendingTransition(0, 0)
-        }
+    }
 
-        navStats.setOnClickListener {
-            startActivity(Intent(this, AnalyticsPage::class.java))
-            overridePendingTransition(0, 0)
-        }
+    private fun changePassword() {
+
+    }
+
+    private fun logout() {
+        val intent = Intent(this, LoginPage::class.java)
+        startActivity(intent)
+        finish()
     }
 }

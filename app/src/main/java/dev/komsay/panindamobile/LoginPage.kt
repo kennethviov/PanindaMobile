@@ -24,7 +24,6 @@ class LoginPage : AppCompatActivity() {
         val txtPassword = findViewById<EditText>(R.id.editTextPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val btnSignUp = findViewById<Button>(R.id.btnSignUp)
-        val canBeNull: String
 
 
         btnLogin.setOnClickListener {

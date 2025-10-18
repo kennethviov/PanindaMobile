@@ -1,15 +1,18 @@
 package dev.komsay.panindamobile.ui.data
 
+import dev.komsay.panindamobile.R
+
 data class Product(
-    val id: String,
+    var id: String,
     var name: String,
     var price: Double,
     var stock: Int,
     var category: String,
+    var unitSold: Int = 0,
 
-    val imageResId: Int? = null, // subject to change
+    var imageResId: Int? = R.drawable.img_placeholder, // subject to change
     // or
-    val imageURL: String? = null
+    var imageURL: String? = null
     ) {
     fun getFormattedPrice(): String {
         return "₱%.2f".format(price)

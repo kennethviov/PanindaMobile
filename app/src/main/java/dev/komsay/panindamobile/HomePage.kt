@@ -1,10 +1,8 @@
 package dev.komsay.panindamobile
-import android.content.Intent
-import android.content.res.Configuration
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,17 +14,14 @@ import dev.komsay.panindamobile.ui.components.CategoryComponent
 import dev.komsay.panindamobile.ui.components.ProductSellerComponent
 import dev.komsay.panindamobile.ui.data.Product
 import dev.komsay.panindamobile.ui.components.TopSellingProductComponent
-import dev.komsay.panindamobile.ui.data.Category
-import dev.komsay.panindamobile.ui.data.ProductSales
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import android.widget.LinearLayout
-import androidx.activity.OnBackPressedCallback
+import dev.komsay.panindamobile.ui.components.NavigationBarManager
 
 class HomePage : AppCompatActivity() {
 
-
-
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +33,8 @@ class HomePage : AppCompatActivity() {
             insets
         }
 
-
+        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
+        navigationBarManager.setup()
 
         val currentDateTime = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
@@ -48,185 +44,22 @@ class HomePage : AppCompatActivity() {
         val userTxtView = findViewById<TextView>(R.id.userTextView)
         val dateTime = findViewById<TextView>(R.id.dateTimeView)
 
-        val navHome = findViewById<ImageButton>(R.id.navHome)
-        val navSales = findViewById<ImageButton>(R.id.navSales)
-        val navProfile = findViewById<ImageButton>(R.id.navProfile)
-        val navInventory = findViewById<ImageButton>(R.id.navBox)
-        val navStats = findViewById<ImageButton>(R.id.navStats)
-
-
-
-        navHome.setOnClickListener {
-            if (this::class.java != HomePage::class.java) {
-                val intent = Intent(this, HomePage::class.java)
-                startActivity(intent)
-                overridePendingTransition(0, 0)
-            }
-        }
-
-        navSales.setOnClickListener {
-            if (this::class.java != SalesPage::class.java) {
-                val intent = Intent(this, SalesPage::class.java)
-                startActivity(intent)
-                overridePendingTransition(0, 0)
-            }
-        }
-
-        navProfile.setOnClickListener {
-            if (this::class.java != ProfilePage::class.java) {
-                val intent = Intent(this, ProfilePage::class.java)
-                startActivity(intent)
-                overridePendingTransition(0, 0)
-            }
-        }
-
-        navInventory.setOnClickListener {
-            if (this::class.java != InventoryPage::class.java) {
-                val intent = Intent(this, InventoryPage::class.java)
-                startActivity(intent)
-                overridePendingTransition(0, 0)
-            }
-        }
-
-        navStats.setOnClickListener {
-            if (this::class.java != AnalyticsPage::class.java) {
-                val intent = Intent(this, AnalyticsPage::class.java)
-                startActivity(intent)
-                overridePendingTransition(0, 0)
-            }
-
-        }
-
-
-
         userTxtView.text = "Hello, $receivedUsername"
         dateTime.text =formattedDateTime.toString()
 
-        val products = mutableListOf<Product>(
-            Product(
-                id = "1",
-                name = "Piattos",
-                price = 10.50,
-                stock = 20,
-                category = "Snacks",
-                imageResId = R.drawable.img_piattos
-            ),
-            Product(
-                id = "2",
-                name = "Banana",
-                price = 15.00,
-                stock = 15,
-                category = "Snacks",
-                imageResId = R.drawable.img_placeholder
-            ),
-            Product(
-                id = "3",
-                name = "Apple",
-                price = 10.00,
-                stock = 12,
-                category = "Snacks",
-                imageResId = R.drawable.img_placeholder
-            ),
-            Product(
-                id = "4",
-                name = "Mango",
-                price = 25.00,
-                stock = 8,
-                category = "Snacks",
-                imageResId = R.drawable.img_placeholder
-            ),
-            Product(
-                id = "5",
-                name = "Orange",
-                price = 15.00,
-                stock = 10,
-                category = "Snacks",
-                imageResId = R.drawable.img_placeholder
-            ),
-            Product(
-                id = "6",
-                name = "Coffee",
-                price = 20.00,
-                stock = 5,
-                category = "Beverages",
-                imageResId = R.drawable.img_placeholder
-            ),
-            Product(
-                id = "7",
-                name = "Tea",
-                price = 15.00,
-                stock = 10,
-                category = "Beverages",
-                imageResId = R.drawable.img_placeholder
-            ),
-            Product(
-                id = "8",
-                name = "Water",
-                price = 10.00,
-                stock = 20,
-                category = "Beverages",
-                imageResId = R.drawable.img_placeholder
-            ),
-            Product(
-                id = "9",
-                name = "Coke",
-                price = 15.00,
-                stock = 15,
-                category = "Beverages",
-                imageResId = R.drawable.img_placeholder
-            ),
-        )
 
-        val categories = mutableListOf<Category>(
 
-            Category(
-                id = "1",
-                name = "Snacks"
-            ),
-            Category(
-                id = "2",
-                name = "Beverages"
-            ),
-            Category(
-                id = "3",
-                name = "Fruits"
-            ),
-            Category(
-                id = "4",
-                name = "Vegetables"
-            ),
-            Category(
-                id = "5",
-                name = "Dairy"
-            ),
-            Category(
-                id = "6",
-                name = "Bakery"
-            ),
-            Category(
-                id = "7",
-                name = "Frozen Foods"
-            ),
-            Category(
-                id = "8",
-                name = "Meat"
-            )
-
-        )
-
-        val product = ProductSales(
-            id = "1",
-            name = "Piattos",
-            stockSold = 10,
-            totalSales = 100.00,
-            imageResId = R.drawable.img_piattos,
-            overAllStocksSold = 67
-        )
 
         val container = findViewById<LinearLayout>(R.id.productSellerContainer)
 
+        val app = application as Paninda
+        val dataHelper = app.dataHelper
+
+        val products = dataHelper.getAllProducts()
+        val categories = dataHelper.getAllCategories()
+
         val topSellComp = TopSellingProductComponent(container)
-        topSellComp.bind(product)
+        topSellComp.bind(products.find { it.unitSold == products.maxByOrNull { it.unitSold }?.unitSold }!!, totalUnitSold(products))
 
         for (cat in categories) {
             val catComp = CategoryComponent(findViewById(R.id.categorySlider))
@@ -241,6 +74,7 @@ class HomePage : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private fun handleSellClick(product: Product, quantity: Int) {
         val totalAmount = product.price * quantity
 
@@ -270,5 +104,9 @@ class HomePage : AppCompatActivity() {
                     "Remaining stock: ${product.stock}",
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    private fun totalUnitSold(products: List<Product>): Int {
+        return products.sumOf { it.unitSold }
     }
 }
