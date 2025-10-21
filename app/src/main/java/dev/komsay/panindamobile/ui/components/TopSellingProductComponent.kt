@@ -4,7 +4,6 @@ import android.view.*
 import android.widget.*
 import dev.komsay.panindamobile.R
 import dev.komsay.panindamobile.ui.data.Product
-import dev.komsay.panindamobile.ui.data.ProductSales
 
 class TopSellingProductComponent {
 

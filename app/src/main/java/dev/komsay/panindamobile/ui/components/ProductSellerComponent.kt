@@ -67,7 +67,7 @@ class ProductSellerComponent {
             maxStock = product.stock
 
             productName.text = product.name
-            productPrice.text = product.getFormattedPrice()
+            productPrice.text = product.getFormattedPrice(product.price)
             productStock.text = product.stock.toString()
 
             product.imageResId?.let { resourceId ->

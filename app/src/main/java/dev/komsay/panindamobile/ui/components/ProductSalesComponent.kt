@@ -1,51 +1,54 @@
 package dev.komsay.panindamobile.ui.components
 
+import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import java.time.format.DateTimeFormatter
 import dev.komsay.panindamobile.R
-import dev.komsay.panindamobile.ui.data.Product
+import dev.komsay.panindamobile.ui.data.Sales
+import dev.komsay.panindamobile.ui.fragments.SalesDetails
+import java.time.LocalDateTime
 
 class ProductSalesComponent {
 
     private val view: View
-    private val productImage: ImageView
-    private val productName: TextView
-    private val productPrice: TextView
-    private val productSold: TextView
+    private val context: Context
+    private val time: TextView
+    private val salesID: TextView
     private val productSales: TextView
 
-    constructor(container: LinearLayout) {
+    constructor(container: LinearLayout, context: Context) {
+        this.context = context
+
         view = LayoutInflater.from(container.context)
             .inflate(R.layout.component_product_sales,
             container, false)
 
         container.addView(view)
 
-        productImage = view.findViewById(R.id.productImage)
-        productName = view.findViewById(R.id.productName)
-        productPrice = view.findViewById(R.id.productPrice)
-        productSold = view.findViewById(R.id.productSold)
+        time = view.findViewById(R.id.time)
+        salesID = view.findViewById(R.id.salesID)
         productSales = view.findViewById(R.id.productSales)
 
     }
 
-    fun bind(product: Product) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun bind(sales: Sales) {
 
-        productName.text = product.name
-        productPrice.text = "₱%.2f".format(product.price)
-        productSold.text = product.unitSold.toString()
-        productSales.text = calcSales(product.price, product.unitSold)
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        val dateTime = LocalDateTime.parse(sales.salesDate)
 
-        product.imageResId?.let { resourceId ->
-            productImage.setImageResource(resourceId)
+        time.text = dateTime.format(formatter)
+        salesID.text = sales.id
+        productSales.text = sales.getFormattedTotal(sales.salesItems.sumOf { it.price * it.stock })
+
+        view.setOnClickListener {
+            val dialog = SalesDetails(context)
+            dialog.show(sales)
         }
-    }
-
-    private fun calcSales(price: Double, unitSold: Int): String {
-        val unitSales = unitSold * price
-        return "₱%.2f".format(unitSales)
     }
 }

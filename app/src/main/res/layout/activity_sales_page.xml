@@ -81,8 +81,6 @@
                         android:orientation="horizontal"
                         android:layout_gravity="start">
 
-                        <include layout="@layout/component_category"/>
-
                     </LinearLayout>
                 </HorizontalScrollView>
 
@@ -96,7 +94,7 @@
                         android:id="@+id/productText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Product"
+                        android:text="Time and ID"
                         android:textSize="12sp"
                         android:textColor="@color/gray"
                         android:fontFamily="@font/inter_regular"
@@ -104,21 +102,6 @@
                         android:layout_marginEnd="16dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/stocksSoldText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="@font/inter_regular"
-                        android:text="Stocks Sold"
-                        android:textSize="12sp"
-                        android:textColor="@color/gray"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.55"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/salesTotalText"

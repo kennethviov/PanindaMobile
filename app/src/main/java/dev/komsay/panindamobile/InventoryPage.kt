@@ -1,16 +1,20 @@
 package dev.komsay.panindamobile
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import dev.komsay.panindamobile.ui.components.ProductInventoryComponent
+import dev.komsay.panindamobile.ui.fragments.AddProduct
 
 class InventoryPage : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,7 +29,7 @@ class InventoryPage : AppCompatActivity() {
 
         addBtn.setOnClickListener {
             val dialog = AddProduct(this)
-            dialog.show()
+            dialog.show(null)
         }
 
         val app = application as Paninda
@@ -36,8 +40,8 @@ class InventoryPage : AppCompatActivity() {
         val container = findViewById<LinearLayout>(R.id.productInventoryContainer)
 
         for (product in products) {
-            val component = ProductInventoryComponent(container)
-            component.bind(product)
+            val component = ProductInventoryComponent(container, this)
+            component.bind(product, null)
         }
 
         val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
