@@ -9,6 +9,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import dev.komsay.panindamobile.dto.RegisterUsersDTO
+import dev.komsay.panindamobile.dto.Users
+import dev.komsay.panindamobile.network.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignupPage : AppCompatActivity() {
 
@@ -29,27 +35,58 @@ class SignupPage : AppCompatActivity() {
         val btnCancel = findViewById<Button>(R.id.btnCancel)
 
         btnConfirm.setOnClickListener {
-            val user = username.text.toString()
-            val pwd = password.text.toString()
-            val cpwd = confirmpwd.text.toString()
+            val user = username.text.toString().trim()
+            val pwd = password.text.toString().trim()
+            val cpwd = confirmpwd.text.toString().trim()
 
-            if (user.isEmpty() || pwd.isEmpty() || cpwd.isEmpty()){
+            if (user.isEmpty() || pwd.isEmpty() || cpwd.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
-            }else if (pwd != cpwd){
-                Toast.makeText(this, "Password do not match please try again", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this, "Account Created for $user", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            if (pwd != cpwd) {
+                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Send data to Spring Boot API
+            val registerDto = RegisterUsersDTO(username = user, password = pwd)
+            RetrofitClient.api.registerUser(registerDto).enqueue(object : Callback<Users> {
+                override fun onResponse(call: Call<Users>, response: Response<Users>) {
+                    if (response.isSuccessful) {
+                        val newUser = response.body()
+                        Toast.makeText(
+                            this@SignupPage,
+                            "Account created for ${newUser?.username}",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        // Redirect to LoginPage
+                        startActivity(Intent(this@SignupPage, LoginPage::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(
+                            this@SignupPage,
+                            "Registration failed: ${response.code()}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Users>, t: Throwable) {
+                    Toast.makeText(
+                        this@SignupPage,
+                        "Error: ${t.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
         }
 
         btnCancel.setOnClickListener {
-            val user = username.text.toString()
-            val pwd = password.text.toString()
-            val cpwd = confirmpwd.text.toString()
             Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, LoginPage::class.java)
             startActivity(intent)
         }
-
     }
 }
