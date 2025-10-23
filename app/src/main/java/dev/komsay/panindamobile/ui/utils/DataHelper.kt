@@ -3,6 +3,7 @@ package dev.komsay.panindamobile.ui.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import dev.komsay.panindamobile.R
 import dev.komsay.panindamobile.ui.data.Product
@@ -15,6 +16,7 @@ import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
+import dev.komsay.panindamobile.ui.data.CartItem
 import dev.komsay.panindamobile.ui.data.Sales
 import java.lang.reflect.Type
 import java.time.LocalDateTime
@@ -140,20 +142,80 @@ class DataHelper(private val context: Context) {
                 Sales(
                     id = "1001",
                     salesDate = LocalDateTime.now().minusDays(1).toString(),
-                    salesTotal = 30.50,
-                    salesItems = _products.take(2)
+                    salesItems = mutableListOf(
+                        CartItem (
+                            imageResId = _products[0].imageResId,
+                            productName = _products[0].name,
+                            productPrice = _products[0].price,
+                            productQuantity = 9
+                        ),
+                        CartItem (
+                            imageResId = _products[1].imageResId,
+                            productName = _products[1].name,
+                            productPrice = _products[1].price,
+                            productQuantity = 7
+                        ),
+                        CartItem (
+                            imageResId = _products[2].imageResId,
+                            productName = _products[2].name,
+                            productPrice = _products[2].price,
+                            productQuantity = 5
+                        ),
+                        CartItem (
+                            imageResId = _products[3].imageResId,
+                            productName = _products[3].name,
+                            productPrice = _products[3].price,
+                            productQuantity = 6
+                        )
+                    )
                 ),
                 Sales(
                     id = "1002",
                     salesDate = LocalDateTime.now().minusHours(5).toString(),
-                    salesTotal = 50.00,
-                    salesItems = _products.subList(2, 3)
+                    salesItems = mutableListOf(
+                        CartItem (
+                            imageResId = _products[4].imageResId,
+                            productName = _products[4].name,
+                            productPrice = _products[4].price,
+                            productQuantity = 5
+                        ),
+                        CartItem (
+                            imageResId = _products[5].imageResId,
+                            productName = _products[5].name,
+                            productPrice = _products[5].price,
+                            productQuantity = 4
+                        )
+                    )
                 ),
                 Sales(
                     id = "1003",
                     salesDate = LocalDateTime.now().minusMinutes(30).toString(),
-                    salesTotal = 45.00,
-                    salesItems = _products.subList(3, 7)
+                    salesItems = mutableListOf(
+                        CartItem (
+                            imageResId = _products[6].imageResId,
+                            productName = _products[6].name,
+                            productPrice = _products[6].price,
+                            productQuantity = 2
+                        ),
+                        CartItem (
+                            imageResId = _products[7].imageResId,
+                            productName = _products[7].name,
+                            productPrice = _products[7].price,
+                            productQuantity = 9
+                        )
+                    )
+                ),
+                Sales(
+                    id = "1004",
+                    salesDate = LocalDateTime.now().minusDays(3).toString(),
+                    salesItems = mutableListOf(
+                        CartItem (
+                            imageResId = _products[8].imageResId,
+                            productName = _products[8].name,
+                            productPrice = _products[8].price,
+                            productQuantity = 6
+                        )
+                    )
                 )
             )
             _sales.addAll(initialSales)
@@ -194,13 +256,21 @@ class DataHelper(private val context: Context) {
     }
 
     // Sales Methods
-    fun getAllSales(): List<Sales> = _sales.reversed()
+    fun getAllSales(): List<Sales> {
+        Log.i("DataHelper.getAllSales", _sales.reversed().toString())
+        return _sales.reversed()
+    }
 
     fun addSale(sale: Sales): Sales {
         salesId++
-        val newSale = sale.copy(id = salesId.toString())
+        val newSale = sale
+        Log.i("DataHelper.addSell before", newSale.toString())
+        // log println(newSale)
+        newSale.id = salesId.toString()
         _sales.add(newSale)
         saveSales()
+        Log.i("DataHelper.addSell after", (_sales.find { it.id == newSale.id}).toString() )
+        Log.i("DataHelper.addSale all", _sales.reversed().toString())
         return newSale
     }
 
@@ -235,6 +305,8 @@ class DataHelper(private val context: Context) {
             _sales.clear()
             _sales.addAll(loadedSales)
         }
+
+        Log.i("DataHelper.load", _sales.toString())
     }
 
     inner class LocalDateTimeAdapter : JsonSerializer<LocalDateTime>,

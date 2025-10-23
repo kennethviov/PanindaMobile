@@ -21,8 +21,12 @@ class CategoryComponent {
         categoryName = view.findViewById(R.id.categoryName)
     }
 
-    fun bind(category: String) {
+    fun bind(category: String, onClick: (String) -> Unit) {
         categoryName.text = category
+
+        view.setOnClickListener {
+            onClick(category)
+        }
     }
 
 }

@@ -1,8 +1,11 @@
 package dev.komsay.panindamobile
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -17,9 +20,24 @@ import dev.komsay.panindamobile.ui.components.TopSellingProductComponent
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import dev.komsay.panindamobile.ui.components.CartItemComponent
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
+import dev.komsay.panindamobile.ui.data.Sales
+import androidx.core.view.isVisible
+import androidx.transition.Visibility
+import dev.komsay.panindamobile.ui.data.CartItem
+import dev.komsay.panindamobile.ui.utils.DataHelper
+import kotlinx.coroutines.selects.select
 
 class HomePage : AppCompatActivity() {
+
+    private var products: List<Product> = mutableListOf()
+    private val cart: MutableList<CartItem> = mutableListOf()
+    private lateinit var container: LinearLayout
+
+    private lateinit var app: Paninda
+    private lateinit var dataHelper: DataHelper
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -33,50 +51,61 @@ class HomePage : AppCompatActivity() {
             insets
         }
 
+        // Navigation bar
         val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
         navigationBarManager.setup()
 
-        val currentDateTime = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
-        val formattedDateTime = currentDateTime.format(formatter)
-
+        // Home Page Components
+        container = findViewById(R.id.productSellerContainer)
         val receivedUsername = intent.getStringExtra("USERNAME_KEY")
         val userTxtView = findViewById<TextView>(R.id.userTextView)
         val dateTime = findViewById<TextView>(R.id.dateTimeView)
+        val cartCancel = findViewById<Button>(R.id.btn_cancel)
+        val cartSell = findViewById<Button>(R.id.btn_sell)
+
+        /*
+        *
+        *  MOCK DATA
+        *
+        * */
+        app = application as Paninda
+        dataHelper = app.dataHelper
+
+        // Home Page  Greeting
+        val currentDateTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
+        val formattedDateTime = currentDateTime.format(formatter)
 
         userTxtView.text = "Hello, $receivedUsername"
         dateTime.text =formattedDateTime.toString()
 
 
-
-
-        val container = findViewById<LinearLayout>(R.id.productSellerContainer)
-
-        val app = application as Paninda
-        val dataHelper = app.dataHelper
-
-        val products = dataHelper.getAllProducts()
         val categories = dataHelper.getAllCategories()
 
-        val topSellComp = TopSellingProductComponent(container)
-        topSellComp.bind(products.find { it.unitSold == products.maxByOrNull { it.unitSold }?.unitSold }!!, totalUnitSold(products))
+        // products
+        loadProductsFromDB()
+        updateProductUI(this.products)
 
+        // top seller
+        loadTopSellingProducts(this.products)
+
+        // categories
         for (cat in categories) {
             val catComp = CategoryComponent(findViewById(R.id.categorySlider))
-            catComp.bind(cat)
+            catComp.bind(cat) { selectedCategory ->
+                handleCategoryClick(selectedCategory) }
         }
 
-        for (product in products) {
-            val component = ProductSellerComponent(container)
-            component.bind(product) { selectedProduct, quantity ->
-                handleSellClick(selectedProduct, quantity)
-            }
-        }
+        // SetUpCartBtn
+        setUpCartBtn(cartCancel, cartSell)
+
+        // SetUpCartUI
+        updateCartUI()
+
     }
 
     @SuppressLint("DefaultLocale")
     private fun handleSellClick(product: Product, quantity: Int) {
-        val totalAmount = product.price * quantity
 
         if(quantity <= 0) {
             Toast.makeText(
@@ -87,7 +116,7 @@ class HomePage : AppCompatActivity() {
             return
         }
 
-        if (quantity <= product.stock) {
+        if (quantity > product.stock) {
             Toast.makeText(
                 this,
                 "Not enough stock for ${product.name}",
@@ -96,14 +125,130 @@ class HomePage : AppCompatActivity() {
             return
         }
 
-        product.stock -= quantity  // to properly reduce stock
+        if (cart.any { it.productName == product.name }) {
+            val cartItem = cart.find { it.productName == product.name }!!
+            cartItem.productQuantity += quantity
+            updateCartUI()
+            return
+        }
 
-        Toast.makeText(
-            this,
-            "Selling ${quantity}x ${product.name} for ${String.format("₱%.2f", totalAmount)}. " +
-                    "Remaining stock: ${product.stock}",
-            Toast.LENGTH_LONG
-        ).show()
+        val cartItem = CartItem(
+            product.imageResId,
+            product.name,
+            product.price,
+            quantity
+        )
+        cart.add(cartItem)
+        toggleCartVisibility("visible")
+        updateCartUI()
+    }
+
+    private var currCat: String = ""
+
+    fun handleCategoryClick(category: String) {
+        if (currCat == category) {
+            updateProductUI(this.products)
+            loadTopSellingProducts(this.products)
+            currCat = ""
+            return
+        }
+
+        val categorizedProducts = products.filter { it.category == category }
+        updateProductUI(categorizedProducts)
+        loadTopSellingProducts(categorizedProducts)
+        currCat = category
+    }
+
+    fun updateProductUI(products: List<Product>) {
+        container.removeAllViews()
+
+        for (product in products) {
+            val component = ProductSellerComponent(container)
+            component.bind(product) { selectedProduct, quantity ->
+                handleSellClick(selectedProduct, quantity)
+            }
+        }
+    }
+
+    fun loadTopSellingProducts(products: List<Product>) {
+        val topSellCont = findViewById<LinearLayout>(R.id.view_top_seller)
+        topSellCont.removeAllViews()
+        val topSellComp = TopSellingProductComponent(topSellCont)
+        topSellComp.bind(products.find { it -> it.unitSold == products.maxByOrNull { it.unitSold }?.unitSold }!!, totalUnitSold(products))
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setUpCartBtn(cancelBtn: Button, sellBtn: Button) {
+        cancelBtn.setOnClickListener {
+            cart.clear()
+            toggleCartVisibility("gone")
+        }
+
+        sellBtn.setOnClickListener {
+
+            val numOfSales = dataHelper.getAllSales().size
+
+            val sale = Sales("100$numOfSales", LocalDateTime.now().toString(), ArrayList(cart))
+
+            dataHelper.addSale(sale)
+
+            for (item in cart) {
+                val product = products.find { it.name == item.productName }
+
+                if (product != null) {
+
+                    // TODO update the product stock deduction logic
+
+                    product.stock -= item.productQuantity
+
+                    if (product.stock < 0) {
+                        product.stock = 0
+                    }
+
+                    product.unitSold += item.productQuantity
+
+                    dataHelper.updateProduct(product)
+                }
+            }
+
+            cart.clear()
+            loadProductsFromDB()
+            updateProductUI(this.products)
+            toggleCartVisibility("gone")
+        }
+    }
+
+    private fun updateCartUI() {
+        val sales = cart.sumOf { it.productPrice * it.productQuantity }
+        val salesTotal = findViewById<TextView>(R.id.txt_total)
+        val cartCont = findViewById<LinearLayout>(R.id.view_cart_items)
+
+        salesTotal.text = String.format("₱%.2f", sales)
+        cartCont.removeAllViews()
+        for (item in cart) {
+            val cartItem = CartItemComponent(cartCont)
+            cartItem.bind(item)
+        }
+    }
+
+    fun toggleCartVisibility(visibility: String?) {
+        val cartLayout = findViewById<ConstraintLayout>(R.id.view_cart)
+
+        val cartHeight = cartLayout.layoutParams.height
+        val dfltBotPad = (100f / resources.displayMetrics.density).toInt()
+
+        if (visibility != "visible") {
+            cartLayout.visibility = View.GONE
+            container.setPadding(0, 0, 0, dfltBotPad)
+        } else {
+            cartLayout.visibility = View.VISIBLE
+            container.setPadding(0, 0, 0, cartHeight + dfltBotPad)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun loadProductsFromDB() {
+        products = dataHelper.getAllProducts()
     }
 
     private fun totalUnitSold(products: List<Product>): Int {

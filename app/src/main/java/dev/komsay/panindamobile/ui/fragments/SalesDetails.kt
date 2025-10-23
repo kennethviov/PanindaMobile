@@ -31,7 +31,7 @@ class SalesDetails(private val context: Context) {
         // display infos
         binding.txtTimeDate.text = dateTime.format(timeFormatter) + ", " + dateTime.format(dateFormatter)
         binding.txtSalesId.text = sales.id
-        binding.txtSalesTotal.text = sales.getFormattedTotal(sales.salesItems.sumOf { it.price * it.stock })
+        binding.txtSalesTotal.text = String.format("₱%.2f", sales.salesTotal())
 
         // dynamic container
         val container = binding.salesDetailsContainer
@@ -46,7 +46,7 @@ class SalesDetails(private val context: Context) {
 
         for (item in sales.salesItems) {
             val comp = ProductInventoryComponent(container, context)
-            comp.bind(item, "sales")
+            comp.bind(item)
         }
 
         binding.btnOk.setOnClickListener {

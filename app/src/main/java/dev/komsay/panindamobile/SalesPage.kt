@@ -3,6 +3,7 @@ package dev.komsay.panindamobile
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -36,6 +37,8 @@ class SalesPage : AppCompatActivity() {
         val dataHelper = app.dataHelper
 
         val sales = dataHelper.getAllSales()
+
+        Log.i("SalesPage", "Sales: $sales")
 
         val container = findViewById<LinearLayout>(R.id.productSalesContainer)
 

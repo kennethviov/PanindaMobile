@@ -47,12 +47,7 @@ class ProductSellerComponent {
 
         sellBtn.setOnClickListener {
             if (product.isQuantityAvailable(currentQuantity)) {
-                if (product.deductStock(currentQuantity)) {
-                    onSellClick(product, currentQuantity)
-                    refreshUI()
-                } else {
-                    Toast.makeText(view.context, "Failed to process sale", Toast.LENGTH_SHORT).show()
-                }
+                onSellClick(product, currentQuantity)
             } else {
                 Toast.makeText(view.context, "Insufficient stock available", Toast.LENGTH_SHORT).show()
             }

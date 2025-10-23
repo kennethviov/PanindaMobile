@@ -44,7 +44,7 @@ class ProductSalesComponent {
 
         time.text = dateTime.format(formatter)
         salesID.text = sales.id
-        productSales.text = sales.getFormattedTotal(sales.salesItems.sumOf { it.price * it.stock })
+        productSales.text = String.format("₱%.2f",sales.salesTotal())
 
         view.setOnClickListener {
             val dialog = SalesDetails(context)

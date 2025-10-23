@@ -41,7 +41,7 @@ class InventoryPage : AppCompatActivity() {
 
         for (product in products) {
             val component = ProductInventoryComponent(container, this)
-            component.bind(product, null)
+            component.bind(product)
         }
 
         val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))

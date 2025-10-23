@@ -1,5 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <solid android:color="@color/tertiaryColor"/> <!-- orange shade -->
-    <corners android:radius="100dp"/> <!-- rounded navbar -->
+    <corners android:radius="35dp"/> <!-- rounded navbar -->
 </shape>

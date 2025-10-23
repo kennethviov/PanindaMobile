@@ -1,5 +1,6 @@
 package dev.komsay.panindamobile.ui.components
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -9,6 +10,7 @@ import dev.komsay.panindamobile.ui.fragments.AddProduct
 import dev.komsay.panindamobile.R
 import dev.komsay.panindamobile.ui.data.Product
 import android.content.Context
+import dev.komsay.panindamobile.ui.data.CartItem
 
 class ProductInventoryComponent {
 
@@ -40,25 +42,38 @@ class ProductInventoryComponent {
 
     }
 
-    fun bind(product: Product, invoker: String?) {
+    fun bind(product: Product) {
 
-        if (invoker == "sales") {
-            productTotal.visibility = View.VISIBLE
-            productTotal.text = product.getFormattedPrice(product.stock * product.price)
-        } else {
-            view.setOnLongClickListener {
-                val dialog = AddProduct(context)
-                dialog.show(product)
-                true
-            }
+        view.setOnLongClickListener {
+            val dialog = AddProduct(context)
+            dialog.show(product)
+            true
         }
 
         productName.text = product.name
         productPrice.text = product.getFormattedPrice(product.price)
+        // TODO make the text red if its below a specific number
         productStock.text = product.stock.toString()
         category = product.category
 
         product.imageResId?.let { resourceId ->
+            productImage.setImageResource(resourceId)
+        }
+
+        container.addView(view)
+    }
+
+    @SuppressLint("DefaultLocale")
+    fun bind(item: CartItem) {
+
+        productTotal.visibility = View.VISIBLE
+        productTotal.text = String.format("₱%.2f", item.productPrice * item.productQuantity)
+
+        productName.text = item.productName
+        productPrice.text = String.format("₱%.2f", item.productPrice)
+        productStock.text = item.productQuantity.toString()
+
+        item.imageResId?.let { resourceId ->
             productImage.setImageResource(resourceId)
         }
 
