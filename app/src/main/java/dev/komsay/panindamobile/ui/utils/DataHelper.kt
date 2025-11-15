@@ -36,6 +36,11 @@ import java.time.format.DateTimeFormatter
 *
 * */
 
+    /* TODO
+    *   - add profile mock data
+    *
+    * */
+
 @RequiresApi(Build.VERSION_CODES.O)
 class DataHelper(private val context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences("products_prefs", Context.MODE_PRIVATE)

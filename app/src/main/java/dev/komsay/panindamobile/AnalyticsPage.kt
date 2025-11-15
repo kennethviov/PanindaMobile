@@ -21,4 +21,13 @@ class AnalyticsPage : AppCompatActivity() {
         val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
         navigationBarManager.setup()
     }
+
+    /* TODO
+    *   - implement the analytics page functionalities
+    *   - Data presentation
+    *       - line graph for income
+    *       - pie chart for individual products performance
+    *   - Data retrieving and logic for calculation
+    * */
+
 }

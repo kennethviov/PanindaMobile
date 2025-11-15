@@ -104,6 +104,7 @@ class HomePage : AppCompatActivity() {
 
     }
 
+    /// TODO handle the sell click so that when adding to cart, cannot add more than the actual quantity
     @SuppressLint("DefaultLocale")
     private fun handleSellClick(product: Product, quantity: Int) {
 
@@ -198,6 +199,8 @@ class HomePage : AppCompatActivity() {
                 if (product != null) {
 
                     // TODO update the product stock deduction logic
+
+
 
                     product.stock -= item.productQuantity
 
