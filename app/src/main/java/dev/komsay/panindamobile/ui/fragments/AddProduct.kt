@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.R
 import dev.komsay.panindamobile.databinding.FragmentAddProductBinding
 import dev.komsay.panindamobile.ui.data.Product
@@ -20,18 +20,25 @@ import dev.komsay.panindamobile.ui.data.Product
  * - Host can set an onProductAdded listener via `setOnProductAddedListener`.
  * - If you want to pre-populate for editing, call `populateForEdit(product)` before showing.
  */
-class AddProductDialogFragment : DialogFragment() {
+class AddProductDialogFragment() : DialogFragment() {
 
     private var _binding: FragmentAddProductBinding? = null
     private val binding get() = _binding!!
 
     // Listener to let host know when a product is added/updated
     private var onProductAdded: ((name: String, price: String, stock: String, category: String) -> Unit)? = null
-    private var productToEdit: Product? = null
-
+    private var productToEditorDelete: Product? = null
     fun setOnProductAddedListener(listener: (String, String, String, String) -> Unit) {
         onProductAdded = listener
     }
+
+    // Listener to let host know when a product is deleted
+    private var onProductDeleted: ((product: Product) -> Unit)? = null
+    private var productToDelete: Product? = null
+    fun setOnProductDeletedListener(listener: (Product) -> Unit) {
+        onProductDeleted = listener
+    }
+
 
     // Keep the picked URI so result can be applied even if callback runs before/after view is ready
     private var pickedImageUri: Uri? = null
@@ -42,7 +49,11 @@ class AddProductDialogFragment : DialogFragment() {
             pickedImageUri = uri
             _binding?.productImage?.setImageURI(uri)
             if (uri == null) {
-                Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
+                Snackbar.make(
+                    requireActivity().findViewById(android.R.id.content),
+                    "No image selected",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -65,7 +76,7 @@ class AddProductDialogFragment : DialogFragment() {
 
     private fun setupUI() {
         // Check if we are editing and populate fields
-        productToEdit?.let { product ->
+        productToEditorDelete?.let { product ->
             binding.btnConfirm.text = "Update"
             binding.deleteProduct.visibility = View.VISIBLE
             binding.productName.setText(product.name)
@@ -80,7 +91,16 @@ class AddProductDialogFragment : DialogFragment() {
 
 
         binding.deleteProduct.setOnClickListener {
-            Toast.makeText(requireContext(), "Delete clicked (add code to delete product)", Toast.LENGTH_SHORT).show()
+
+            productToEditorDelete?.let { onProductDeleted?.invoke(it) }
+
+            Snackbar.make(
+                requireActivity().findViewById(android.R.id.content),
+                "Delete clicked (add code to delete product)",
+                Snackbar.LENGTH_SHORT
+            ).show()
+
+            dismiss()
         }
 
         binding.btnCancel.setOnClickListener {
@@ -111,8 +131,12 @@ class AddProductDialogFragment : DialogFragment() {
             }
 
             onProductAdded?.invoke(name, price, stock, category)
-            val message = if (productToEdit != null) "Updated" else "Added"
-            Toast.makeText(requireContext(), "$message: $name", Toast.LENGTH_SHORT).show()
+            val message = if (productToEditorDelete != null) "Updated" else "Added"
+            Snackbar.make(
+                requireActivity().findViewById(android.R.id.content),
+                "$message: $name",
+                Snackbar.LENGTH_SHORT
+            ).show()
 
             dismiss()
         }
@@ -131,7 +155,7 @@ class AddProductDialogFragment : DialogFragment() {
      * If host wants to edit an existing product, call this BEFORE showing the dialog.
      */
     fun populateForEdit(sender: Product) {
-        productToEdit = sender
+        productToEditorDelete = sender
     }
 
     /**

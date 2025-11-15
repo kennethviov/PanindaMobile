@@ -1,16 +1,18 @@
 package dev.komsay.panindamobile
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 
 class ForgotPassPage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgotpass_page)
+        val rootView = findViewById<View>(android.R.id.content)
 
         val username = findViewById<EditText>(R.id.editTextUsername)
         val newpwd = findViewById<EditText>(R.id.editTextnewPassword)
@@ -24,11 +26,11 @@ class ForgotPassPage : AppCompatActivity() {
             val cpwd = confirmpwd.text.toString()
 
             if (user.isEmpty() || newpwd.isEmpty() || cpwd.isEmpty()){
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                Snackbar.make(rootView, "Please fill all fields", Snackbar.LENGTH_SHORT).show()
             }else if (newpwd != cpwd){
-                Toast.makeText(this, "Password do not match please try again", Toast.LENGTH_SHORT).show()
+                Snackbar.make(rootView, "Password do not match please try again", Snackbar.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(this, "Password Successfully Changed for $user", Toast.LENGTH_SHORT).show()
+                Snackbar.make(rootView, "Password Successfully Changed for $user", Snackbar.LENGTH_SHORT).show()
             }
         }
 
@@ -36,7 +38,7 @@ class ForgotPassPage : AppCompatActivity() {
             val user = username.text.toString()
             val newpwd = newpwd.text.toString()
             val cpwd = confirmpwd.text.toString()
-            Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
+            Snackbar.make(rootView, "Cancelled", Snackbar.LENGTH_SHORT).show()
         }
     }
 }

@@ -66,6 +66,12 @@ class ProductInventoryComponent {
                 dataHelper.updateProduct(updatedProduct)
                 onProductUpdated()
             }
+            dialog.setOnProductDeletedListener { product ->
+                val app = context.applicationContext as Paninda
+                val dataHelper = app.dataHelper
+                dataHelper.deleteProduct(product)
+                onProductUpdated()
+            }
             dialog.show(activity.supportFragmentManager, "AddProductDialogFragment")
             true
         }

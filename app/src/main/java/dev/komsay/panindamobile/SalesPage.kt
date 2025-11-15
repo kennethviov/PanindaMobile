@@ -83,4 +83,11 @@ class SalesPage : AppCompatActivity() {
             context.resources.displayMetrics
         ).toInt()
     }
+
+    /* TODO: Timely report
+    *   - today
+    *   - last 7 days
+    *   - 30 days
+    *   - all time
+    * */
 }

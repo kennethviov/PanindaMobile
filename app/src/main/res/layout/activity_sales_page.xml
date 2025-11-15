@@ -50,6 +50,8 @@
                     android:textStyle="bold"
                     android:fontFamily="@font/inter_bold"/>
 
+<!--                TODO: remove search feature-->
+
                 <EditText
                     android:id="@+id/searchBar"
                     android:layout_width="match_parent"
@@ -73,6 +75,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:scrollbars="none">
+
+<!--                    TODO: Timely report-->
+<!--                     - today-->
+<!--                     - last 7 days-->
+<!--                     - 30 days-->
+<!--                     - all time-->
 
                     <LinearLayout
                         android:id="@+id/categorySlider"

@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.EditText
-import android.widget.Toast
 import android.widget.Button
 import android.widget.TextView
+import com.google.android.material.snackbar.Snackbar
 
 class LoginPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,11 @@ class LoginPage : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }else{
-                Toast.makeText(this, "Bayot Ka", Toast.LENGTH_LONG).show()
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Invalid username or password",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
 

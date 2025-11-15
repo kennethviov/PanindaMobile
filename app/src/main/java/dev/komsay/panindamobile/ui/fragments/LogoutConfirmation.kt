@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.widget.Button
+import dev.komsay.panindamobile.LoginPage
 import dev.komsay.panindamobile.R
 
 class LogoutConfirmation(private val context: Context) {

@@ -23,7 +23,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-/*
+/**
 *
 *
 *
@@ -36,112 +36,68 @@ import java.time.format.DateTimeFormatter
 *
 * */
 
-    /* TODO
-    *   - add profile mock data
-    *
-    * */
-
 @RequiresApi(Build.VERSION_CODES.O)
 class DataHelper(private val context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences("products_prefs", Context.MODE_PRIVATE)
     private val gson = GsonBuilder()
         .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
         .create()
+
+    // -- Products Data
     private val _products = mutableListOf<Product>()
     val product: List<Product> get() = _products
+    private var productId: Int = 0
 
+    // -- Sales Data
     private val _sales = mutableListOf<Sales>()
     val sales: List<Sales> get() = _sales
-
-    private var productId: Int = 0
     private var salesId: Int = 0
 
+    // --- rofile (Sample user)
+    data class Profile(
+        var id: String = "1",
+        var name: String = "admin",
+        var password: String = "admin",
+
+        /**
+         * imageUri: when users pick image from gallery
+         * imageResId: default picture
+         *
+         * imageUri takes precedence when present
+         */
+        var imageUri: String? = null,
+        var imageResId: Int = R.drawable.img_placeholder_photo
+    )
+
+    private var _profile: Profile? = null
+    val profile: Profile?
+        get() = _profile
+
     init {
+        // remove this ↓ for persistent data
         prefs.edit().clear().apply()
+
         // Load from SharedPreferences first
         load()
 
-        // If still empty, populate with initial data and save
+        // populate products with initial data and save
         if (_products.isEmpty()) {
             val initialProducts = mutableListOf(
-                Product(
-                    id = "1",
-                    name = "Piattos",
-                    price = 10.50,
-                    stock = 20,
-                    category = "Snacks",
-                    unitSold = 20,
-                    imageResId = R.drawable.img_piattos
-                ),
-                Product(
-                    id = "2",
-                    name = "Banana",
-                    price = 15.00,
-                    stock = 15,
-                    category = "Snacks",
-                    unitSold = 10
-                ),
-                Product(
-                    id = "3",
-                    name = "Apple",
-                    price = 10.00,
-                    stock = 12,
-                    category = "Snacks",
-                    unitSold = 10
-                ),
-                Product(
-                    id = "4",
-                    name = "Mango",
-                    price = 25.00,
-                    stock = 8,
-                    category = "Snacks",
-                    unitSold = 12
-                ),
-                Product(
-                    id = "5",
-                    name = "Orange",
-                    price = 15.00,
-                    stock = 10,
-                    category = "Snacks",
-                    unitSold = 8
-                ),
-                Product(
-                    id = "6",
-                    name = "Coffee",
-                    price = 20.00,
-                    stock = 5,
-                    category = "Beverages",
-                    unitSold = 20
-                ),
-                Product(
-                    id = "7",
-                    name = "Tea",
-                    price = 15.00,
-                    stock = 10,
-                    category = "Beverages",
-                    unitSold = 10
-                ),
-                Product(
-                    id = "8",
-                    name = "Water",
-                    price = 10.00,
-                    stock = 20,
-                    category = "Beverages",
-                    unitSold = 50
-                ),
-                Product(
-                    id = "9",
-                    name = "Coke",
-                    price = 15.00,
-                    stock = 15,
-                    category = "Beverages",
-                    unitSold = 55
-                ),
+                Product(id = "1", name = "Piattos", price = 10.50, stock = 20, category = "Snacks", unitSold = 20, imageResId = R.drawable.img_piattos),
+                Product(id = "2", name = "Banana", price = 15.00, stock = 15, category = "Snacks", unitSold = 10),
+                Product(id = "3", name = "Apple", price = 10.00, stock = 12, category = "Snacks", unitSold = 10),
+                Product(id = "4", name = "Mango", price = 25.00, stock = 8, category = "Snacks", unitSold = 12),
+                Product(id = "5", name = "Orange", price = 15.00, stock = 10, category = "Snacks", unitSold = 8),
+                Product(id = "6", name = "Coffee", price = 20.00, stock = 5, category = "Beverages", unitSold = 20),
+                Product(id = "7", name = "Tea", price = 15.00, stock = 10, category = "Beverages", unitSold = 10),
+                Product(id = "8", name = "Water", price = 10.00, stock = 20, category = "Beverages", unitSold = 50),
+                Product(id = "9", name = "Coke", price = 15.00, stock = 15, category = "Beverages", unitSold = 55),
             )
             _products.addAll(initialProducts)
             saveProducts()
         }
 
+        // populate sales with initial data and save
         if (_sales.isEmpty()) {
             val initialSales = mutableListOf(
                 Sales(
@@ -227,12 +183,27 @@ class DataHelper(private val context: Context) {
             saveSales()
         }
 
+        // if profile is null, create a default mock profile for testing
+        if (_profile == null) {
+            _profile = Profile(
+                id = "1",
+                name = "admin",
+                password = "admin",
+                imageResId = R.drawable.img_placeholder_photo
+            )
+            saveProfile()
+        }
+
         // Set latest ID for new entries
         productId = _products.mapNotNull { it.id.toIntOrNull() }.maxOrNull() ?: 0
         salesId = _sales.mapNotNull { it.id.toIntOrNull() }.maxOrNull() ?: 0
     }
 
-    // Product Methods
+
+    // +-------------------+
+    // |  Product Methods  |
+    // +-------------------+
+
     fun getAllProducts(): List<Product> = _products
 
     fun getAllCategories(): List<String> = _products.map { it.category }.distinct()
@@ -260,7 +231,11 @@ class DataHelper(private val context: Context) {
         saveProducts()
     }
 
-    // Sales Methods
+
+    // +-----------------+
+    // |  Sales Methods  |
+    // +-----------------+
+
     fun getAllSales(): List<Sales> {
         Log.i("DataHelper.getAllSales", _sales.reversed().toString())
         return _sales.reversed()
@@ -281,7 +256,41 @@ class DataHelper(private val context: Context) {
 
     fun getSale(id: String): Sales? = _sales.find { it.id == id }
 
-    // SharedPreferences Methods
+
+    // +-------------------+
+    // |  Profile Methods  |
+    // +-------------------+
+
+    // saving and retrieving profile
+
+    fun saveProfile(profile: Profile) {
+        _profile = profile
+        saveProfile()
+    }
+
+    // updating profile pics
+    fun updateProfileImageUri(uriString: String) {
+        if (_profile == null) _profile = Profile()
+        _profile?.imageUri = uriString
+        saveProfile()
+    }
+
+    fun updateProfileImageResId(resId: Int) {
+        if (_profile == null) _profile = Profile()
+        _profile?.imageResId = resId
+        saveProfile()
+    }
+
+    // clear profile picture
+    fun clearProfileImage() {
+        _profile?.imageUri = null
+        saveProfile()
+    }
+
+
+    // +-------------------------------------------------+
+    // |  Persistence Helpers SharedPreferences Methods  |
+    // +-------------------------------------------------+
     private fun saveProducts() {
         val json = gson.toJson(_products)
         prefs.edit { putString("products_json", json) }
@@ -290,6 +299,11 @@ class DataHelper(private val context: Context) {
     private fun saveSales() {
         val json = gson.toJson(_sales)
         prefs.edit { putString("sales_json", json) }
+    }
+
+    private fun saveProfile() {
+        val json = gson.toJson(_profile)
+        prefs.edit { putString("profile_json", json) }
     }
 
     private fun load() {
@@ -314,6 +328,10 @@ class DataHelper(private val context: Context) {
         Log.i("DataHelper.load", _sales.toString())
     }
 
+
+    // +-------------------------+
+    // |  LocalDateTime adapter  |
+    // +-------------------------+
     inner class LocalDateTimeAdapter : JsonSerializer<LocalDateTime>,
         JsonDeserializer<LocalDateTime> {
         private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME

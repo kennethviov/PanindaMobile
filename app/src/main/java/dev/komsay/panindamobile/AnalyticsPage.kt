@@ -100,4 +100,11 @@ class AnalyticsPage : AppCompatActivity() {
     *   - Data retrieving and logic for calculation
     * */
 
+    /* TODO: Timely report
+    *   - today
+    *   - last 7 days
+    *   - 30 days
+    *   - all time
+    * */
+
 }

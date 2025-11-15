@@ -49,6 +49,12 @@
                     android:textStyle="bold"
                     android:fontFamily="@font/inter_bold"/>
 
+                <!--TODO: Timely report-->
+                <!-- - today-->
+                <!-- - last 7 days-->
+                <!-- - 30 days-->
+                <!-- - all time-->
+
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart"
                     android:layout_width="match_parent"
