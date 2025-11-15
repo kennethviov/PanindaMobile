@@ -128,7 +128,7 @@
         android:layout_height="46dp"
         android:text="Sell"
         android:textSize="14sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:fontFamily="@font/inter_bold"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/buttonColor"

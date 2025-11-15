@@ -94,7 +94,7 @@
                 android:layout_height="56dp"
                 android:backgroundTint="#FEAC00"
                 android:text="Sign up"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/inter_bold"
