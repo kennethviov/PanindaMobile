@@ -64,12 +64,8 @@ class ProfilePage : AppCompatActivity() {
     }
 
     private fun logout() {
-       val dialog = LogoutConfirmation(this)
-
-        dialog.setOnLogoutConfirmed {
-            startActivity(Intent(this, LogoutConfirmation::class.java))
-            finish()
-        }
-        dialog.show();
+        val intent = Intent(this, LoginPage::class.java)
+        startActivity(intent)
+        finish()
     }
 }
