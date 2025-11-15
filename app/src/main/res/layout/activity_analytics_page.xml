@@ -49,6 +49,20 @@
                     android:textStyle="bold"
                     android:fontFamily="@font/inter_bold"/>
 
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="16dp"/>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="30dp" />
+
+
+
             </LinearLayout>
 
         </ScrollView>
