@@ -14,7 +14,7 @@ data class Product(
     // or
     var imageURL: String? = null
     ) {
-    fun getFormattedPrice(): String {
+    fun getFormattedPrice(price: Double): String {
         return "₱%.2f".format(price)
     }
 

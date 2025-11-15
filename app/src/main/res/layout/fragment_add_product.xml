@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AddProduct">
+    tools:context=".ui.fragments.AddProduct">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -26,6 +26,7 @@
                         android:id="@+id/productImage"
                         android:layout_width="128dp"
                         android:layout_height="128dp"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/img_placeholder"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -53,6 +54,7 @@
                         android:id="@+id/productPrice"
                         android:layout_width="135dp"
                         android:layout_height="36dp"
+                        android:inputType="numberDecimal"
                         android:hint="Price"
                         android:textSize="12sp"
                         android:textColorHint="@color/gray"
@@ -69,17 +71,18 @@
                         android:id="@+id/productStock"
                         android:layout_width="135dp"
                         android:layout_height="36dp"
-                        android:hint="Stock"
-                        android:textSize="12sp"
-                        android:textColorHint="@color/gray"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/inter_regular"
+                        android:inputType="number"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/bg_add_product_field"
-                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:hint="Stock"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray"
+                        android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/productName"/>
+                        app:layout_constraintTop_toBottomOf="@id/productName" />
 
                     <AutoCompleteTextView
                         android:id="@+id/categories"
@@ -144,6 +147,14 @@
 
                     </LinearLayout>
 
+                    <ImageView
+                        android:id="@+id/deleteProduct"
+                        android:src="@drawable/ic_delete"
+                        android:scaleType="centerCrop"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

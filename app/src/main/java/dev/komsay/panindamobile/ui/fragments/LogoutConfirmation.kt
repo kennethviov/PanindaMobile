@@ -1,8 +1,9 @@
-package dev.komsay.panindamobile
+package dev.komsay.panindamobile.ui.fragments
 
 import android.app.Dialog
 import android.content.Context
 import android.widget.Button
+import dev.komsay.panindamobile.R
 
 class LogoutConfirmation(private val context: Context) {
 

@@ -39,22 +39,26 @@ class ProfilePage : AppCompatActivity() {
         val changePassBtn = findViewById<Button>(R.id.changePassBtn)
         val logoutBtn = findViewById<Button>(R.id.logoutBtn)
 
-        changePicBtn.setOnClickListener { changePicture(profilePic, ) }
+        changePicBtn.setOnClickListener { changePicture(profilePic) }
         changeNameBtn.setOnClickListener { changeName() }
         changePassBtn.setOnClickListener { changePassword() }
         logoutBtn.setOnClickListener { logout() }
     }
 
+    /// TODO add profile picture changing functionality
     private fun changePicture(profilePic: ImageView) {
-
-
         pickImageLauncher.launch("image/*")
     }
 
+    /// TODO add name changing functionality
     private fun changeName() {
 
     }
 
+    /* TODO add password changing functionality
+    *   - add new page to change password
+    *   - add button to change password
+    * */
     private fun changePassword() {
 
     }

@@ -9,6 +9,8 @@ import androidx.core.view.WindowInsetsCompat
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.Button
+import android.widget.TextView
+
 class LoginPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +26,7 @@ class LoginPage : AppCompatActivity() {
         val txtPassword = findViewById<EditText>(R.id.editTextPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val btnSignUp = findViewById<Button>(R.id.btnSignUp)
+        val forgotPass = findViewById<TextView>(R.id.forgotPass)
 
 
         btnLogin.setOnClickListener {
@@ -47,6 +50,9 @@ class LoginPage : AppCompatActivity() {
             startActivity(intent)
         }
 
-
+        forgotPass.setOnClickListener {
+            val intent = Intent(this, SignupPage::class.java)
+            startActivity(intent)
+        }
     }
 }
