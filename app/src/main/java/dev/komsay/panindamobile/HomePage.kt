@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import dev.komsay.panindamobile.ui.components.CategoryComponent
 import dev.komsay.panindamobile.ui.components.ProductSellerComponent
@@ -24,11 +23,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import dev.komsay.panindamobile.ui.components.CartItemComponent
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import dev.komsay.panindamobile.ui.data.Sales
-import androidx.core.view.isVisible
-import androidx.transition.Visibility
+import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.ui.data.CartItem
 import dev.komsay.panindamobile.ui.utils.DataHelper
-import kotlinx.coroutines.selects.select
 
 class HomePage : AppCompatActivity() {
 
@@ -104,30 +101,39 @@ class HomePage : AppCompatActivity() {
 
     }
 
-    /// TODO handle the sell click so that when adding to cart, cannot add more than the actual quantity
     @SuppressLint("DefaultLocale")
     private fun handleSellClick(product: Product, quantity: Int) {
 
         if(quantity <= 0) {
-            Toast.makeText(
-                this,
+            Snackbar.make(
+                findViewById(android.R.id.content),
                 "Quantity must be greater then 0",
-                Toast.LENGTH_LONG
+                Snackbar.LENGTH_SHORT
             ).show()
             return
         }
 
         if (quantity > product.stock) {
-            Toast.makeText(
-                this,
+            Snackbar.make(
+                findViewById(android.R.id.content),
                 "Not enough stock for ${product.name}",
-                Toast.LENGTH_LONG
+                Snackbar.LENGTH_SHORT
             ).show()
             return
         }
 
         if (cart.any { it.productName == product.name }) {
             val cartItem = cart.find { it.productName == product.name }!!
+
+            if (cartItem.productQuantity + quantity > product.stock) {
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Cannot add more than stock",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                return
+            }
+
             cartItem.productQuantity += quantity
             updateCartUI()
             return
@@ -189,7 +195,10 @@ class HomePage : AppCompatActivity() {
 
             val numOfSales = dataHelper.getAllSales().size
 
-            val sale = Sales("100$numOfSales", LocalDateTime.now().toString(), ArrayList(cart))
+            val sale = Sales(
+                "100$numOfSales",
+                LocalDateTime.now().toString(),
+                ArrayList(cart))
 
             dataHelper.addSale(sale)
 
@@ -197,10 +206,6 @@ class HomePage : AppCompatActivity() {
                 val product = products.find { it.name == item.productName }
 
                 if (product != null) {
-
-                    // TODO update the product stock deduction logic
-
-
 
                     product.stock -= item.productQuantity
 
@@ -257,4 +262,6 @@ class HomePage : AppCompatActivity() {
     private fun totalUnitSold(products: List<Product>): Int {
         return products.sumOf { it.unitSold }
     }
+
+    // TODO: Search feature
 }

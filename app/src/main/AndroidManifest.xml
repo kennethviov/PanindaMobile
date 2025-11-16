@@ -24,16 +24,16 @@
             android:exported="true" />
         <activity
             android:name=".SalesPage"
-            android:exported="true" /> <!-- HomePage -->
+            android:exported="true" />
         <activity
             android:name=".HomePage"
-            android:exported="true" /> <!-- SignupPage -->
+            android:exported="true" />
         <activity
             android:name=".SignupPage"
-            android:exported="true" /> <!-- Forgot passPage -->
+            android:exported="true" />
         <activity
             android:name=".ForgotPassPage"
-            android:exported="true" /> <!-- LoginPage -->
+            android:exported="true" />
         <activity
             android:name=".LoginPage"
             android:exported="true">

@@ -1,15 +1,20 @@
 package dev.komsay.panindamobile
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,6 +24,18 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class SalesPage : AppCompatActivity() {
+
+    private lateinit var todayButton : Button
+    private lateinit var pastWeekButton : Button
+    private lateinit var pastMonthButton : Button
+    private lateinit var allTimeButton : Button
+
+    private var selectedButton: Button? = null
+
+    // animation duration
+    private val animationDuration = 220L
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +53,17 @@ class SalesPage : AppCompatActivity() {
         val app = application as Paninda
         val dataHelper = app.dataHelper
 
+        // get mock data
         val sales = dataHelper.getAllSales()
 
-        Log.i("SalesPage", "Sales: $sales")
-
+        //---------------------------
+        // initialize views from xml
+        //---------------------------
         val container = findViewById<LinearLayout>(R.id.productSalesContainer)
+        // time filter
+        setUpTimeFilter()
 
+        // add first data to container
         var currDate = LocalDateTime.parse(sales[0].salesDate)
         addDate(currDate, container)
 
@@ -82,5 +104,57 @@ class SalesPage : AppCompatActivity() {
             this.toFloat(),
             context.resources.displayMetrics
         ).toInt()
+    }
+
+    // +---------------+
+    // |  Time Filter  |
+    // +---------------+
+    private fun setUpTimeFilter() {
+        todayButton = findViewById(R.id.todayButton)
+        pastWeekButton = findViewById(R.id.pastWeekButton)
+        pastMonthButton = findViewById(R.id.pastMonthButton)
+        allTimeButton = findViewById(R.id.allTimeButton)
+
+        val buttons = listOf(todayButton, pastWeekButton, pastMonthButton, allTimeButton)
+
+        val defaultTint = buttons.first().backgroundTintList?.defaultColor ?: Color.TRANSPARENT
+        val selectedTint = ContextCompat.getColor(this, R.color.selectedTimeFilterColor)
+
+        buttons.forEach { btn ->
+            btn.setOnClickListener {
+
+                if (selectedButton == btn) return@setOnClickListener
+
+                selectedButton?.let { prev ->
+                    animateBackgroundTint(prev, selectedTint,defaultTint)
+                }
+
+                animateBackgroundTint(btn, defaultTint, selectedTint)
+
+                selectedButton = btn
+
+                // TODO: filtering logic here ->
+
+            }
+        }
+
+        allTimeButton.post {
+            animateBackgroundTint(allTimeButton, defaultTint, selectedTint)
+            selectedButton = allTimeButton
+        }
+    }
+
+    private fun animateBackgroundTint(button: Button, fromColor: Int, toColor: Int) {
+        (button.getTag(R.id.animator_tag) as? ValueAnimator)?.cancel()
+
+        val animator = ValueAnimator.ofObject(ArgbEvaluator(), fromColor, toColor)
+        animator.duration = animationDuration
+        animator.addUpdateListener { valueAnimator ->
+            val color = valueAnimator.animatedValue as Int
+            button.backgroundTintList = ColorStateList.valueOf(color)
+        }
+        animator.start()
+
+        button.setTag(R.id.animator_tag, animator)
     }
 }

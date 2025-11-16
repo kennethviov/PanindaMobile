@@ -52,9 +52,11 @@ class InventoryPage : AppCompatActivity() {
                     category = category
                 )
                 dataHelper.addProduct(newProduct)
+
                 // Refresh the list
                 refreshProductList()
             }
+
             addProductDialog.show(supportFragmentManager, "AddProductDialogFragment")
         }
 
@@ -79,6 +81,8 @@ class InventoryPage : AppCompatActivity() {
 
     private fun refreshCategoryList() {
         categoryContainer.removeAllViews()
-
     }
+
+    /* TODO: Search Feature */
+    /* TODO: Category Slider */
 }

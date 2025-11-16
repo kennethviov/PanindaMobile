@@ -3,6 +3,7 @@ package dev.komsay.panindamobile.ui.components
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.R
 import dev.komsay.panindamobile.ui.data.Product
 
@@ -49,7 +50,7 @@ class ProductSellerComponent {
             if (product.isQuantityAvailable(currentQuantity)) {
                 onSellClick(product, currentQuantity)
             } else {
-                Toast.makeText(view.context, "Insufficient stock available", Toast.LENGTH_SHORT).show()
+                Snackbar.make(view, "Insufficient stock available", Snackbar.LENGTH_SHORT).show()
             }
         }
 

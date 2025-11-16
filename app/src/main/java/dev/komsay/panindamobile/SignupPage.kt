@@ -2,13 +2,14 @@ package dev.komsay.panindamobile
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.dto.RegisterUsersDTO
 import dev.komsay.panindamobile.dto.Users
 import dev.komsay.panindamobile.network.RetrofitClient
@@ -22,6 +23,7 @@ class SignupPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_signup_page)
+        val rootView = findViewById<View>(android.R.id.content)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.signUpPage)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -40,12 +42,20 @@ class SignupPage : AppCompatActivity() {
             val cpwd = confirmpwd.text.toString().trim()
 
             if (user.isEmpty() || pwd.isEmpty() || cpwd.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                Snackbar.make(
+                    rootView, 
+                    "Please fill all fields",
+                    Snackbar.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
             if (pwd != cpwd) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                Snackbar.make(
+                    rootView, 
+                    "Passwords do not match",
+                    Snackbar.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
@@ -55,36 +65,36 @@ class SignupPage : AppCompatActivity() {
                 override fun onResponse(call: Call<Users>, response: Response<Users>) {
                     if (response.isSuccessful) {
                         val newUser = response.body()
-                        Toast.makeText(
-                            this@SignupPage,
+                        Snackbar.make(
+                            rootView,
                             "Account created for ${newUser?.username}",
-                            Toast.LENGTH_LONG
+                            Snackbar.LENGTH_LONG
                         ).show()
 
                         // Redirect to LoginPage
                         startActivity(Intent(this@SignupPage, LoginPage::class.java))
                         finish()
                     } else {
-                        Toast.makeText(
-                            this@SignupPage,
+                        Snackbar.make(
+                            rootView,
                             "Registration failed: ${response.code()}",
-                            Toast.LENGTH_LONG
+                            Snackbar.LENGTH_LONG
                         ).show()
                     }
                 }
 
                 override fun onFailure(call: Call<Users>, t: Throwable) {
-                    Toast.makeText(
-                        this@SignupPage,
+                    Snackbar.make(
+                        rootView,
                         "Error: ${t.message}",
-                        Toast.LENGTH_LONG
+                        Snackbar.LENGTH_LONG
                     ).show()
                 }
             })
         }
 
         btnCancel.setOnClickListener {
-            Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
+            Snackbar.make(rootView, "Cancelled", Snackbar.LENGTH_SHORT).show()
             val intent = Intent(this, LoginPage::class.java)
             startActivity(intent)
         }
