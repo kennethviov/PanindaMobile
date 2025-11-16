@@ -1,9 +1,14 @@
 package dev.komsay.panindamobile
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.github.mikephil.charting.charts.LineChart
@@ -13,6 +18,18 @@ import com.github.mikephil.charting.components.XAxis
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 
 class AnalyticsPage : AppCompatActivity() {
+
+    private lateinit var todayButton : Button
+    private lateinit var pastWeekButton : Button
+    private lateinit var pastMonthButton : Button
+    private lateinit var allTimeButton : Button
+
+    private var selectedButton: Button? = null
+
+    // animation duration
+    private val animationDuration = 220L
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,36 +44,20 @@ class AnalyticsPage : AppCompatActivity() {
         val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
         navigationBarManager.setup()
 
-        // -------------------------
-        // PIE CHART SETUP
-        // -------------------------
+        val app = application as Paninda
+        val dataHelper = app.dataHelper
 
-        val pieChart = findViewById<PieChart>(R.id.pieChart)
+        // get mock data
+        val sales = dataHelper.getAllSales()
 
-        val entries = ArrayList<PieEntry>().apply {
-            add(PieEntry(40f, "Food"))
-            add(PieEntry(30f, "Bills"))
-            add(PieEntry(20f, "Savings"))
-            add(PieEntry(10f, "Other"))
-        }
+        // set up time filter buttons
+        setUpTimeFilter()
 
-        val dataSet = PieDataSet(entries, "Expenses")
-        dataSet.colors = listOf(
-            Color.parseColor("#4CAF50"),  // Green
-            Color.parseColor("#F44336"),  // Red
-            Color.parseColor("#2196F3"),  // Blue
-            Color.parseColor("#FF9800")   // Orange
-        )
-        dataSet.valueTextSize = 14f
-
-        val pieData = PieData(dataSet)
-
-        pieChart.data = pieData
-        pieChart.description.isEnabled = false
-        pieChart.centerText = "Monthly"
-        pieChart.setCenterTextSize(18f)
-        pieChart.animateY(1000)
-
+        /* TODO
+        *   - Data presentation
+        *       - line graph for income
+        *       - pie chart for individual products performance
+        * */
 
         // -------------------------
         // LINE CHART SETUP
@@ -90,21 +91,89 @@ class AnalyticsPage : AppCompatActivity() {
 
         lineChart.axisRight.isEnabled = false  // disable right y-axis
         lineChart.animateX(1200)
+
+        // -------------------------
+        // PIE CHART SETUP
+        // -------------------------
+
+        val pieChart = findViewById<PieChart>(R.id.pieChart)
+
+        val entries = ArrayList<PieEntry>().apply {
+            add(PieEntry(40f, "Food"))
+            add(PieEntry(30f, "Bills"))
+            add(PieEntry(20f, "Savings"))
+            add(PieEntry(10f, "Other"))
+        }
+
+        val dataSet = PieDataSet(entries, "Expenses")
+        dataSet.colors = listOf(
+            Color.parseColor("#4CAF50"),  // Green
+            Color.parseColor("#F44336"),  // Red
+            Color.parseColor("#2196F3"),  // Blue
+            Color.parseColor("#FF9800")   // Orange
+        )
+        dataSet.valueTextSize = 14f
+
+        val pieData = PieData(dataSet)
+
+        pieChart.data = pieData
+        pieChart.description.isEnabled = false
+        pieChart.centerText = "Monthly"
+        pieChart.setCenterTextSize(18f)
+        pieChart.animateY(1000)
+
     }
 
-    /* TODO
-    *   - implement the analytics page functionalities
-    *   - Data presentation
-    *       - line graph for income
-    *       - pie chart for individual products performance
-    *   - Data retrieving and logic for calculation
-    * */
+    // +---------------+
+    // |  Time Filter  |
+    // +---------------+
+    private fun setUpTimeFilter() {
+        todayButton = findViewById(R.id.todayButton)
+        pastWeekButton = findViewById(R.id.pastWeekButton)
+        pastMonthButton = findViewById(R.id.pastMonthButton)
+        allTimeButton = findViewById(R.id.allTimeButton)
 
-    /* TODO: Timely report
-    *   - today
-    *   - last 7 days
-    *   - 30 days
-    *   - all time
-    * */
+        val buttons = listOf(todayButton, pastWeekButton, pastMonthButton, allTimeButton)
+
+        val defaultTint = buttons.first().backgroundTintList?.defaultColor ?: Color.TRANSPARENT
+        val selectedTint = ContextCompat.getColor(this, R.color.selectedTimeFilterColor)
+
+        buttons.forEach { btn ->
+            btn.setOnClickListener {
+
+                if (selectedButton == btn) return@setOnClickListener
+
+                selectedButton?.let { prev ->
+                    animateBackgroundTint(prev, selectedTint,defaultTint)
+                }
+
+                animateBackgroundTint(btn, defaultTint, selectedTint)
+
+                selectedButton = btn
+
+                // TODO: filtering logic here ->
+
+            }
+        }
+
+        allTimeButton.post {
+            animateBackgroundTint(allTimeButton, defaultTint, selectedTint)
+            selectedButton = allTimeButton
+        }
+    }
+
+    private fun animateBackgroundTint(button: Button, fromColor: Int, toColor: Int) {
+        (button.getTag(R.id.animator_tag) as? ValueAnimator)?.cancel()
+
+        val animator = ValueAnimator.ofObject(ArgbEvaluator(), fromColor, toColor)
+        animator.duration = animationDuration
+        animator.addUpdateListener { valueAnimator ->
+            val color = valueAnimator.animatedValue as Int
+            button.backgroundTintList = ColorStateList.valueOf(color)
+        }
+        animator.start()
+
+        button.setTag(R.id.animator_tag, animator)
+    }
 
 }

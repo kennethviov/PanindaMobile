@@ -83,5 +83,6 @@ class InventoryPage : AppCompatActivity() {
         categoryContainer.removeAllViews()
     }
 
+    /* TODO: Search Feature */
     /* TODO: Category Slider */
 }

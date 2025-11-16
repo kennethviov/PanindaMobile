@@ -39,63 +39,78 @@
                     android:textColor="@color/gray"
                     android:fontFamily="@font/inter_regular"/>
 
-                <TextView
-                    android:id="@+id/userTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Review your sales"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/black"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/inter_bold"/>
+            <TextView
+                android:id="@+id/userTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Review your sales"
+                android:textColor="@color/black"
+                android:textColorLink="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter_bold"/>
 
-<!--                TODO: remove search feature-->
-
-                <EditText
-                    android:id="@+id/searchBar"
+                <LinearLayout
+                    android:id="@+id/categorySlider"
+                    style="?android:attr/buttonBarStyle"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
-                    android:layout_marginTop="6dp"
-                    android:drawableStart="@drawable/ic_search"
-                    android:drawablePadding="10dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:background="@drawable/bg_product_seller"
-                    android:autofillHints="Snacks"
-                    android:hint="Search"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray"
-                    android:textSize="14sp"
-                    />
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="start"
+                    android:background="@drawable/bg_time_filter">
 
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:scrollbars="none">
+                    <Button
+                        android:id="@+id/todayButton"
+                        android:text="Today"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
-<!--                    TODO: Timely report-->
-<!--                     - today-->
-<!--                     - last 7 days-->
-<!--                     - 30 days-->
-<!--                     - all time-->
+                    <Button
+                        android:id="@+id/pastWeekButton"
+                        android:text="Past week"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
-                    <LinearLayout
-                        android:id="@+id/categorySlider"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:orientation="horizontal"
-                        android:layout_gravity="start">
+                    <Button
+                        android:id="@+id/pastMonthButton"
+                        android:text="Past month"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
-                    </LinearLayout>
-                </HorizontalScrollView>
+                    <Button
+                        android:id="@+id/allTimeButton"
+                        android:text="All time"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="7dp"
+                        style="?android:attr/buttonBarButtonStyle"/>
+
+                </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="4dp">
 
                     <TextView

@@ -87,11 +87,10 @@ class ProfilePage : AppCompatActivity() {
         changeNameBtn.visibility = View.GONE
         changeNameField.visibility = View.VISIBLE
         changeNameField.setText(name)
+        changeNameField.requestFocus()
     }
 
-    /* TODO: refine profile editing and saving functionality
-    *
-    * */
+    // TODO: refine profile editing and saving functionality
     private fun editProfile() {
         changePicBtn.visibility = View.VISIBLE
         changeNameBtn.visibility = View.VISIBLE

@@ -16,4 +16,7 @@
 
     <color name="sliderColor"> #FFC6AE </color>
     <color name="buttonColor">#FEAC00</color>
+
+    <color name="timeFilterColor">#FFE3C8</color>
+    <color name="selectedTimeFilterColor">#FFC6AE</color>
 </resources>

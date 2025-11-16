@@ -49,17 +49,62 @@
                     android:textStyle="bold"
                     android:fontFamily="@font/inter_bold"/>
 
-                <!--TODO: Timely report-->
-                <!-- - today-->
-                <!-- - last 7 days-->
-                <!-- - 30 days-->
-                <!-- - all time-->
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pieChart"
+                <LinearLayout
+                    android:id="@+id/categorySlider"
+                    style="?android:attr/buttonBarStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginTop="16dp"/>
+                    android:layout_height="36dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="start"
+                    android:background="@drawable/bg_time_filter">
+
+                    <Button
+                        android:id="@+id/todayButton"
+                        android:text="Today"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="?android:attr/buttonBarButtonStyle"/>
+
+                    <Button
+                        android:id="@+id/pastWeekButton"
+                        android:text="Past week"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="?android:attr/buttonBarButtonStyle"/>
+
+                    <Button
+                        android:id="@+id/pastMonthButton"
+                        android:text="Past month"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="?android:attr/buttonBarButtonStyle"/>
+
+                    <Button
+                        android:id="@+id/allTimeButton"
+                        android:text="All time"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="7dp"
+                        style="?android:attr/buttonBarButtonStyle"/>
+
+                </LinearLayout>
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/lineChart"
@@ -67,7 +112,11 @@
                     android:layout_height="250dp"
                     android:layout_marginTop="30dp" />
 
-
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="16dp"/>
 
             </LinearLayout>
 
