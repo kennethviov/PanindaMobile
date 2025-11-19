@@ -17,7 +17,7 @@ import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
 import dev.komsay.panindamobile.ui.data.CartItem
-import dev.komsay.panindamobile.ui.data.Sales
+import dev.komsay.panindamobile.ui.data.Sale
 import java.lang.reflect.Type
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -49,8 +49,8 @@ class DataHelper(private val context: Context) {
     private var productId: Int = 0
 
     // -- Sales Data
-    private val _sales = mutableListOf<Sales>()
-    val sales: List<Sales> get() = _sales
+    private val _sales = mutableListOf<Sale>()
+    val sales: List<Sale> get() = _sales
     private var salesId: Int = 0
 
     // --- rofile (Sample user)
@@ -92,7 +92,19 @@ class DataHelper(private val context: Context) {
                 Product(id = "7", name = "Tea", price = 15.00, stock = 10, category = "Beverages", unitSold = 10),
                 Product(id = "8", name = "Water", price = 10.00, stock = 20, category = "Beverages", unitSold = 50),
                 Product(id = "9", name = "Coke", price = 15.00, stock = 15, category = "Beverages", unitSold = 55),
-            )
+                Product(id = "10", name = "Sprite", price = 15.00, stock = 18, category = "Beverages", unitSold = 40),
+                Product(id = "11", name = "Royal", price = 15.00, stock = 10, category = "Beverages", unitSold = 35),
+                Product(id = "12", name = "Nova", price = 12.00, stock = 25, category = "Snacks", unitSold = 22),
+                Product(id = "13", name = "Roller Coaster", price = 11.00, stock = 30, category = "Snacks", unitSold = 28),
+                Product(id = "14", name = "Chippy", price = 10.00, stock = 35, category = "Snacks", unitSold = 32),
+                Product(id = "15", name = "Cup Noodles", price = 25.00, stock = 20, category = "Instant Food", unitSold = 18),
+                Product(id = "16", name = "SkyFlakes", price = 8.00, stock = 40, category = "Snacks", unitSold = 27),
+                Product(id = "17", name = "Pancit Canton", price = 17.00, stock = 22, category = "Instant Food", unitSold = 30),
+                Product(id = "18", name = "Energy Drink", price = 30.00, stock = 12, category = "Beverages", unitSold = 16),
+                Product(id = "19", name = "Hotdog", price = 6.00, stock = 60, category = "Frozen", unitSold = 45),
+                Product(id = "20", name = "Egg", price = 8.00, stock = 50, category = "Produce", unitSold = 38)
+                )
+
             _products.addAll(initialProducts)
             saveProducts()
         }
@@ -100,85 +112,141 @@ class DataHelper(private val context: Context) {
         // populate sales with initial data and save
         if (_sales.isEmpty()) {
             val initialSales = mutableListOf(
-                Sales(
+                // === OLDEST ===
+                Sale(
                     id = "1001",
-                    salesDate = LocalDateTime.now().minusDays(1).toString(),
+                    salesDate = LocalDateTime.now().minusDays(330).toString(),
                     salesItems = mutableListOf(
-                        CartItem (
-                            imageResId = _products[0].imageResId,
-                            productName = _products[0].name,
-                            productPrice = _products[0].price,
-                            productQuantity = 9
-                        ),
-                        CartItem (
-                            imageResId = _products[1].imageResId,
-                            productName = _products[1].name,
-                            productPrice = _products[1].price,
-                            productQuantity = 7
-                        ),
-                        CartItem (
-                            imageResId = _products[2].imageResId,
-                            productName = _products[2].name,
-                            productPrice = _products[2].price,
-                            productQuantity = 5
-                        ),
-                        CartItem (
-                            imageResId = _products[3].imageResId,
-                            productName = _products[3].name,
-                            productPrice = _products[3].price,
-                            productQuantity = 6
-                        )
+                        CartItem(_products[1].imageResId, _products[1].name, _products[1].price, 12),
+                        CartItem(_products[14].imageResId, _products[14].name, _products[14].price, 8)
                     )
                 ),
-                Sales(
+
+                Sale(
                     id = "1002",
-                    salesDate = LocalDateTime.now().minusHours(5).toString(),
+                    salesDate = LocalDateTime.now().minusDays(200).toString(),
                     salesItems = mutableListOf(
-                        CartItem (
-                            imageResId = _products[4].imageResId,
-                            productName = _products[4].name,
-                            productPrice = _products[4].price,
-                            productQuantity = 5
-                        ),
-                        CartItem (
-                            imageResId = _products[5].imageResId,
-                            productName = _products[5].name,
-                            productPrice = _products[5].price,
-                            productQuantity = 4
-                        )
+                        CartItem(_products[3].imageResId, _products[3].name, _products[3].price, 3),
+                        CartItem(_products[8].imageResId, _products[8].name, _products[8].price, 4)
                     )
                 ),
-                Sales(
+
+                Sale(
                     id = "1003",
-                    salesDate = LocalDateTime.now().minusMinutes(30).toString(),
+                    salesDate = LocalDateTime.now().minusDays(120).toString(),
                     salesItems = mutableListOf(
-                        CartItem (
-                            imageResId = _products[6].imageResId,
-                            productName = _products[6].name,
-                            productPrice = _products[6].price,
-                            productQuantity = 2
-                        ),
-                        CartItem (
-                            imageResId = _products[7].imageResId,
-                            productName = _products[7].name,
-                            productPrice = _products[7].price,
-                            productQuantity = 9
-                        )
+                        CartItem(_products[19].imageResId, _products[19].name, _products[19].price, 10)
                     )
                 ),
-                Sales(
+
+                Sale(
                     id = "1004",
+                    salesDate = LocalDateTime.now().minusDays(90).toString(),
+                    salesItems = mutableListOf(
+                        CartItem(_products[18].imageResId, _products[18].name, _products[18].price, 6)
+                    )
+                ),
+
+                Sale(
+                    id = "1005",
+                    salesDate = LocalDateTime.now().minusDays(60).toString(),
+                    salesItems = mutableListOf(
+                        CartItem(_products[4].imageResId, _products[4].name, _products[4].price, 5),
+                        CartItem(_products[17].imageResId, _products[17].name, _products[17].price, 4)
+                    )
+                ),
+
+                Sale(
+                    id = "1006",
+                    salesDate = LocalDateTime.now().minusDays(45).toString(),
+                    salesItems = mutableListOf(
+                        CartItem(_products[16].imageResId, _products[16].name, _products[16].price, 12)
+                    )
+                ),
+
+                Sale(
+                    id = "1007",
+                    salesDate = LocalDateTime.now().minusDays(30).toString(),
+                    salesItems = mutableListOf(
+                        CartItem(_products[15].imageResId, _products[15].name, _products[15].price, 3),
+                        CartItem(_products[0].imageResId, _products[0].name, _products[0].price, 5)
+                    )
+                ),
+
+                Sale(
+                    id = "1008",
+                    salesDate = LocalDateTime.now().minusDays(20).toString(),
+                    salesItems = mutableListOf(
+                        CartItem(_products[14].imageResId, _products[14].name, _products[14].price, 10)
+                    )
+                ),
+
+                Sale(
+                    id = "1009",
+                    salesDate = LocalDateTime.now().minusDays(14).toString(),
+                    salesItems = mutableListOf(
+                        CartItem(_products[3].imageResId, _products[3].name, _products[3].price, 6),
+                        CartItem(_products[13].imageResId, _products[13].name, _products[13].price, 7)
+                    )
+                ),
+
+                Sale(
+                    id = "1010",
+                    salesDate = LocalDateTime.now().minusDays(10).toString(),
+                    salesItems = mutableListOf(
+                        CartItem(_products[11].imageResId, _products[11].name, _products[11].price, 4),
+                        CartItem(_products[2].imageResId, _products[2].name, _products[2].price, 3)
+                    )
+                ),
+
+                Sale(
+                    id = "1011",
+                    salesDate = LocalDateTime.now().minusDays(4).toString(),
+                    salesItems = mutableListOf(
+                        CartItem(_products[9].imageResId, _products[9].name, _products[9].price, 3),
+                        CartItem(_products[10].imageResId, _products[10].name, _products[10].price, 5)
+                    )
+                ),
+
+                Sale(
+                    id = "1012",
                     salesDate = LocalDateTime.now().minusDays(3).toString(),
                     salesItems = mutableListOf(
-                        CartItem (
-                            imageResId = _products[8].imageResId,
-                            productName = _products[8].name,
-                            productPrice = _products[8].price,
-                            productQuantity = 6
-                        )
+                        CartItem(_products[8].imageResId, _products[8].name, _products[8].price, 6)
+                    )
+                ),
+
+                Sale(
+                    id = "1013",
+                    salesDate = LocalDateTime.now().minusHours(5).toString(),
+                    salesItems = mutableListOf(
+                        CartItem(_products[4].imageResId, _products[4].name, _products[4].price, 5),
+                        CartItem(_products[5].imageResId, _products[5].name, _products[5].price, 4)
+                    )
+                ),
+
+                Sale(
+                    id = "1014",
+                    salesDate = LocalDateTime.now().minusMinutes(30).toString(),
+                    salesItems = mutableListOf(
+                        CartItem(_products[6].imageResId, _products[6].name, _products[6].price, 2),
+                        CartItem(_products[7].imageResId, _products[7].name, _products[7].price, 9)
+                    )
+                ),
+
+                // === NEWEST ===
+                Sale(
+                    id = "1015",
+                    salesDate = LocalDateTime.now().toString(),
+                    salesItems = mutableListOf(
+                        CartItem(_products[0].imageResId, _products[0].name, _products[0].price, 9),
+                        CartItem(_products[1].imageResId, _products[1].name, _products[1].price, 7),
+                        CartItem(_products[2].imageResId, _products[2].name, _products[2].price, 5),
+                        CartItem(_products[3].imageResId, _products[3].name, _products[3].price, 6)
                     )
                 )
             )
+
             _sales.addAll(initialSales)
             saveSales()
         }
@@ -236,12 +304,12 @@ class DataHelper(private val context: Context) {
     // |  Sales Methods  |
     // +-----------------+
 
-    fun getAllSales(): List<Sales> {
+    fun getAllSales(): List<Sale> {
         Log.i("DataHelper.getAllSales", _sales.reversed().toString())
         return _sales.reversed()
     }
 
-    fun addSale(sale: Sales): Sales {
+    fun addSale(sale: Sale): Sale {
         salesId++
         val newSale = sale
         Log.i("DataHelper.addSell before", newSale.toString())
@@ -254,7 +322,7 @@ class DataHelper(private val context: Context) {
         return newSale
     }
 
-    fun getSale(id: String): Sales? = _sales.find { it.id == id }
+    fun getSale(id: String): Sale? = _sales.find { it.id == id }
 
 
     // +-------------------+
@@ -319,8 +387,8 @@ class DataHelper(private val context: Context) {
         // Load Sales
         val salesJson = prefs.getString("sales_json", null)
         if (salesJson != null) {
-            val saleType = object : TypeToken<MutableList<Sales>>() {}.type
-            val loadedSales: MutableList<Sales> = gson.fromJson(salesJson, saleType)
+            val saleType = object : TypeToken<MutableList<Sale>>() {}.type
+            val loadedSales: MutableList<Sale> = gson.fromJson(salesJson, saleType)
             _sales.clear()
             _sales.addAll(loadedSales)
         }

@@ -1,9 +1,11 @@
 package dev.komsay.panindamobile.ui.components
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import dev.komsay.panindamobile.R
 
 class CategoryComponent {
@@ -29,4 +31,7 @@ class CategoryComponent {
         }
     }
 
+    public fun setCatBGTintColor(color: Int) {
+        view.backgroundTintList = ColorStateList.valueOf(color)
+    }
 }

@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import androidx.annotation.RequiresApi
 import dev.komsay.panindamobile.databinding.FragmentSalesDetailsBinding
 import dev.komsay.panindamobile.ui.components.ProductInventoryComponent
-import dev.komsay.panindamobile.ui.data.Sales
+import dev.komsay.panindamobile.ui.data.Sale
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -16,7 +16,7 @@ class SalesDetails(private val context: Context) {
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
-    fun show(sales: Sales) {
+    fun show(sales: Sale) {
         val dialog = Dialog(context)
         val binding = FragmentSalesDetailsBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
@@ -24,7 +24,7 @@ class SalesDetails(private val context: Context) {
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         // datetime format
-        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+        val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
         val dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
         val dateTime = LocalDateTime.parse(sales.salesDate)
 
@@ -67,4 +67,5 @@ class SalesDetails(private val context: Context) {
         return actualHeight.toInt()
     }
 
+    // TODO: Convert to RecyclerView for better performance; great for large amounts of data
 }

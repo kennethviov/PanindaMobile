@@ -1,6 +1,6 @@
 package dev.komsay.panindamobile.ui.data
 
-data class Sales(
+data class Sale(
     var id: String,
     val salesDate: String,
 

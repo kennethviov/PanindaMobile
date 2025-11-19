@@ -1,10 +1,11 @@
 package dev.komsay.panindamobile
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.os.Build
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import dev.komsay.panindamobile.ui.components.CategoryComponent
 import dev.komsay.panindamobile.ui.components.ProductSellerComponent
 import dev.komsay.panindamobile.ui.data.Product
 import dev.komsay.panindamobile.ui.components.TopSellingProductComponent
@@ -20,9 +20,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import dev.komsay.panindamobile.ui.components.CartItemComponent
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
-import dev.komsay.panindamobile.ui.data.Sales
+import dev.komsay.panindamobile.ui.data.Sale
 import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.ui.data.CartItem
 import dev.komsay.panindamobile.ui.utils.DataHelper
@@ -31,7 +33,10 @@ class HomePage : AppCompatActivity() {
 
     private var products: List<Product> = mutableListOf()
     private val cart: MutableList<CartItem> = mutableListOf()
+    private var categories: List<String> = mutableListOf<String>()
+
     private lateinit var container: LinearLayout
+    private lateinit var categorySlider: LinearLayout
 
     private lateinit var app: Paninda
     private lateinit var dataHelper: DataHelper
@@ -48,12 +53,9 @@ class HomePage : AppCompatActivity() {
             insets
         }
 
-        // Navigation bar
-        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
-        navigationBarManager.setup()
-
-        // Home Page Components
+        // Initialize Home Page Components
         container = findViewById(R.id.productSellerContainer)
+        categorySlider = findViewById<LinearLayout>(R.id.categorySlider)
         val receivedUsername = intent.getStringExtra("USERNAME_KEY")
         val userTxtView = findViewById<TextView>(R.id.userTextView)
         val dateTime = findViewById<TextView>(R.id.dateTimeView)
@@ -68,6 +70,11 @@ class HomePage : AppCompatActivity() {
         app = application as Paninda
         dataHelper = app.dataHelper
 
+        // load mock data
+        loadProductsFromDB()
+        loadCategoriesFromDB()
+
+        // Set up Page UI
         // Home Page  Greeting
         val currentDateTime = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
@@ -76,29 +83,16 @@ class HomePage : AppCompatActivity() {
         userTxtView.text = "Hello, $receivedUsername"
         dateTime.text =formattedDateTime.toString()
 
+        refreshCategoryUI(categories)
+        refreshTopSellingProducts(this.products)
+        refreshProductUI(this.products)
+        refreshCartUI()
 
-        val categories = dataHelper.getAllCategories()
-
-        // products
-        loadProductsFromDB()
-        updateProductUI(this.products)
-
-        // top seller
-        loadTopSellingProducts(this.products)
-
-        // categories
-        for (cat in categories) {
-            val catComp = CategoryComponent(findViewById(R.id.categorySlider))
-            catComp.bind(cat) { selectedCategory ->
-                handleCategoryClick(selectedCategory) }
-        }
-
-        // SetUpCartBtn
         setUpCartBtn(cartCancel, cartSell)
 
-        // SetUpCartUI
-        updateCartUI()
-
+        // Navigation bar
+        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
+        navigationBarManager.setup()
     }
 
     @SuppressLint("DefaultLocale")
@@ -135,7 +129,7 @@ class HomePage : AppCompatActivity() {
             }
 
             cartItem.productQuantity += quantity
-            updateCartUI()
+            refreshCartUI()
             return
         }
 
@@ -147,41 +141,29 @@ class HomePage : AppCompatActivity() {
         )
         cart.add(cartItem)
         toggleCartVisibility("visible")
-        updateCartUI()
+        refreshCartUI()
     }
 
-    private var currCat: String = ""
+    private var currCat: Button? = null
+    private var lastCat: Button? = null
 
-    fun handleCategoryClick(category: String) {
+    fun handleCategoryClick(category: Button) {
         if (currCat == category) {
-            updateProductUI(this.products)
-            loadTopSellingProducts(this.products)
-            currCat = ""
+            refreshProductUI(this.products)
+            refreshTopSellingProducts(this.products)
+            category.backgroundTintList = ContextCompat.getColorStateList(this@HomePage, R.color.categoryColor)
+            currCat = null
             return
         }
 
-        val categorizedProducts = products.filter { it.category == category }
-        updateProductUI(categorizedProducts)
-        loadTopSellingProducts(categorizedProducts)
+        lastCat?.backgroundTintList = ContextCompat.getColorStateList(this@HomePage, R.color.categoryColor)
+
+        val categorizedProducts = products.filter { it.category == category.text }
+        refreshProductUI(categorizedProducts)
+        refreshTopSellingProducts(categorizedProducts)
+        category.backgroundTintList = ContextCompat.getColorStateList(this@HomePage, R.color.selectedCategoryColor)
         currCat = category
-    }
-
-    fun updateProductUI(products: List<Product>) {
-        container.removeAllViews()
-
-        for (product in products) {
-            val component = ProductSellerComponent(container)
-            component.bind(product) { selectedProduct, quantity ->
-                handleSellClick(selectedProduct, quantity)
-            }
-        }
-    }
-
-    fun loadTopSellingProducts(products: List<Product>) {
-        val topSellCont = findViewById<LinearLayout>(R.id.view_top_seller)
-        topSellCont.removeAllViews()
-        val topSellComp = TopSellingProductComponent(topSellCont)
-        topSellComp.bind(products.find { it -> it.unitSold == products.maxByOrNull { it.unitSold }?.unitSold }!!, totalUnitSold(products))
+        lastCat = currCat
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -195,7 +177,7 @@ class HomePage : AppCompatActivity() {
 
             val numOfSales = dataHelper.getAllSales().size
 
-            val sale = Sales(
+            val sale = Sale(
                 "100$numOfSales",
                 LocalDateTime.now().toString(),
                 ArrayList(cart))
@@ -221,12 +203,69 @@ class HomePage : AppCompatActivity() {
 
             cart.clear()
             loadProductsFromDB()
-            updateProductUI(this.products)
+            refreshProductUI(this.products)
             toggleCartVisibility("gone")
         }
     }
 
-    private fun updateCartUI() {
+    fun refreshProductUI(products: List<Product>) {
+        container.removeAllViews()
+
+        for (product in products) {
+            val component = ProductSellerComponent(container)
+            component.bind(product) { selectedProduct, quantity ->
+                handleSellClick(selectedProduct, quantity)
+            }
+        }
+    }
+
+    fun refreshTopSellingProducts(products: List<Product>) {
+        val topSellCont = findViewById<LinearLayout>(R.id.view_top_seller)
+        topSellCont.removeAllViews()
+        val topSellComp = TopSellingProductComponent(topSellCont)
+        topSellComp.bind(products.find { it -> it.unitSold == products.maxByOrNull { it.unitSold }?.unitSold }!!, totalUnitSold(products))
+    }
+
+    fun refreshCategoryUI(categories: List<String>) {
+        categorySlider.removeAllViews()
+
+        for (cat in categories) {
+            val paddingDp = 12
+            val scale = resources.displayMetrics.density
+            val paddingPx = (paddingDp * scale + 0.5f).toInt()
+
+            val button = Button(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                ).apply {
+                    marginEnd = (8 * scale * 0.5f).toInt()
+                }
+
+                text = cat
+                textSize = 12f
+                typeface = ResourcesCompat.getFont(this@HomePage, R.font.inter_regular)
+                setTextColor(ContextCompat.getColor(this@HomePage, R.color.black))
+                isAllCaps = false
+
+                background = ContextCompat.getDrawable(this@HomePage, R.drawable.bg_category)
+                backgroundTintList = ContextCompat.getColorStateList(this@HomePage, R.color.categoryColor)
+
+                elevation = 0f
+                translationZ = 0f
+                stateListAnimator = null
+
+                setPadding(paddingPx, 0, paddingPx, 0)
+            }
+
+            categorySlider.addView(button)
+            button.setOnClickListener {
+                handleCategoryClick(button)
+            }
+        }
+    }
+
+    private fun refreshCartUI() {
         val sales = cart.sumOf { it.productPrice * it.productQuantity }
         val salesTotal = findViewById<TextView>(R.id.txt_total)
         val cartCont = findViewById<LinearLayout>(R.id.view_cart_items)
@@ -259,9 +298,25 @@ class HomePage : AppCompatActivity() {
         products = dataHelper.getAllProducts()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun loadCategoriesFromDB() {
+        categories = dataHelper.getAllCategories().sorted()
+    }
+
     private fun totalUnitSold(products: List<Product>): Int {
         return products.sumOf { it.unitSold }
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+            currentFocus!!.clearFocus()
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
     // TODO: Search feature
+    // TODO: Convert main product container and cart container to
+    //  RecyclerView for better performance; great for large amounts of data
 }

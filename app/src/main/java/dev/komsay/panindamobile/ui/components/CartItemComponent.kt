@@ -19,8 +19,8 @@ class CartItemComponent {
     private val productPrice: TextView
     private val productTotal: TextView
     private val productQuantity: TextView
-    private val incBtn: Button
-    private val decBtn: Button
+//    private val incBtn: Button
+//    private val decBtn: Button
 
     constructor(container: LinearLayout) {
         this.container = container
@@ -32,11 +32,13 @@ class CartItemComponent {
         productPrice = view.findViewById(R.id.productPrice)
         productTotal = view.findViewById(R.id.productTotal)
         productQuantity = view.findViewById(R.id.productQuantity)
-        incBtn = view.findViewById(R.id.btn_inc)
-        decBtn = view.findViewById(R.id.btn_dec)
+//        incBtn = view.findViewById(R.id.btn_inc)
+//        decBtn = view.findViewById(R.id.btn_dec)
 
         container.addView(view)
     }
+
+    // TODO: handle incButton and decButton
 
     fun bind(item: CartItem) {
 

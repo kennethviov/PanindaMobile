@@ -2,13 +2,19 @@ package dev.komsay.panindamobile
 
 import android.os.Build
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import dev.komsay.panindamobile.ui.components.CategoryComponent
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import dev.komsay.panindamobile.ui.components.ProductInventoryComponent
 import dev.komsay.panindamobile.ui.data.Product
@@ -19,8 +25,9 @@ class InventoryPage : AppCompatActivity() {
 
     private lateinit var dataHelper: DataHelper
     private lateinit var productContainer: LinearLayout
-    private lateinit var categoryContainer: LinearLayout
-    private lateinit var products: List<Product>
+    private lateinit var categorySlider: LinearLayout
+    private var products: List<Product> = emptyList()
+    private var categories: List<String> = emptyList()
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -34,13 +41,32 @@ class InventoryPage : AppCompatActivity() {
             insets
         }
 
-        val app = application as Paninda
-        dataHelper = app.dataHelper
+        // Initialize views
         productContainer = findViewById(R.id.productInventoryContainer)
-        categoryContainer = findViewById(R.id.categorySlider)
-
+        categorySlider = findViewById(R.id.categorySlider)
         val addBtn = findViewById<ImageButton>(R.id.addBtn)
 
+        // +-------------+
+        // |  MOCK DATA  |
+        // +-------------+
+        val app = application as Paninda
+        dataHelper = app.dataHelper
+
+        // load mock data
+        loadProductsFromDB()
+        loadCategoriesFromDB()
+
+        // set up ui
+        handleAddBtnClick(addBtn)
+        refreshProductUI()
+        refreshCategoryUI(this.categories)
+
+        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
+        navigationBarManager.setup()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun handleAddBtnClick(addBtn: ImageButton) {
         addBtn.setOnClickListener {
             val addProductDialog = AddProductDialogFragment()
             addProductDialog.setOnProductAddedListener { name, price, stock, category ->
@@ -51,38 +77,108 @@ class InventoryPage : AppCompatActivity() {
                     stock = stock.toInt(),
                     category = category
                 )
+
                 dataHelper.addProduct(newProduct)
 
-                // Refresh the list
-                refreshProductList()
+                loadProductsFromDB()
+                loadCategoriesFromDB()
+                refreshProductUI()
+                refreshCategoryUI(this.categories)
             }
 
+            // Refresh the list
             addProductDialog.show(supportFragmentManager, "AddProductDialogFragment")
         }
+    }
 
-        refreshProductList()
+    private var currCat: Button? = null
+    private var lastCat: Button? = null
 
-        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
-        navigationBarManager.setup()
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun handleCategoryClick(category: Button) {
+        if (currCat == category) {
+            refreshProductUI(this.products)
+            category.backgroundTintList = ContextCompat.getColorStateList(this@InventoryPage, R.color.categoryColor)
+            currCat = null
+            return
+        }
+
+        lastCat?.backgroundTintList = ContextCompat.getColorStateList(this@InventoryPage, R.color.categoryColor)
+
+        val categorizedProducts = products.filter { it.category == category.text }
+        refreshProductUI(categorizedProducts)
+        category.backgroundTintList = ContextCompat.getColorStateList(this@InventoryPage, R.color.selectedCategoryColor)
+        currCat = category
+        lastCat = currCat
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun refreshProductList() {
+    fun refreshProductUI(products: List<Product> = this.products) {
         productContainer.removeAllViews()
-        val products = dataHelper.getAllProducts()
+
         for (product in products) {
             val component = ProductInventoryComponent(productContainer, this)
             component.bind(product) {
                 // This is the callback for when a product is updated.
-                refreshProductList()
+                refreshProductUI()
             }
         }
     }
 
-    private fun refreshCategoryList() {
-        categoryContainer.removeAllViews()
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun refreshCategoryUI(categories: List<String>) {
+        categorySlider.removeAllViews()
+
+        for (cat in categories) {
+            val paddingDp = 12
+            val scale = resources.displayMetrics.density
+            val paddingPx = (paddingDp * scale + 0.5f).toInt()
+
+            val button = Button(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                ).apply {
+                    marginEnd = (8 * scale * 0.5f).toInt()
+                }
+
+                text = cat
+                textSize = 12f
+                typeface = ResourcesCompat.getFont(this@InventoryPage, R.font.inter_regular)
+                setTextColor(ContextCompat.getColor(this@InventoryPage, R.color.black))
+                isAllCaps = false
+
+                background = ContextCompat.getDrawable(this@InventoryPage, R.drawable.bg_category)
+                backgroundTintList = ContextCompat.getColorStateList(this@InventoryPage, R.color.categoryColor)
+
+                elevation = 0f
+                translationZ = 0f
+                stateListAnimator = null
+
+                setPadding(paddingPx, 0, paddingPx, 0)
+            }
+
+            categorySlider.addView(button)
+            button.setOnClickListener {
+                handleCategoryClick(button)
+            }
+        }
     }
 
-    /* TODO: Search Feature */
-    /* TODO: Category Slider */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun loadProductsFromDB() { products = dataHelper.getAllProducts() }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun loadCategoriesFromDB() { categories = dataHelper.getAllCategories().sorted() }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+            currentFocus!!.clearFocus()
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
+    // TODO: Search feature
+    // TODO: Convert to RecyclerView for better performance; great for large amounts of data
 }

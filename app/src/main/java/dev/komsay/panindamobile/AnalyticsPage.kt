@@ -4,9 +4,11 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -16,6 +18,7 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.components.XAxis
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
+import androidx.core.graphics.toColorInt
 
 class AnalyticsPage : AppCompatActivity() {
 
@@ -30,6 +33,7 @@ class AnalyticsPage : AppCompatActivity() {
     private val animationDuration = 220L
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,9 +44,6 @@ class AnalyticsPage : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
-        navigationBarManager.setup()
 
         val app = application as Paninda
         val dataHelper = app.dataHelper
@@ -74,11 +75,11 @@ class AnalyticsPage : AppCompatActivity() {
         }
 
         val lineDataSet = LineDataSet(lineEntries, "Sales Trends").apply {
-            color = Color.parseColor("#2196F3")
+            color = "#2196F3".toColorInt()
             valueTextColor = Color.BLACK
             lineWidth = 2f
             circleRadius = 5f
-            setCircleColor(Color.parseColor("#2196F3"))
+            setCircleColor("#2196F3".toColorInt())
         }
 
         val lineData = LineData(lineDataSet)
@@ -107,10 +108,10 @@ class AnalyticsPage : AppCompatActivity() {
 
         val dataSet = PieDataSet(entries, "Expenses")
         dataSet.colors = listOf(
-            Color.parseColor("#4CAF50"),  // Green
-            Color.parseColor("#F44336"),  // Red
-            Color.parseColor("#2196F3"),  // Blue
-            Color.parseColor("#FF9800")   // Orange
+            "#4CAF50".toColorInt(),  // Green
+            "#F44336".toColorInt(),  // Red
+            "#2196F3".toColorInt(),  // Blue
+            "#FF9800".toColorInt()   // Orange
         )
         dataSet.valueTextSize = 14f
 
@@ -122,6 +123,8 @@ class AnalyticsPage : AppCompatActivity() {
         pieChart.setCenterTextSize(18f)
         pieChart.animateY(1000)
 
+        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
+        navigationBarManager.setup()
     }
 
     // +---------------+

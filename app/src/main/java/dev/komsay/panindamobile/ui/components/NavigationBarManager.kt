@@ -44,7 +44,9 @@ class NavigationBarManager(private val activity: AppCompatActivity, private val 
     private fun <T> navigateTo(targetActivity: Class<T>) {
         if (activity::class.java != targetActivity) {
             val intent = Intent(activity, targetActivity)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             activity.startActivity(intent)
+
             activity.overridePendingTransition(0, 0)
         }
     }

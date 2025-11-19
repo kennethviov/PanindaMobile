@@ -47,6 +47,9 @@ class ProductInventoryComponent {
 
     }
 
+    // +------------------------------+
+    // |  bind products in inventory  |
+    // +------------------------------+
     @RequiresApi(Build.VERSION_CODES.O)
     fun bind(product: Product, onProductUpdated: () -> Unit) {
 
@@ -95,6 +98,9 @@ class ProductInventoryComponent {
         container.addView(view)
     }
 
+    // +--------------------------+
+    // |  bind products in sales  |
+    // +--------------------------+
     @SuppressLint("DefaultLocale")
     fun bind(item: CartItem) {
 
