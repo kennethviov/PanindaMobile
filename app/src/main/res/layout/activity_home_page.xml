@@ -82,7 +82,7 @@
                         <LinearLayout
                             android:id="@+id/categorySlider"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_height="36dp"
                             android:orientation="horizontal"
                             android:layout_gravity="start">
 

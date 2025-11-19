@@ -1,5 +1,6 @@
 package dev.komsay.panindamobile.ui.components
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
@@ -9,7 +10,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import java.time.format.DateTimeFormatter
 import dev.komsay.panindamobile.R
-import dev.komsay.panindamobile.ui.data.Sales
+import dev.komsay.panindamobile.ui.data.Sale
 import dev.komsay.panindamobile.ui.fragments.SalesDetails
 import java.time.LocalDateTime
 
@@ -36,10 +37,11 @@ class ProductSalesComponent {
 
     }
 
+    @SuppressLint("DefaultLocale")
     @RequiresApi(Build.VERSION_CODES.O)
-    fun bind(sales: Sales) {
+    fun bind(sales: Sale) {
 
-        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        val formatter = DateTimeFormatter.ofPattern("hh:mm a")
         val dateTime = LocalDateTime.parse(sales.salesDate)
 
         time.text = dateTime.format(formatter)

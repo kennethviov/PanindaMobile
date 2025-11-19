@@ -54,9 +54,6 @@ class ProfilePage : AppCompatActivity() {
         app = application as Paninda
         dataHelper = app.dataHelper
 
-        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
-        navigationBarManager.setup()
-
         username = findViewById(R.id.username)
         changePicBtn = findViewById(R.id.editProfilePic)
         changeNameBtn = findViewById(R.id.changeNameBtn)
@@ -74,6 +71,9 @@ class ProfilePage : AppCompatActivity() {
             else { saveProfile() }
             inEditMode = !inEditMode
         }
+
+        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
+        navigationBarManager.setup()
     }
 
     // TODO add profile picture changing functionality
@@ -87,7 +87,10 @@ class ProfilePage : AppCompatActivity() {
         changeNameBtn.visibility = View.GONE
         changeNameField.visibility = View.VISIBLE
         changeNameField.setText(name)
+
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         changeNameField.requestFocus()
+        imm.showSoftInput(changeNameField, InputMethodManager.SHOW_IMPLICIT)
     }
 
     // TODO: refine profile editing and saving functionality

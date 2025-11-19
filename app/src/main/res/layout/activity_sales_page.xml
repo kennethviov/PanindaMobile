@@ -23,7 +23,6 @@
             app:layout_constraintBottom_toTopOf="@id/navbar">
 
             <LinearLayout
-                android:id="@+id/productSalesContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -39,16 +38,16 @@
                     android:textColor="@color/gray"
                     android:fontFamily="@font/inter_regular"/>
 
-            <TextView
-                android:id="@+id/userTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Review your sales"
-                android:textColor="@color/black"
-                android:textColorLink="@color/black"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/inter_bold"/>
+                <TextView
+                    android:id="@+id/userTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Review your sales"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/black"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/inter_bold"/>
 
                 <LinearLayout
                     android:id="@+id/categorySlider"
@@ -140,6 +139,12 @@
                         app:layout_constraintTop_toTopOf="parent"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/productSalesContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
 
             </LinearLayout>
 
