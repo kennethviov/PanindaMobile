@@ -179,6 +179,10 @@ class InventoryPage : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
-    // TODO: Search feature
-    // TODO: Convert to RecyclerView for better performance; great for large amounts of data
+    /* TODO:
+    *   - Search feature
+    *   - Convert main product container and cart container to
+    *           RecyclerView for better performance; great for large amounts of data
+    *   - SwipeRefreshLayout to refresh
+    * */
 }
