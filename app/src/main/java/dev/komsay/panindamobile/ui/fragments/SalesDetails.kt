@@ -67,5 +67,9 @@ class SalesDetails(private val context: Context) {
         return actualHeight.toInt()
     }
 
-    // TODO: Convert to RecyclerView for better performance; great for large amounts of data
+    /* TODO:
+    *   - Convert main product container and cart container to
+    *           RecyclerView for better performance; great for large amounts of data
+    *   - SwipeRefreshLayout to refresh
+    * */
 }

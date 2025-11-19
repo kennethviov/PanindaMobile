@@ -193,5 +193,9 @@ class SalesPage : AppCompatActivity() {
         button.setTag(R.id.animator_tag, animator)
     }
 
-    // TODO: Convert to RecyclerView for better performance; great for large amounts of data
+    /* TODO:
+    *   - Convert main product container and cart container to
+    *           RecyclerView for better performance; great for large amounts of data
+    *   - SwipeRefreshLayout to refresh
+    * */
 }
