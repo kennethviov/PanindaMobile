@@ -68,6 +68,7 @@ class LoginPage : AppCompatActivity() {
                     Toast.makeText(this@LoginPage, "Error: ${t.message}", Toast.LENGTH_LONG).show()
                 }
             })
+
         }
 
         btnSignUp.setOnClickListener {

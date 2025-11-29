@@ -2,6 +2,7 @@ package dev.komsay.panindamobile.Service
 
 import dev.komsay.panindamobile.dto.LoginResponse
 import dev.komsay.panindamobile.dto.LoginUsersDTO
+import dev.komsay.panindamobile.dto.ProductDTO
 import dev.komsay.panindamobile.dto.RegisterUsersDTO
 import dev.komsay.panindamobile.dto.Users
 import retrofit2.Call;
@@ -20,5 +21,10 @@ interface ApiService {
     fun loginUser(@Body loginUsersDTO: LoginUsersDTO): Call<LoginResponse>
 
     //Products
+    @GET("/api/products/{id}/image")
+    fun getProductsWithImage(@Body productDTO: ProductDTO): Call<ProductDTO>
 
+
+    @GET("/api/sales/stats/top-products")
+    fun getTopProducts(): Call<List<ProductDTO>>
 }

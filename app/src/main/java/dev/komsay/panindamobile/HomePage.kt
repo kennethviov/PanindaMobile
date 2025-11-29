@@ -24,6 +24,7 @@ import dev.komsay.panindamobile.ui.components.CartItemComponent
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import dev.komsay.panindamobile.ui.data.Sales
 import com.google.android.material.snackbar.Snackbar
+import dev.komsay.panindamobile.Service.SharedPrefManager
 import dev.komsay.panindamobile.ui.data.CartItem
 import dev.komsay.panindamobile.ui.utils.DataHelper
 
@@ -53,8 +54,9 @@ class HomePage : AppCompatActivity() {
         navigationBarManager.setup()
 
         // Home Page Components
+
         container = findViewById(R.id.productSellerContainer)
-        val receivedUsername = intent.getStringExtra("USERNAME_KEY")
+        val receivedUsername = SharedPrefManager.getUsername(this)
         val userTxtView = findViewById<TextView>(R.id.userTextView)
         val dateTime = findViewById<TextView>(R.id.dateTimeView)
         val cartCancel = findViewById<Button>(R.id.btn_cancel)
@@ -73,7 +75,7 @@ class HomePage : AppCompatActivity() {
         val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
         val formattedDateTime = currentDateTime.format(formatter)
 
-        userTxtView.text = "Hello, $receivedUsername"
+        userTxtView.text = "Hello, ${receivedUsername ?: "Guest"}"
         dateTime.text =formattedDateTime.toString()
 
 
