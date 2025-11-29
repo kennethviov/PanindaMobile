@@ -22,10 +22,10 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import dev.komsay.panindamobile.ui.components.CartItemComponent
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
-import dev.komsay.panindamobile.ui.data.Sales
 import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.Service.SharedPrefManager
 import dev.komsay.panindamobile.ui.data.CartItem
+import dev.komsay.panindamobile.ui.data.Sale
 import dev.komsay.panindamobile.ui.utils.DataHelper
 
 class HomePage : AppCompatActivity() {
@@ -197,10 +197,11 @@ class HomePage : AppCompatActivity() {
 
             val numOfSales = dataHelper.getAllSales().size
 
-            val sale = Sales(
+            val sale = Sale(
                 "100$numOfSales",
                 LocalDateTime.now().toString(),
-                ArrayList(cart))
+                ArrayList(cart)
+            )
 
             dataHelper.addSale(sale)
 

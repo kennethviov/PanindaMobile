@@ -19,6 +19,8 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.components.XAxis
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import androidx.core.graphics.toColorInt
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
 class AnalyticsPage : AppCompatActivity() {
 
@@ -63,35 +65,8 @@ class AnalyticsPage : AppCompatActivity() {
         // -------------------------
         // LINE CHART SETUP
         // -------------------------
-
         val lineChart = findViewById<LineChart>(R.id.lineChart)
-
-        val lineEntries = ArrayList<Entry>().apply {
-            add(Entry(0f, 5f))
-            add(Entry(1f, 8f))
-            add(Entry(2f, 3f))
-            add(Entry(3f, 10f))
-            add(Entry(4f, 6f))
-        }
-
-        val lineDataSet = LineDataSet(lineEntries, "Sales Trends").apply {
-            color = "#2196F3".toColorInt()
-            valueTextColor = Color.BLACK
-            lineWidth = 2f
-            circleRadius = 5f
-            setCircleColor("#2196F3".toColorInt())
-        }
-
-        val lineData = LineData(lineDataSet)
-
-        lineChart.data = lineData
-        lineChart.description.isEnabled = false
-
-        // X-axis bottom
-        lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-        lineChart.axisRight.isEnabled = false  // disable right y-axis
-        lineChart.animateX(1200)
+        setUpLineChart(lineChart)
 
         // -------------------------
         // PIE CHART SETUP
@@ -99,23 +74,23 @@ class AnalyticsPage : AppCompatActivity() {
 
         val pieChart = findViewById<PieChart>(R.id.pieChart)
 
-        val entries = ArrayList<PieEntry>().apply {
+        val pieEntries = ArrayList<PieEntry>().apply {
             add(PieEntry(40f, "Food"))
             add(PieEntry(30f, "Bills"))
             add(PieEntry(20f, "Savings"))
             add(PieEntry(10f, "Other"))
         }
 
-        val dataSet = PieDataSet(entries, "Expenses")
-        dataSet.colors = listOf(
+        val pieDataSet = PieDataSet(pieEntries, "Expenses")
+        pieDataSet.colors = listOf(
             "#4CAF50".toColorInt(),  // Green
             "#F44336".toColorInt(),  // Red
             "#2196F3".toColorInt(),  // Blue
             "#FF9800".toColorInt()   // Orange
         )
-        dataSet.valueTextSize = 14f
+        pieDataSet.valueTextSize = 14f
 
-        val pieData = PieData(dataSet)
+        val pieData = PieData(pieDataSet)
 
         pieChart.data = pieData
         pieChart.description.isEnabled = false
@@ -123,9 +98,134 @@ class AnalyticsPage : AppCompatActivity() {
         pieChart.setCenterTextSize(18f)
         pieChart.animateY(1000)
 
+        // LINE CHART SETUP
+        val barChart = findViewById<BarChart>(R.id.barChart)
+        setUpBarChart(barChart)
+
         val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
         navigationBarManager.setup()
     }
+
+    private fun setUpLineChart(lineChart: LineChart) {
+
+        val dates = listOf(
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun"
+        )
+
+        val amounts = listOf(
+            100f, 600f, 150f, 700f, 450f, 350f
+        )
+
+        val lineEntries = ArrayList<Entry>()
+        amounts.forEachIndexed { index, value ->
+            lineEntries.add(Entry(index.toFloat(), value))
+        }
+
+        val dataSet = LineDataSet(lineEntries, "Income")
+        dataSet.color = "#C05454".toColorInt()              // line color
+        dataSet.setDrawCircles(false)                       // remove points
+        dataSet.lineWidth = 2f
+        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER        // smooth curves
+        dataSet.setDrawFilled(true)
+
+        val drawable = ContextCompat.getDrawable(this, R.drawable.bg_chart_gradient)
+        dataSet.fillDrawable = drawable
+
+        dataSet.valueTextSize = 12f
+        dataSet.valueTextColor = Color.BLACK
+        dataSet.setDrawValues(false)
+
+        val lineData = LineData(dataSet)
+        lineChart.data = lineData
+
+        val xAxis = lineChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.granularity = 1f
+        xAxis.valueFormatter = IndexAxisValueFormatter(dates)
+        xAxis.textColor = "#C05454".toColorInt()
+
+        lineChart.axisLeft.textColor = "#C05454".toColorInt()    // y axis text colors
+        lineChart.axisRight.isEnabled = false
+        lineChart.axisLeft.setDrawGridLines(false)
+        lineChart.xAxis.setDrawGridLines(false)
+
+        lineChart.description.isEnabled = false
+        lineChart.legend.isEnabled = false
+
+        lineChart.setScaleEnabled(false)
+        lineChart.setPinchZoom(false)
+        lineChart.isDoubleTapToZoomEnabled = false
+        lineChart.setHighlightPerDragEnabled(false)
+
+        lineChart.animateY(1000)
+        lineChart.invalidate()
+    }
+
+    private fun setUpBarChart(barChart: BarChart) {
+
+        val labels = listOf(
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun"
+        )
+
+        val inflowValues = listOf(
+            120f, 150f, 90f, 200f, 170f, 210f
+        )
+        val outflowValues = listOf(
+            80f, 110f, 60f, 140f, 130f, 160f
+        )
+
+        val inflow = ArrayList<BarEntry>()
+        val outflow = ArrayList<BarEntry>()
+
+        for (i in labels.indices) {
+            inflow.add(BarEntry(i.toFloat(), inflowValues[i]))
+            outflow.add(BarEntry(i.toFloat(), outflowValues[i]))
+        }
+
+        val inflowSet = BarDataSet(inflow, "Inflow").apply {
+            color = Color.parseColor("#C05454")
+        }
+
+        val outflowSet = BarDataSet(outflow, "Outflow").apply {
+            color = Color.parseColor("#FFC6AE")
+        }
+
+        val data = BarData(inflowSet, outflowSet)
+
+        // 👉 These values WORK 100% for 2 datasets
+        val barWidth = 0.3f
+        val barSpace = 0.02f
+        val groupSpace = 0.2f
+
+        data.barWidth = barWidth
+
+        barChart.data = data
+
+        val xAxis = barChart.xAxis
+        xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
+        xAxis.granularity = 1f
+        xAxis.textColor = Color.DKGRAY
+
+        barChart.axisRight.isEnabled = false
+        barChart.axisLeft.setDrawGridLines(false)
+        barChart.description.isEnabled = false
+
+        // REQUIRED ORDER ⚠️
+        barChart.xAxis.axisMinimum = 0f
+        barChart.xAxis.axisMaximum = data.getGroupWidth(groupSpace, barSpace) * labels.size
+
+        barChart.setScaleEnabled(false)
+        barChart.setPinchZoom(false)
+        barChart.isDoubleTapToZoomEnabled = false
+        barChart.setHighlightPerDragEnabled(false)
+
+        barChart.groupBars(0f, groupSpace, barSpace)
+
+        barChart.invalidate()
+    }
+
 
     // +---------------+
     // |  Time Filter  |
