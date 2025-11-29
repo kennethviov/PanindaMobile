@@ -60,8 +60,9 @@ class SignupPage : AppCompatActivity() {
             }
 
             // Send data to Spring Boot API
+            // Send data to Spring Boot API
             val registerDto = RegisterUsersDTO(username = user, password = pwd)
-            RetrofitClient.api.registerUser(registerDto).enqueue(object : Callback<Users> {
+            RetrofitClient.getApi(this).registerUser(registerDto).enqueue(object : Callback<Users> {
                 override fun onResponse(call: Call<Users>, response: Response<Users>) {
                     if (response.isSuccessful) {
                         val newUser = response.body()
@@ -91,6 +92,7 @@ class SignupPage : AppCompatActivity() {
                     ).show()
                 }
             })
+
         }
 
         btnCancel.setOnClickListener {
