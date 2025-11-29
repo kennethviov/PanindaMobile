@@ -110,13 +110,23 @@
                     android:id="@+id/lineChart"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:layout_marginTop="30dp" />
+                    android:layout_marginTop="16dp"/>
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:layout_marginTop="16dp"/>
+                    android:layout_marginTop="64dp"/>
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="48dp"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"/>
 
             </LinearLayout>
 

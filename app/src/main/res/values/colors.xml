@@ -4,19 +4,17 @@
     <color name="gray"> #7F7F69 </color>
     <color name="white"> #FFFFFFFF </color>
     <color name="red">#CC0000</color>
-    <color name="backgroundRed">#77CC0000</color>
     <color name="transparent"> #00000000 </color>
 
     <color name="mainBackgroundColor"> #FFF9D9 </color>
     <color name="secondaryColor"> #FFEEA9 </color>
     <color name="tertiaryColor"> #FFBF78 </color>
-    <color name="opaqueColor"> #FF7D29 </color>
 
-    <color name="accentColor"> #FFF4C8 </color>
-
-    <color name="sliderColor"> #FFC6AE </color>
     <color name="buttonColor">#FEAC00</color>
 
     <color name="timeFilterColor">#FFE3C8</color>
     <color name="selectedTimeFilterColor">#FFC6AE</color>
+
+    <color name="categoryColor">#FFB584</color>
+    <color name="selectedCategoryColor">#FF7D29</color>
 </resources>

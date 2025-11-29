@@ -20,15 +20,21 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import dev.komsay.panindamobile.ui.components.ProductSalesComponent
+import dev.komsay.panindamobile.ui.data.Sale
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class SalesPage : AppCompatActivity() {
 
+    private lateinit var container: LinearLayout
     private lateinit var todayButton : Button
     private lateinit var pastWeekButton : Button
     private lateinit var pastMonthButton : Button
     private lateinit var allTimeButton : Button
+
+    private var sales: List<Sale> = mutableListOf()
+
 
     private var selectedButton: Button? = null
 
@@ -47,68 +53,27 @@ class SalesPage : AppCompatActivity() {
             insets
         }
 
-        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
-        navigationBarManager.setup()
+        // initialize views
+        container = findViewById(R.id.productSalesContainer)
 
         val app = application as Paninda
         val dataHelper = app.dataHelper
 
         // get mock data
-        val sales = dataHelper.getAllSales()
+        sales = dataHelper.getAllSales()
 
-        //---------------------------
-        // initialize views from xml
-        //---------------------------
-        val container = findViewById<LinearLayout>(R.id.productSalesContainer)
-        // time filter
+        // set up ui
         setUpTimeFilter()
+        refreshSalesUI(this.sales)
 
-        // add first data to container
-        var currDate = LocalDateTime.parse(sales[0].salesDate)
-        addDate(currDate, container)
-
-        for (sale in sales) {
-
-            val date = LocalDateTime.parse(sale.salesDate)
-
-            if (date.dayOfMonth != currDate.dayOfMonth || date.monthValue != currDate.monthValue || date.year != currDate.year) {
-                addDate(date, container)
-                currDate = date
-            }
-
-            val component = ProductSalesComponent(container, this)
-            component.bind(sale)
-        }
-
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun addDate(date: LocalDateTime, container: LinearLayout) {
-        val textView = TextView(this)
-
-        val txtDate = date.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy"))
-
-        textView.text = txtDate
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-        textView.setTextColor(resources.getColor(R.color.black))
-        textView.setTypeface(ResourcesCompat.getFont(this, R.font.inter_bold))
-        textView.setPadding(8.toDp(this), 6.toDp(this), 8.toDp(this), 0.toDp(this))
-
-        container.addView(textView)
-    }
-
-    private fun Int.toDp(context: Context): Int
-    {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            this.toFloat(),
-            context.resources.displayMetrics
-        ).toInt()
+        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
+        navigationBarManager.setup()
     }
 
     // +---------------+
     // |  Time Filter  |
     // +---------------+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setUpTimeFilter() {
         todayButton = findViewById(R.id.todayButton)
         pastWeekButton = findViewById(R.id.pastWeekButton)
@@ -135,6 +100,30 @@ class SalesPage : AppCompatActivity() {
 
                 // TODO: filtering logic here ->
 
+                val now = LocalDateTime.now()
+
+                val (startDate, endDate) =
+                    when (btn.text) {
+                        "Today" -> {
+                            LocalDate.now().atStartOfDay() to now
+                        }
+                        "Past Week" -> {
+                            now.minusDays(7) to now
+                        }
+                        "Past Month" -> {
+                            now.minusMonths(1) to now
+                        }
+                        else -> {
+                            LocalDateTime.MIN to now
+                        }
+                    }
+
+                val filteredSales = sales
+                    .filter { LocalDateTime.parse(it.salesDate) in startDate..endDate }
+                    .sortedByDescending { LocalDateTime.parse(it.salesDate) }
+
+                refreshSalesUI(filteredSales)
+
             }
         }
 
@@ -142,6 +131,52 @@ class SalesPage : AppCompatActivity() {
             animateBackgroundTint(allTimeButton, defaultTint, selectedTint)
             selectedButton = allTimeButton
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun refreshSalesUI(sales: List<Sale>) {
+        container.removeAllViews()
+
+        // add first data to container
+        var currDate = LocalDateTime.parse(sales[0].salesDate)
+        addDate(currDate, container)
+
+        for (sale in sales) {
+
+            val date = LocalDateTime.parse(sale.salesDate)
+
+            if (date.dayOfMonth != currDate.dayOfMonth || date.monthValue != currDate.monthValue || date.year != currDate.year) {
+                addDate(date, container)
+                currDate = date
+            }
+
+            val component = ProductSalesComponent(container, this)
+            component.bind(sale)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun addDate(date: LocalDateTime, container: LinearLayout) {
+        val textView = TextView(this)
+
+        val txtDate = date.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy"))
+
+        textView.text = txtDate
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+        textView.setTextColor(resources.getColor(R.color.black))
+        textView.setTypeface(ResourcesCompat.getFont(this, R.font.inter_bold))
+        textView.setPadding(8.toDp(this), 6.toDp(this), 8.toDp(this), 0.toDp(this))
+
+        container.addView(textView)
+    }
+
+    private fun Int.toDp(context: Context): Int
+    {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            this.toFloat(),
+            context.resources.displayMetrics
+        ).toInt()
     }
 
     private fun animateBackgroundTint(button: Button, fromColor: Int, toColor: Int) {
@@ -157,4 +192,10 @@ class SalesPage : AppCompatActivity() {
 
         button.setTag(R.id.animator_tag, animator)
     }
+
+    /* TODO:
+    *   - Convert main product container and cart container to
+    *           RecyclerView for better performance; great for large amounts of data
+    *   - SwipeRefreshLayout to refresh
+    * */
 }
