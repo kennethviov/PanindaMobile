@@ -1,6 +1,6 @@
+// dev.komsay.panindamobile.dto.ProductDTO.kt
 package dev.komsay.panindamobile.dto
 
-import java.net.URL
 import java.util.UUID
 
 data class ProductDTO(
@@ -8,8 +8,9 @@ data class ProductDTO(
     val name: String,
     val price: Double,
     val stock: Int,
-    val category: UUID,
-    val categoryName: String,
-    val imageURL: String,
-    val imageName: String
+    val category: UUID?,
+    val categoryName: String?,
+    val imageName: String?,     // optional
+    val imageType: String?      // optional (e.g., "image/jpeg")
+    // Remove imageURL — it's not sent by backend!
 )
