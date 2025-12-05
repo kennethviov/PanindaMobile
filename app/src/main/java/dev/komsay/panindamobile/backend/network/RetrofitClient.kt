@@ -1,8 +1,10 @@
-package dev.komsay.panindamobile.network
+package dev.komsay.panindamobile.backend.network
 
 import android.content.Context
-import dev.komsay.panindamobile.Service.ApiService
-import dev.komsay.panindamobile.Service.SharedPrefManager
+import android.util.Log
+import dev.komsay.panindamobile.backend.service.ApiService
+import dev.komsay.panindamobile.backend.service.ProductsApi
+import dev.komsay.panindamobile.backend.service.SharedPrefManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -52,6 +54,45 @@ object RetrofitClient {
 
         return retrofit!!.create(ApiService::class.java)
     }
+
+    fun getProductsApi(context: Context): ProductsApi {
+        if (retrofit == null) {
+            val logging = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+
+            val client = OkHttpClient.Builder()
+                .addInterceptor { chain ->
+                    val originalRequest = chain.request()
+                    val token = SharedPrefManager.getToken(context)
+
+                    val requestBuilder = originalRequest.newBuilder().apply {
+                        header("Accept", "application/json")
+
+                        //Log.d("OLOK TOKEN", "${token}")
+                        if (token != null) {
+                            addHeader("Authorization", "Bearer $token")
+                        }
+                    }
+
+                    chain.proceed(requestBuilder.build())
+                }
+                .addInterceptor(logging)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build()
+
+            retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+
+        return retrofit!!.create(ProductsApi::class.java)
+    }
+
 
     // Optional: Reset retrofit (useful when user logs out)
     fun clear() {

@@ -3,9 +3,13 @@ package dev.komsay.panindamobile.ui.components
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.R
-import dev.komsay.panindamobile.ui.data.Product
+import dev.komsay.panindamobile.backend.dto.ProductsDTO
+import dev.komsay.panindamobile.backend.service.SharedPrefManager
 
 class ProductSellerComponent {
 
@@ -21,7 +25,7 @@ class ProductSellerComponent {
 
     private var currentQuantity: Int = 1
     private var maxStock: Int = 0
-    private var currentProduct: Product? = null
+    private var currentProduct: ProductsDTO? = null
 
     constructor(container: LinearLayout) {
         view = LayoutInflater.from(container.context)
@@ -39,7 +43,7 @@ class ProductSellerComponent {
         sellBtn = view.findViewById(R.id.sellBtn)
     }
 
-    fun bind(product: Product, onSellClick: (Product, Int) -> Unit) {
+    fun bind(product: ProductsDTO, onSellClick: (ProductsDTO, Int) -> Unit) {
 
         currentProduct = product
         refreshUI()
@@ -60,15 +64,26 @@ class ProductSellerComponent {
 
     private fun refreshUI() {
         currentProduct?.let { product ->
-            maxStock = product.stock
+            maxStock = product.stocks
 
             productName.text = product.name
-            productPrice.text = product.getFormattedPrice(product.price)
-            productStock.text = product.stock.toString()
+            productPrice.text = product.getFormattedPrice()
+            productStock.text = product.stocks.toString()
 
-            product.imageResId?.let { resourceId ->
-                productImage.setImageResource(resourceId)
-            }
+            val token = SharedPrefManager.getToken(view.context)
+            val imageUrl = "http://10.0.2.2:8080${product.imageUrl}"
+            val glideUrl = GlideUrl(
+                imageUrl,
+                LazyHeaders.Builder()
+                    .addHeader("Authorization" , "Bearer ${token}")
+                    .build()
+            )
+
+            Glide.with(view.context)
+                .load(glideUrl)
+                .placeholder(R.drawable.img_placeholder) // While loading
+                .error(R.drawable.img_placeholder)       // If failed
+                .into(productImage)
 
             // Reset quantity to 1 or adjust if current quantity exceeds new stock
             currentQuantity = if (currentQuantity > maxStock && maxStock > 0) maxStock else 1
@@ -119,7 +134,7 @@ class ProductSellerComponent {
         increaseBtn.alpha = if (currentQuantity < maxStock) 1.0f else 0.5f
     }
 
-    private fun updateUIState(product: Product) {
+    private fun updateUIState(product: ProductsDTO) {
         val isInStock = product.isInStock()
 
         decreaseBtn.isEnabled = isInStock

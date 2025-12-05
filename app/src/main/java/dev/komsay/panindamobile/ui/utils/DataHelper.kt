@@ -83,27 +83,248 @@ class DataHelper(private val context: Context) {
         // populate products with initial data and save
         if (_products.isEmpty()) {
             val initialProducts = mutableListOf(
-                Product(id = "1", name = "Piattos", price = 10.50, stock = 20, category = "Snacks", unitSold = 20, imageResId = R.drawable.img_piattos),
-                Product(id = "2", name = "Banana", price = 15.00, stock = 15, category = "Snacks", unitSold = 10),
-                Product(id = "3", name = "Apple", price = 10.00, stock = 12, category = "Snacks", unitSold = 10),
-                Product(id = "4", name = "Mango", price = 25.00, stock = 8, category = "Snacks", unitSold = 12),
-                Product(id = "5", name = "Orange", price = 15.00, stock = 10, category = "Snacks", unitSold = 8),
-                Product(id = "6", name = "Coffee", price = 20.00, stock = 5, category = "Beverages", unitSold = 20),
-                Product(id = "7", name = "Tea", price = 15.00, stock = 10, category = "Beverages", unitSold = 10),
-                Product(id = "8", name = "Water", price = 10.00, stock = 20, category = "Beverages", unitSold = 50),
-                Product(id = "9", name = "Coke", price = 15.00, stock = 15, category = "Beverages", unitSold = 55),
-                Product(id = "10", name = "Sprite", price = 15.00, stock = 18, category = "Beverages", unitSold = 40),
-                Product(id = "11", name = "Royal", price = 15.00, stock = 10, category = "Beverages", unitSold = 35),
-                Product(id = "12", name = "Nova", price = 12.00, stock = 25, category = "Snacks", unitSold = 22),
-                Product(id = "13", name = "Roller Coaster", price = 11.00, stock = 30, category = "Snacks", unitSold = 28),
-                Product(id = "14", name = "Chippy", price = 10.00, stock = 35, category = "Snacks", unitSold = 32),
-                Product(id = "15", name = "Cup Noodles", price = 25.00, stock = 20, category = "Instant Food", unitSold = 18),
-                Product(id = "16", name = "SkyFlakes", price = 8.00, stock = 40, category = "Snacks", unitSold = 27),
-                Product(id = "17", name = "Pancit Canton", price = 17.00, stock = 22, category = "Instant Food", unitSold = 30),
-                Product(id = "18", name = "Energy Drink", price = 30.00, stock = 12, category = "Beverages", unitSold = 16),
-                Product(id = "19", name = "Hotdog", price = 6.00, stock = 60, category = "Frozen", unitSold = 45),
-                Product(id = "20", name = "Egg", price = 8.00, stock = 50, category = "Produce", unitSold = 38)
+                Product(
+                    id = 1L,
+                    name = "Piattos",
+                    price = 10.50,
+                    stock = 20,
+                    category = null,
+                    categoryName = "Snacks",
+                    imageResId = R.drawable.img_piattos,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 2L,
+                    name = "Banana",
+                    price = 15.00,
+                    stock = 15,
+                    category = null,
+                    categoryName = "Snacks",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 3L,
+                    name = "Apple",
+                    price = 10.00,
+                    stock = 12,
+                    category = null,
+                    categoryName = "Snacks",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 4L,
+                    name = "Mango",
+                    price = 25.00,
+                    stock = 8,
+                    category = null,
+                    categoryName = "Snacks",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 5L,
+                    name = "Orange",
+                    price = 15.00,
+                    stock = 10,
+                    category = null,
+                    categoryName = "Snacks",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 6L,
+                    name = "Coffee",
+                    price = 20.00,
+                    stock = 5,
+                    category = null,
+                    categoryName = "Beverages",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 7L,
+                    name = "Tea",
+                    price = 15.00,
+                    stock = 10,
+                    category = null,
+                    categoryName = "Beverages",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 8L,
+                    name = "Water",
+                    price = 10.00,
+                    stock = 20,
+                    category = null,
+                    categoryName = "Beverages",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 9L,
+                    name = "Coke",
+                    price = 15.00,
+                    stock = 15,
+                    category = null,
+                    categoryName = "Beverages",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 10L,
+                    name = "Sprite",
+                    price = 15.00,
+                    stock = 18,
+                    category = null,
+                    categoryName = "Beverages",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 11L,
+                    name = "Royal",
+                    price = 15.00,
+                    stock = 10,
+                    category = null,
+                    categoryName = "Beverages",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 12L,
+                    name = "Nova",
+                    price = 12.00,
+                    stock = 25,
+                    category = null,
+                    categoryName = "Snacks",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 13L,
+                    name = "Roller Coaster",
+                    price = 11.00,
+                    stock = 30,
+                    category = null,
+                    categoryName = "Snacks",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 14L,
+                    name = "Chippy",
+                    price = 10.00,
+                    stock = 35,
+                    category = null,
+                    categoryName = "Snacks",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 15L,
+                    name = "Cup Noodles",
+                    price = 25.00,
+                    stock = 20,
+                    category = null,
+                    categoryName = "Instant Food",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 16L,
+                    name = "SkyFlakes",
+                    price = 8.00,
+                    stock = 40,
+                    category = null,
+                    categoryName = "Snacks",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 17L,
+                    name = "Pancit Canton",
+                    price = 17.00,
+                    stock = 22,
+                    category = null,
+                    categoryName = "Instant Food",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 18L,
+                    name = "Energy Drink",
+                    price = 30.00,
+                    stock = 12,
+                    category = null,
+                    categoryName = "Beverages",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 19L,
+                    name = "Hotdog",
+                    price = 6.00,
+                    stock = 60,
+                    category = null,
+                    categoryName = "Frozen",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
+                ),
+                Product(
+                    id = 20L,
+                    name = "Egg",
+                    price = 8.00,
+                    stock = 50,
+                    category = null,
+                    categoryName = "Produce",
+                    imageResId = null,
+                    imageURL = null,
+                    imageName = null,
+                    imageType = null
                 )
+            )
+
 
             _products.addAll(initialProducts)
             saveProducts()
@@ -117,8 +338,8 @@ class DataHelper(private val context: Context) {
                     id = "1001",
                     salesDate = LocalDateTime.now().minusDays(330).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[1].imageResId, _products[1].name, _products[1].price, 12),
-                        CartItem(_products[14].imageResId, _products[14].name, _products[14].price, 8)
+                        CartItem(_products[1].imageResId, _products[1].imageURL, _products[1].name, _products[1].price, 12),
+                        CartItem(_products[14].imageResId, _products[14].imageURL,  _products[14].name, _products[14].price, 8)
                     )
                 ),
 
@@ -126,8 +347,8 @@ class DataHelper(private val context: Context) {
                     id = "1002",
                     salesDate = LocalDateTime.now().minusDays(200).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[3].imageResId, _products[3].name, _products[3].price, 3),
-                        CartItem(_products[8].imageResId, _products[8].name, _products[8].price, 4)
+                        CartItem(_products[3].imageResId, _products[3].imageURL, _products[3].name, _products[3].price, 3),
+                        CartItem(_products[8].imageResId, _products[3].imageURL, _products[8].name, _products[8].price, 4)
                     )
                 ),
 
@@ -135,7 +356,7 @@ class DataHelper(private val context: Context) {
                     id = "1003",
                     salesDate = LocalDateTime.now().minusDays(120).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[19].imageResId, _products[19].name, _products[19].price, 10)
+                        CartItem(_products[19].imageResId, _products[19].imageURL, _products[19].name, _products[19].price, 10)
                     )
                 ),
 
@@ -143,7 +364,7 @@ class DataHelper(private val context: Context) {
                     id = "1004",
                     salesDate = LocalDateTime.now().minusDays(90).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[18].imageResId, _products[18].name, _products[18].price, 6)
+                        CartItem(_products[18].imageResId, _products[18].imageURL, _products[18].name, _products[18].price, 6)
                     )
                 ),
 
@@ -151,8 +372,8 @@ class DataHelper(private val context: Context) {
                     id = "1005",
                     salesDate = LocalDateTime.now().minusDays(60).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[4].imageResId, _products[4].name, _products[4].price, 5),
-                        CartItem(_products[17].imageResId, _products[17].name, _products[17].price, 4)
+                        CartItem(_products[4].imageResId, _products[4].imageURL, _products[4].name, _products[4].price, 5),
+                        CartItem(_products[17].imageResId, _products[17].imageURL, _products[17].name, _products[17].price, 4)
                     )
                 ),
 
@@ -160,7 +381,7 @@ class DataHelper(private val context: Context) {
                     id = "1006",
                     salesDate = LocalDateTime.now().minusDays(45).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[16].imageResId, _products[16].name, _products[16].price, 12)
+                        CartItem(_products[16].imageResId, _products[16].imageURL, _products[16].name, _products[16].price, 12)
                     )
                 ),
 
@@ -168,8 +389,8 @@ class DataHelper(private val context: Context) {
                     id = "1007",
                     salesDate = LocalDateTime.now().minusDays(30).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[15].imageResId, _products[15].name, _products[15].price, 3),
-                        CartItem(_products[0].imageResId, _products[0].name, _products[0].price, 5)
+                        CartItem(_products[15].imageResId, _products[15].imageURL, _products[15].name, _products[15].price, 3),
+                        CartItem(_products[0].imageResId, _products[0].imageURL, _products[0].name, _products[0].price, 5)
                     )
                 ),
 
@@ -177,7 +398,7 @@ class DataHelper(private val context: Context) {
                     id = "1008",
                     salesDate = LocalDateTime.now().minusDays(20).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[14].imageResId, _products[14].name, _products[14].price, 10)
+                        CartItem(_products[14].imageResId, _products[14].imageURL, _products[14].name, _products[14].price, 10)
                     )
                 ),
 
@@ -185,8 +406,8 @@ class DataHelper(private val context: Context) {
                     id = "1009",
                     salesDate = LocalDateTime.now().minusDays(14).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[3].imageResId, _products[3].name, _products[3].price, 6),
-                        CartItem(_products[13].imageResId, _products[13].name, _products[13].price, 7)
+                        CartItem(_products[3].imageResId, _products[3].imageURL, _products[3].name, _products[3].price, 6),
+                        CartItem(_products[13].imageResId, _products[13].imageURL, _products[13].name, _products[13].price, 7)
                     )
                 ),
 
@@ -194,8 +415,8 @@ class DataHelper(private val context: Context) {
                     id = "1010",
                     salesDate = LocalDateTime.now().minusDays(10).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[11].imageResId, _products[11].name, _products[11].price, 4),
-                        CartItem(_products[2].imageResId, _products[2].name, _products[2].price, 3)
+                        CartItem(_products[11].imageResId, _products[11].imageURL, _products[11].name, _products[11].price, 4),
+                        CartItem(_products[2].imageResId, _products[2].imageURL, _products[2].name, _products[2].price, 3)
                     )
                 ),
 
@@ -203,8 +424,8 @@ class DataHelper(private val context: Context) {
                     id = "1011",
                     salesDate = LocalDateTime.now().minusDays(4).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[9].imageResId, _products[9].name, _products[9].price, 3),
-                        CartItem(_products[10].imageResId, _products[10].name, _products[10].price, 5)
+                        CartItem(_products[9].imageResId, _products[9].imageURL, _products[9].name, _products[9].price, 3),
+                        CartItem(_products[10].imageResId, _products[10].imageURL, _products[10].name, _products[10].price, 5)
                     )
                 ),
 
@@ -212,7 +433,7 @@ class DataHelper(private val context: Context) {
                     id = "1012",
                     salesDate = LocalDateTime.now().minusDays(3).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[8].imageResId, _products[8].name, _products[8].price, 6)
+                        CartItem(_products[8].imageResId, _products[8].imageURL, _products[8].name, _products[8].price, 6)
                     )
                 ),
 
@@ -220,8 +441,8 @@ class DataHelper(private val context: Context) {
                     id = "1013",
                     salesDate = LocalDateTime.now().minusHours(5).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[4].imageResId, _products[4].name, _products[4].price, 5),
-                        CartItem(_products[5].imageResId, _products[5].name, _products[5].price, 4)
+                        CartItem(_products[4].imageResId, _products[4].imageURL, _products[4].name, _products[4].price, 5),
+                        CartItem(_products[5].imageResId, _products[5].imageURL, _products[5].name, _products[5].price, 4)
                     )
                 ),
 
@@ -229,8 +450,8 @@ class DataHelper(private val context: Context) {
                     id = "1014",
                     salesDate = LocalDateTime.now().minusMinutes(30).toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[6].imageResId, _products[6].name, _products[6].price, 2),
-                        CartItem(_products[7].imageResId, _products[7].name, _products[7].price, 9)
+                        CartItem(_products[6].imageResId, _products[6].imageURL, _products[6].name, _products[6].price, 2),
+                        CartItem(_products[7].imageResId, _products[7].imageURL, _products[7].name, _products[7].price, 9)
                     )
                 ),
 
@@ -239,10 +460,10 @@ class DataHelper(private val context: Context) {
                     id = "1015",
                     salesDate = LocalDateTime.now().toString(),
                     salesItems = mutableListOf(
-                        CartItem(_products[0].imageResId, _products[0].name, _products[0].price, 9),
-                        CartItem(_products[1].imageResId, _products[1].name, _products[1].price, 7),
-                        CartItem(_products[2].imageResId, _products[2].name, _products[2].price, 5),
-                        CartItem(_products[3].imageResId, _products[3].name, _products[3].price, 6)
+                        CartItem(_products[0].imageResId, _products[0].imageURL, _products[0].name, _products[0].price, 9),
+                        CartItem(_products[1].imageResId, _products[1].imageURL, _products[1].name, _products[1].price, 7),
+                        CartItem(_products[2].imageResId, _products[2].imageURL, _products[2].name, _products[2].price, 5),
+                        CartItem(_products[3].imageResId, _products[3].imageURL, _products[3].name, _products[3].price, 6)
                     )
                 )
             )
@@ -263,7 +484,7 @@ class DataHelper(private val context: Context) {
         }
 
         // Set latest ID for new entries
-        productId = _products.mapNotNull { it.id.toIntOrNull() }.maxOrNull() ?: 0
+        //productId = _products.mapNotNull { it.id.toIntOrNull() }.maxOrNull() ?: 0
         salesId = _sales.mapNotNull { it.id.toIntOrNull() }.maxOrNull() ?: 0
     }
 
@@ -274,17 +495,17 @@ class DataHelper(private val context: Context) {
 
     fun getAllProducts(): List<Product> = _products
 
-    fun getAllCategories(): List<String> = _products.map { it.category }.distinct()
+    fun getAllCategories(): List<String> = _products.map { it.categoryName }.distinct() as List<String>
 
     fun addProduct(product: Product): Product {
         productId++
-        val newProduct = product.copy(id = productId.toString())
+        val newProduct = product.copy(id = productId.toLong())
         _products.add(newProduct)
         saveProducts()
         return newProduct
     }
 
-    fun getProduct(id: String): Product? = _products.find { it.id == id }
+    fun getProduct(id: Long): Product? = _products.find { it.id == id }
 
     fun updateProduct(updatedProduct: Product) {
         val index = _products.indexOfFirst { it.id == updatedProduct.id }

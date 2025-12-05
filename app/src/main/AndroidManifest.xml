@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:name=".Paninda"
@@ -16,28 +18,31 @@
         android:theme="@style/Theme.BasicApplication"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ForgotPassPage"
+            android:name=".ui.pages.AddOrModifyProductPage"
             android:exported="false" />
         <activity
-            android:name=".ProfilePage"
+            android:name=".ui.pages.ForgotPassPage"
+            android:exported="false" />
+        <activity
+            android:name=".ui.pages.ProfilePage"
             android:exported="true" />
         <activity
-            android:name=".AnalyticsPage"
+            android:name=".ui.pages.AnalyticsPage"
             android:exported="true" />
         <activity
-            android:name=".InventoryPage"
+            android:name=".ui.pages.InventoryPage"
             android:exported="true" />
         <activity
-            android:name=".SalesPage"
+            android:name=".ui.pages.SalesPage"
             android:exported="true" />
         <activity
-            android:name=".HomePage"
+            android:name=".ui.pages.HomePage"
             android:exported="true" />
         <activity
-            android:name=".SignupPage"
+            android:name=".ui.pages.SignupPage"
             android:exported="true" />
         <activity
-            android:name=".LoginPage"
+            android:name=".ui.pages.LoginPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

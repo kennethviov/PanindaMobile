@@ -5,6 +5,7 @@ import android.widget.ImageView
 data class CartItem (
 
     val imageResId: Int?,
+    val imageURL: String?,
     val productName: String,
     val productPrice: Double,
     var productQuantity: Int,

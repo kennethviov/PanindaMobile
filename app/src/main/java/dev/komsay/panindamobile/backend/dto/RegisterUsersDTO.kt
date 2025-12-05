@@ -1,4 +1,4 @@
-package dev.komsay.panindamobile.dto
+package dev.komsay.panindamobile.backend.dto
 
 data class RegisterUsersDTO(
     val username: String,

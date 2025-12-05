@@ -9,9 +9,14 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.R
 import dev.komsay.panindamobile.databinding.FragmentAddProductBinding
+import dev.komsay.panindamobile.backend.dto.ProductsDTO
+import dev.komsay.panindamobile.backend.service.SharedPrefManager
 import dev.komsay.panindamobile.ui.data.Product
 
 /**
@@ -27,15 +32,15 @@ class AddProductDialogFragment() : DialogFragment() {
 
     // Listener to let host know when a product is added/updated
     private var onProductAdded: ((name: String, price: String, stock: String, category: String) -> Unit)? = null
-    private var productToEditorDelete: Product? = null
+    private var productToEditorDelete: ProductsDTO? = null
     fun setOnProductAddedListener(listener: (String, String, String, String) -> Unit) {
         onProductAdded = listener
     }
 
     // Listener to let host know when a product is deleted
-    private var onProductDeleted: ((product: Product) -> Unit)? = null
+    private var onProductDeleted: ((product: ProductsDTO) -> Unit)? = null
     private var productToDelete: Product? = null
-    fun setOnProductDeletedListener(listener: (Product) -> Unit) {
+    fun setOnProductDeletedListener(listener: (ProductsDTO) -> Unit) {
         onProductDeleted = listener
     }
 
@@ -81,9 +86,23 @@ class AddProductDialogFragment() : DialogFragment() {
             binding.deleteProduct.visibility = View.VISIBLE
             binding.productName.setText(product.name)
             binding.productPrice.setText(product.price.toString())
-            binding.productStock.setText(product.stock.toString())
-            binding.categories.setText(product.category)
-            product.imageResId?.let { binding.productImage.setImageResource(it) }
+            binding.productStock.setText(product.stocks.toString())
+            binding.categories.setText(product.categoryName)
+
+            val token = SharedPrefManager.getToken(requireContext())
+            val imageUrl = "http://10.0.2.2:8080${product.imageUrl}"
+            val glideUrl = GlideUrl(
+                imageUrl,
+                LazyHeaders.Builder()
+                    .addHeader("Authorization" , "Bearer ${token}")
+                    .build()
+            )
+
+            Glide.with(requireContext())
+                .load(glideUrl)
+                .placeholder(R.drawable.img_placeholder) // While loading
+                .error(R.drawable.img_placeholder)       // If failed
+                .into(binding.productImage)
         } ?: run {
             binding.btnConfirm.text = "Add"
             binding.deleteProduct.visibility = View.GONE
@@ -154,7 +173,7 @@ class AddProductDialogFragment() : DialogFragment() {
     /**
      * If host wants to edit an existing product, call this BEFORE showing the dialog.
      */
-    fun populateForEdit(sender: Product) {
+    fun populateForEdit(sender: ProductsDTO) {
         productToEditorDelete = sender
     }
 

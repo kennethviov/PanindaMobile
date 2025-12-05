@@ -1,6 +1,7 @@
 package dev.komsay.panindamobile.ui.components
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -8,14 +9,19 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import dev.komsay.panindamobile.R
-import dev.komsay.panindamobile.ui.data.Product
 import android.content.Context
 import android.os.Build
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
-import dev.komsay.panindamobile.Paninda
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
+import dev.komsay.panindamobile.backend.dto.ProductsDTO
+import dev.komsay.panindamobile.backend.service.SharedPrefManager
 import dev.komsay.panindamobile.ui.data.CartItem
-import dev.komsay.panindamobile.ui.fragments.AddProductDialogFragment
+import dev.komsay.panindamobile.ui.pages.AddOrModifyProductPage
 
 class ProductInventoryComponent {
 
@@ -44,63 +50,51 @@ class ProductInventoryComponent {
         productStock = view.findViewById(R.id.productStock)
         productTotal = view.findViewById(R.id.productTotal)
         category = ""
-
     }
 
-    // +------------------------------+
-    // |  bind products in inventory  |
-    // +------------------------------+
     @RequiresApi(Build.VERSION_CODES.O)
-    fun bind(product: Product, onProductUpdated: () -> Unit) {
+    fun bind(product: ProductsDTO,
+             launcher: ActivityResultLauncher<Intent>,
+             onProductUpdated: () -> Unit
+    ) {
 
         view.setOnLongClickListener {
-            val activity = context as AppCompatActivity
-            val dialog = AddProductDialogFragment()
-            dialog.populateForEdit(product)
-            dialog.setOnProductAddedListener { name, price, stock, category ->
-                val app = context.applicationContext as Paninda
-                val dataHelper = app.dataHelper
-                val updatedProduct = product.copy(
-                    name = name,
-                    price = price.toDouble(),
-                    stock = stock.toInt(),
-                    category = category
-                )
-                dataHelper.updateProduct(updatedProduct)
-                onProductUpdated()
-            }
-            dialog.setOnProductDeletedListener { product ->
-                val app = context.applicationContext as Paninda
-                val dataHelper = app.dataHelper
-                dataHelper.deleteProduct(product)
-                onProductUpdated()
-            }
-            dialog.show(activity.supportFragmentManager, "AddProductDialogFragment")
+            val intent = Intent(context, AddOrModifyProductPage::class.java)
+            intent.putExtra("PRODUCT_ID", product.id)
+            launcher.launch(intent)
             true
         }
 
-
         productName.text = product.name
-        productPrice.text = product.getFormattedPrice(product.price)
-        productStock.text = product.stock.toString()
-        if (product.stock <= 5) {
+        productPrice.text = product.getFormattedPrice()
+        productStock.text = product.stocks.toString()
+
+        if (product.stocks <= 5) {
             val typeface = ResourcesCompat.getFont(context, R.font.inter_bold)
             productStock.setTypeface(typeface, android.graphics.Typeface.BOLD)
             productStock.setTextColor(context.getColor(R.color.red))
         }
 
-        category = product.category
+        category = product.categoryName.toString()
 
-        product.imageResId?.let { resourceId ->
-            productImage.setImageResource(resourceId)
-        }
+        val token = SharedPrefManager.getToken(view.context)
+        val imageUrl = "http://10.0.2.2:8080${product.imageUrl}"
+        val glideUrl = GlideUrl(
+            imageUrl,
+            LazyHeaders.Builder()
+                .addHeader("Authorization", "Bearer $token")
+                .build()
+        )
+
+        Glide.with(view.context)
+            .load(glideUrl)
+            .placeholder(R.drawable.img_placeholder)
+            .error(R.drawable.img_placeholder)
+            .into(productImage)
 
         container.addView(view)
     }
 
-    // +--------------------------+
-    // |  bind products in sales  |
-    // +--------------------------+
     @SuppressLint("DefaultLocale")
     fun bind(item: CartItem) {
 

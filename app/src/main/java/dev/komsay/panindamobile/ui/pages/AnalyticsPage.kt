@@ -1,4 +1,4 @@
-package dev.komsay.panindamobile
+package dev.komsay.panindamobile.ui.pages
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
@@ -21,6 +21,8 @@ import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import androidx.core.graphics.toColorInt
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import dev.komsay.panindamobile.Paninda
+import dev.komsay.panindamobile.R
 
 class AnalyticsPage : AppCompatActivity() {
 
@@ -47,66 +49,34 @@ class AnalyticsPage : AppCompatActivity() {
             insets
         }
 
+        // Navigation bar
+        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar)).apply {
+            setup()
+            highlightActivePage(R.id.indicatorAnalytics)
+        }
+
+        // Initialize views
+        val lineChart = findViewById<LineChart>(R.id.lineChart)
+        val pieChart = findViewById<PieChart>(R.id.pieChart)
+        val barChart = findViewById<BarChart>(R.id.barChart)
+
+        // +-------------+
+        // |  MOCK DATA  |
+        // +-------------+
         val app = application as Paninda
         val dataHelper = app.dataHelper
 
         // get mock data
         val sales = dataHelper.getAllSales()
 
-        // set up time filter buttons
+        // set up ui
         setUpTimeFilter()
-
-        /* TODO
-        *   - Data presentation
-        *       - line graph for income
-        *       - pie chart for individual products performance
-        * */
-
-        // -------------------------
-        // LINE CHART SETUP
-        // -------------------------
-        val lineChart = findViewById<LineChart>(R.id.lineChart)
-        setUpLineChart(lineChart)
-
-        // -------------------------
-        // PIE CHART SETUP
-        // -------------------------
-
-        val pieChart = findViewById<PieChart>(R.id.pieChart)
-
-        val pieEntries = ArrayList<PieEntry>().apply {
-            add(PieEntry(40f, "Food"))
-            add(PieEntry(30f, "Bills"))
-            add(PieEntry(20f, "Savings"))
-            add(PieEntry(10f, "Other"))
-        }
-
-        val pieDataSet = PieDataSet(pieEntries, "Expenses")
-        pieDataSet.colors = listOf(
-            "#4CAF50".toColorInt(),  // Green
-            "#F44336".toColorInt(),  // Red
-            "#2196F3".toColorInt(),  // Blue
-            "#FF9800".toColorInt()   // Orange
-        )
-        pieDataSet.valueTextSize = 14f
-
-        val pieData = PieData(pieDataSet)
-
-        pieChart.data = pieData
-        pieChart.description.isEnabled = false
-        pieChart.centerText = "Monthly"
-        pieChart.setCenterTextSize(18f)
-        pieChart.animateY(1000)
-
-        // LINE CHART SETUP
-        val barChart = findViewById<BarChart>(R.id.barChart)
-        setUpBarChart(barChart)
-
-        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
-        navigationBarManager.setup()
+        refreshLineChart(lineChart)
+        refreshPieChart(pieChart)
+        refreshBarChart(barChart)
     }
 
-    private fun setUpLineChart(lineChart: LineChart) {
+    private fun refreshLineChart(lineChart: LineChart) {
 
         val dates = listOf(
             "Jan", "Feb", "Mar", "Apr", "May", "Jun"
@@ -161,7 +131,33 @@ class AnalyticsPage : AppCompatActivity() {
         lineChart.invalidate()
     }
 
-    private fun setUpBarChart(barChart: BarChart) {
+    private fun refreshPieChart(pieChart: PieChart) {
+        val pieEntries = ArrayList<PieEntry>().apply {
+            add(PieEntry(40f, "Food"))
+            add(PieEntry(30f, "Bills"))
+            add(PieEntry(20f, "Savings"))
+            add(PieEntry(10f, "Other"))
+        }
+
+        val pieDataSet = PieDataSet(pieEntries, "Expenses")
+        pieDataSet.colors = listOf(
+            "#4CAF50".toColorInt(),  // Green
+            "#F44336".toColorInt(),  // Red
+            "#2196F3".toColorInt(),  // Blue
+            "#FF9800".toColorInt()   // Orange
+        )
+        pieDataSet.valueTextSize = 14f
+
+        val pieData = PieData(pieDataSet)
+
+        pieChart.data = pieData
+        pieChart.description.isEnabled = false
+        pieChart.centerText = "Monthly"
+        pieChart.setCenterTextSize(18f)
+        pieChart.animateY(1000)
+    }
+
+    private fun refreshBarChart(barChart: BarChart) {
 
         val labels = listOf(
             "Jan", "Feb", "Mar", "Apr", "May", "Jun"
@@ -226,10 +222,6 @@ class AnalyticsPage : AppCompatActivity() {
         barChart.invalidate()
     }
 
-
-    // +---------------+
-    // |  Time Filter  |
-    // +---------------+
     private fun setUpTimeFilter() {
         todayButton = findViewById(R.id.todayButton)
         pastWeekButton = findViewById(R.id.pastWeekButton)

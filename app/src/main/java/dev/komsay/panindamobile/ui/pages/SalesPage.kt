@@ -1,4 +1,4 @@
-package dev.komsay.panindamobile
+package dev.komsay.panindamobile.ui.pages
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
@@ -18,6 +18,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import dev.komsay.panindamobile.Paninda
+import dev.komsay.panindamobile.R
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import dev.komsay.panindamobile.ui.components.ProductSalesComponent
 import dev.komsay.panindamobile.ui.data.Sale
@@ -53,9 +55,18 @@ class SalesPage : AppCompatActivity() {
             insets
         }
 
-        // initialize views
+        // Navigation bar
+        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar)).apply {
+            setup()
+            highlightActivePage(R.id.indicatorSales)
+        }
+
+        // Initialize views
         container = findViewById(R.id.productSalesContainer)
 
+        // +-------------+
+        // |  MOCK DATA  |
+        // +-------------+
         val app = application as Paninda
         val dataHelper = app.dataHelper
 
@@ -65,14 +76,8 @@ class SalesPage : AppCompatActivity() {
         // set up ui
         setUpTimeFilter()
         refreshSalesUI(this.sales)
-
-        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
-        navigationBarManager.setup()
     }
 
-    // +---------------+
-    // |  Time Filter  |
-    // +---------------+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setUpTimeFilter() {
         todayButton = findViewById(R.id.todayButton)

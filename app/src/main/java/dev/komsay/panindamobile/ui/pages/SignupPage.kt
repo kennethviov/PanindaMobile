@@ -1,4 +1,4 @@
-package dev.komsay.panindamobile
+package dev.komsay.panindamobile.ui.pages
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,9 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.snackbar.Snackbar
-import dev.komsay.panindamobile.dto.RegisterUsersDTO
-import dev.komsay.panindamobile.dto.Users
-import dev.komsay.panindamobile.network.RetrofitClient
+import dev.komsay.panindamobile.R
+import dev.komsay.panindamobile.backend.dto.RegisterUsersDTO
+import dev.komsay.panindamobile.backend.dto.UserDTO
+import dev.komsay.panindamobile.backend.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -64,8 +65,8 @@ class SignupPage : AppCompatActivity() {
             // Send data to Spring Boot API
             // Send data to Spring Boot API
             val registerDto = RegisterUsersDTO(username = user, password = pwd)
-            RetrofitClient.getApi(this).registerUser(registerDto).enqueue(object : Callback<Users> {
-                override fun onResponse(call: Call<Users>, response: Response<Users>) {
+            RetrofitClient.getApi(this).registerUser(registerDto).enqueue(object : Callback<UserDTO> {
+                override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                     if (response.isSuccessful) {
                         val newUser = response.body()
                         Snackbar.make(
@@ -86,7 +87,7 @@ class SignupPage : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<Users>, t: Throwable) {
+                override fun onFailure(call: Call<UserDTO>, t: Throwable) {
                     Snackbar.make(
                         rootView,
                         "Error: ${t.message}",
