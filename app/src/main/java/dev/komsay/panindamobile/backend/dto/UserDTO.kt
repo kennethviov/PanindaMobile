@@ -1,8 +1,8 @@
-package dev.komsay.panindamobile.dto
+package dev.komsay.panindamobile.backend.dto
 
 import java.util.UUID
 
-data class Users(
+data class UserDTO(
     val id: UUID?,
     val username: String
 )

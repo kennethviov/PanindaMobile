@@ -1,4 +1,4 @@
-package dev.komsay.panindamobile
+package dev.komsay.panindamobile.ui.pages
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import dev.komsay.panindamobile.Paninda
+import dev.komsay.panindamobile.R
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import dev.komsay.panindamobile.ui.fragments.LogoutConfirmation
 import dev.komsay.panindamobile.ui.utils.DataHelper
@@ -51,9 +53,19 @@ class ProfilePage : AppCompatActivity() {
             insets
         }
 
+        // Navigation bar
+        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar)).apply {
+            setup()
+            highlightActivePage(R.id.indicatorProfile)
+        }
+
+        // +-------------+
+        // |  MOCK DATA  |
+        // +-------------+
         app = application as Paninda
         dataHelper = app.dataHelper
 
+        // Initialize views
         username = findViewById(R.id.username)
         changePicBtn = findViewById(R.id.editProfilePic)
         changeNameBtn = findViewById(R.id.changeNameBtn)
@@ -62,6 +74,7 @@ class ProfilePage : AppCompatActivity() {
         editProfileBtn = findViewById(R.id.editProfileBtn)
         logoutBtn = findViewById(R.id.logoutBtn)
 
+        // Set up UI
         changePicBtn.setOnClickListener { changePicture(profilePic) }
         changeNameBtn.setOnClickListener { changeName() }
         logoutBtn.setOnClickListener { logout() }
@@ -72,8 +85,6 @@ class ProfilePage : AppCompatActivity() {
             inEditMode = !inEditMode
         }
 
-        val navigationBarManager = NavigationBarManager(this, findViewById(R.id.navbar))
-        navigationBarManager.setup()
     }
 
     // TODO add profile picture changing functionality

@@ -15,51 +15,132 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/navHome"
+        <FrameLayout
+            android:id="@+id/navHomeWrapper"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:contentDescription="Home"
-            android:src="@drawable/ic_home" />
+            android:layout_height="60dp"
+            android:layout_weight="1">
 
-        <ImageButton
-            android:id="@+id/navSales"
+            <View
+                android:id="@+id/indicatorHome"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_nav_indicator"
+                android:visibility="gone"
+                android:layout_gravity="center"/>
+
+            <ImageButton
+                android:id="@+id/navHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_home_d"
+                android:contentDescription="Home" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/navSalesWrapper"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:contentDescription="Sales"
-            android:src="@drawable/ic_sales" />
+            android:layout_gravity="center">
 
+            <View
+                android:id="@+id/indicatorSales"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_nav_indicator"
+                android:visibility="gone"
+                android:layout_gravity="center"/>
 
-        <ImageButton
-            android:id="@+id/navProfile"
+            <ImageButton
+                android:id="@+id/navSales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_sales_d"
+                android:contentDescription="Sales" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/navProfileWrapper"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:contentDescription="Profile"
-            android:src="@drawable/ic_profile" />
+            android:layout_height="60dp"
+            android:layout_weight="1">
 
-        <ImageButton
-            android:id="@+id/navBox"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:contentDescription="Box"
-            android:src="@drawable/ic_box" />
+            <View
+                android:id="@+id/indicatorProfile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_nav_indicator"
+                android:visibility="gone"
+                android:layout_gravity="center"/>
 
-        <ImageButton
-            android:id="@+id/navStats"
+            <ImageButton
+                android:id="@+id/navProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:contentDescription="Profile"
+                android:src="@drawable/ic_profile_d" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/navInventoryWrapper"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:contentDescription="Stats"
-            android:src="@drawable/ic_statistics" />
+            android:layout_height="60dp"
+            android:layout_weight="1">
+
+            <View
+                android:id="@+id/indicatorInventory"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_nav_indicator"
+                android:visibility="gone"
+                android:layout_gravity="center"/>
+
+            <ImageButton
+                android:id="@+id/navBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:contentDescription="Box"
+                android:src="@drawable/ic_box_d" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/navAnalyticsWrapper"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1">
+
+            <View
+                android:id="@+id/indicatorAnalytics"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_nav_indicator"
+                android:visibility="gone"
+                android:layout_gravity="center"/>
+
+            <ImageButton
+                android:id="@+id/navStats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:contentDescription="Stats"
+                android:src="@drawable/ic_statistics_d" />
+
+        </FrameLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

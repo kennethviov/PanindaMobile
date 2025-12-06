@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackgroundColor"
-    tools:context=".SalesPage">
+    tools:context=".ui.pages.SalesPage">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                         android:textSize="12sp"
                         android:textColor="@color/gray"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.55"
+                        app:layout_constraintHorizontal_bias="0.75"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

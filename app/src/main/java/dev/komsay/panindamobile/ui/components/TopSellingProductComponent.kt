@@ -26,7 +26,7 @@ class TopSellingProductComponent {
 
     fun bind(product: Product, overAllUnitSold: Int) {
         productName.text = product.name
-        productPercentage.text = "${getFormattedPercentage(product.unitSold, overAllUnitSold)}% of the sales for the last 7 days"
+        //productPercentage.text = "${getFormattedPercentage(product.unitSold, overAllUnitSold)}% of the sales for the last 7 days"
 
         product.imageResId?.let { resourceId ->
             productImage.setImageResource(resourceId)
