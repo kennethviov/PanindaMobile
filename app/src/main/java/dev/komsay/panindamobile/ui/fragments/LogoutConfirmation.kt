@@ -6,6 +6,8 @@ import android.content.Intent
 import android.widget.Button
 import dev.komsay.panindamobile.ui.pages.LoginPage
 import dev.komsay.panindamobile.R
+import dev.komsay.panindamobile.backend.network.RetrofitClient
+import dev.komsay.panindamobile.backend.service.SharedPrefManager
 
 class LogoutConfirmation(private val context: Context) {
 
@@ -29,7 +31,13 @@ class LogoutConfirmation(private val context: Context) {
         }
 
         logoutBtn.setOnClickListener {
+
+            SharedPrefManager.clear(context)
+
+            RetrofitClient.clear()
+
             val intent = Intent(context, LoginPage::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(intent)
         }
         dialog.show()

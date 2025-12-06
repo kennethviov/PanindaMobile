@@ -38,6 +38,7 @@ class InventoryPage : AppCompatActivity() {
     private var products: List<ProductsDTO> = emptyList()
     private var categories: List<String> = emptyList()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private val addOrModifyProductLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->

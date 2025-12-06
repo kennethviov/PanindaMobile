@@ -1,6 +1,6 @@
 package dev.komsay.panindamobile.backend.dto
 
-data class TopProductDTO(
+data class TopProductsDTO(
     val id: Long,
     val name: String,
     val qty: Long,

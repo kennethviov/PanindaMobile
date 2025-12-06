@@ -21,12 +21,4 @@ interface ApiService {
 
     @POST("auth/user/login")
     fun loginUser(@Body loginUsersDTO: LoginUsersDTO): Call<LoginResponseDTO>
-
-    // Products
-    @GET("api/products")
-    fun getAllProducts(): List<Product>
-
-    // Get product image (returns raw bytes)
-    @GET("api/products/{id}/image")
-    fun getProductImage(@Path("id") id: Long): Call<ResponseBody>
 }

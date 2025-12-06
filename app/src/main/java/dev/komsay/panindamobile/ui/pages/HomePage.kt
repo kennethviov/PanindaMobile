@@ -94,8 +94,6 @@ class HomePage : AppCompatActivity() {
         loadProductsFromDB()
         loadCategoriesFromDB()
 
-        Log.d("HomePage: OnCreate()", "Products fetched: ${this.products}")
-
         // refresh UI
         //refreshTopSellingProducts(this.products)
         refreshCategoryUI(this.categories)

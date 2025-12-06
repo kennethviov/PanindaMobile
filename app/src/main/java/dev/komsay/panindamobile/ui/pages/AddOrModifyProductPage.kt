@@ -33,7 +33,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
-class AddOrModifyProductPage : AppCompatActivity() {
+class AddOrModifyProductPage() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddOrModifyProductPageBinding
 
@@ -91,9 +91,14 @@ class AddOrModifyProductPage : AppCompatActivity() {
             getProduct(productId) // Load existing product data
 
             // Set click listeners for modify mode
+            btnSave.text = "Update"
             btnSave.setOnClickListener {
                 if (validateForm()) {
-                    updateProduct(productId)
+                    if (selectedImageUri != null) {
+                        updateProductWithImage(productId)
+                    } else {
+                        updateProduct(productId)
+                    }
                 }
             }
             btnDelete.setOnClickListener {
@@ -105,6 +110,7 @@ class AddOrModifyProductPage : AppCompatActivity() {
             btnDelete.visibility = View.GONE // Hide delete button
 
             // Set click listeners for add mode
+            btnSave.text = "Save"
             btnSave.setOnClickListener {
                 if (validateForm()) {
                     if (selectedImageUri != null) {
@@ -138,11 +144,11 @@ class AddOrModifyProductPage : AppCompatActivity() {
                 productCategory.setText(product.categoryName)
 
                 product.imageUrl?.let {
-                    val fullImageUrl = "http://10.0.2.2:8080/${'$'}{product.imageUrl}"
+                    val imageUrl = "http://10.0.2.2:8080${product.imageUrl}"
                     val token = SharedPrefManager.getToken(this@AddOrModifyProductPage)
 
                     val glideUrl = GlideUrl(
-                        fullImageUrl,
+                        imageUrl,
                         LazyHeaders.Builder()
                             .addHeader("Authorization", "Bearer $token")
                             .build()
@@ -189,13 +195,7 @@ class AddOrModifyProductPage : AppCompatActivity() {
                     imageRequestBody
                 )
 
-                val response = api.addProductWithImage(productRequestBody, imagePart)
-
-                Snackbar.make(
-                    findViewById(android.R.id.content),
-                    "Product with image added: $response",
-                    Snackbar.LENGTH_LONG
-                ).show()
+                api.addProductWithImage(productRequestBody, imagePart)
 
                 finish()
 
@@ -217,15 +217,10 @@ class AddOrModifyProductPage : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val response = api.addProduct(product)
+                api.addProduct(product)
 
-                Snackbar.make(
-                    findViewById(android.R.id.content),
-                    "Product added: $response",
-                    Snackbar.LENGTH_LONG
-                ).show()
-
-                goBack()
+                setResult(RESULT_OK)
+                finish()
             } catch (e: Exception) {
                 Snackbar.make(
                     findViewById(android.R.id.content),
@@ -244,15 +239,42 @@ class AddOrModifyProductPage : AppCompatActivity() {
         val updatedProduct = createProductDTO()
         lifecycleScope.launch {
             try {
-                val response = api.updateProduct(productId, updatedProduct)
+                api.updateProduct(productId, updatedProduct)
 
+                setResult(RESULT_OK)
+                finish()
+            } catch (e: Exception) {
                 Snackbar.make(
                     findViewById(android.R.id.content),
-                    "Product updated: $response",
+                    "Error: ${e.message}",
                     Snackbar.LENGTH_LONG
                 ).show()
 
-                setResult(RESULT_OK)
+                Log.e("Update Product", "Error", e)
+            }
+        }
+    }
+
+    private fun updateProductWithImage(productId: Long) {
+        val api = RetrofitClient.getProductsApi(this)
+
+        lifecycleScope.launch {
+            try {
+                val updatedProduct = createProductDTO()
+
+                val imageFile = getFileFromUri(selectedImageUri!!)
+                val imageRequestBody = imageFile.asRequestBody(
+                    "image/jpeg".toMediaTypeOrNull()
+                )
+                val imagePart = MultipartBody.Part.createFormData(
+                    "image",
+                    imageFile.name,
+                    imageRequestBody
+                )
+
+                api.updateProductImage(productId, imagePart)
+                api.updateProduct(productId, updatedProduct)
+
                 finish()
             } catch (e: Exception) {
                 Snackbar.make(
@@ -271,13 +293,7 @@ class AddOrModifyProductPage : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val response = api.deleteProduct(productId)
-
-                Snackbar.make(
-                    findViewById(android.R.id.content),
-                    "Product deleted: $response",
-                    Snackbar.LENGTH_LONG
-                ).show()
+                api.deleteProduct(productId)
 
                 setResult(RESULT_OK)
                 finish()

@@ -40,6 +40,13 @@ interface ProductsApi {
         @Body product: ProductsDTO
     ): ProductsDTO
 
+    @Multipart
+    @PUT("api/products/{id}/image")
+    suspend fun updateProductImage(
+        @Path("id") id: Long,
+        @Part image: MultipartBody.Part
+    ): ProductsDTO
+
     @DELETE("api/products/{id}")
     suspend fun deleteProduct(@Path("id") id: Long): ProductsDTO
 }

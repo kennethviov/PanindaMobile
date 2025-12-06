@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.EditText
-import android.widget.Toast
 import android.widget.Button
+import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.R
 import dev.komsay.panindamobile.backend.dto.LoginUsersDTO
 import dev.komsay.panindamobile.backend.network.RetrofitClient
@@ -25,6 +25,16 @@ import dev.komsay.panindamobile.backend.service.SharedPrefManager
 class LoginPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Check if user is already logged in
+//        if (SharedPrefManager.isLoggedIn(this)) {
+//            // User is already logged in, go to HomePage
+//            val intent = Intent(this, HomePage::class.java)
+//            startActivity(intent)
+//            finish()
+//            return
+//        }
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_login_page)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.loginPage)) { v, insets ->
@@ -43,9 +53,17 @@ class LoginPage : AppCompatActivity() {
             val pwd = txtPassword.text.toString().trim()
 
             if (user.isEmpty() || pwd.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Please fill all fields",
+                    Snackbar.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
+
+            SharedPrefManager.clear(this)
+
+            RetrofitClient.clear()
 
             val loginDto = LoginUsersDTO(username = user, password = pwd)
 
@@ -59,22 +77,47 @@ class LoginPage : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val loginResponse = response.body()!!
 
-                        // Save token
-                        SharedPrefManager.saveToken(this@LoginPage, loginResponse.token)
+                        Log.d("LoginPage", "Token received: ${loginResponse.token}")
+                        Log.d("LoginPage", "Username: ${loginResponse.username}")
 
-                        Toast.makeText(this@LoginPage, "Welcome ${loginResponse.username}", Toast.LENGTH_LONG).show()
+                        val saved = SharedPrefManager.saveLoginData(
+                            this@LoginPage,
+                            loginResponse.token,
+                            loginResponse.username
+                        )
+
+                        Log.d("LoginPage", "Login data saved: $saved")
+
+                        val retrievedToken = SharedPrefManager.getToken(this@LoginPage)
+                        val retrievedUsername = SharedPrefManager.getUsername(this@LoginPage)
+                        Log.d("LoginPage", "Retrieved token: $retrievedToken")
+                        Log.d("LoginPage", "Retrieved username: $retrievedUsername")
+
+                        Snackbar.make(
+                            findViewById(android.R.id.content),
+                            "Welcome ${loginResponse.username}",
+                            Snackbar.LENGTH_LONG
+                        ).show()
 
                         val intent = Intent(this@LoginPage, HomePage::class.java)
                         intent.putExtra("USERNAME_KEY", loginResponse.username)
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(this@LoginPage, "Invalid username or password", Toast.LENGTH_LONG).show()
+                        Snackbar.make(
+                            findViewById(android.R.id.content),
+                            "Invalid username or password",
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
                 }
 
                 override fun onFailure(call: Call<LoginResponseDTO>, t: Throwable) {
-                    Toast.makeText(this@LoginPage, "Error: ${t.message}", Toast.LENGTH_LONG).show()
+                    Snackbar.make(
+                        findViewById(android.R.id.content),
+                        "Error: ${t.message}",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
             })
 
