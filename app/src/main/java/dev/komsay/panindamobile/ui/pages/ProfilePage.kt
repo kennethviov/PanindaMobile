@@ -2,6 +2,7 @@ package dev.komsay.panindamobile.ui.pages
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -15,11 +16,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.Paninda
 import dev.komsay.panindamobile.R
+import dev.komsay.panindamobile.backend.dto.LoginUsersDTO
+import dev.komsay.panindamobile.backend.dto.UpdatePasswordDTO
+import dev.komsay.panindamobile.backend.dto.UserDTO
+import dev.komsay.panindamobile.backend.network.RetrofitClient
+import dev.komsay.panindamobile.backend.service.SharedPrefManager
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import dev.komsay.panindamobile.ui.fragments.LogoutConfirmation
-import dev.komsay.panindamobile.ui.utils.DataHelper
+import okhttp3.Callback
+import retrofit2.Call
+import retrofit2.Response
 
 class ProfilePage : AppCompatActivity() {
 
@@ -30,18 +39,8 @@ class ProfilePage : AppCompatActivity() {
         }
     }
 
-    private lateinit var app: Paninda
-    private lateinit var dataHelper: DataHelper
-
     private lateinit var username: TextView
-    private lateinit var changePicBtn: ImageButton
-    private lateinit var changeNameBtn: ImageButton
-    private lateinit var changeNameField: EditText
-    private lateinit var changePassField: EditText
-    private lateinit var editProfileBtn: Button
     private lateinit var logoutBtn: Button
-
-    private var inEditMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,72 +58,17 @@ class ProfilePage : AppCompatActivity() {
             highlightActivePage(R.id.indicatorProfile)
         }
 
-        // +-------------+
-        // |  MOCK DATA  |
-        // +-------------+
-        app = application as Paninda
-        dataHelper = app.dataHelper
-
         // Initialize views
         username = findViewById(R.id.username)
-        changePicBtn = findViewById(R.id.editProfilePic)
-        changeNameBtn = findViewById(R.id.changeNameBtn)
-        changeNameField = findViewById(R.id.changeNameField)
-        changePassField = findViewById(R.id.changePasswordField)
-        editProfileBtn = findViewById(R.id.editProfileBtn)
         logoutBtn = findViewById(R.id.logoutBtn)
 
         // Set up UI
-        changePicBtn.setOnClickListener { changePicture(profilePic) }
-        changeNameBtn.setOnClickListener { changeName() }
+
         logoutBtn.setOnClickListener { logout() }
 
-        editProfileBtn.setOnClickListener {
-            if (!inEditMode) { editProfile() }
-            else { saveProfile() }
-            inEditMode = !inEditMode
-        }
-
+        username.text = SharedPrefManager.getUsername(this)
     }
 
-    // TODO add profile picture changing functionality
-    private fun changePicture(profilePic: ImageView) {
-        pickImageLauncher.launch("image/*")
-    }
-
-    private fun changeName() {
-        val name = username.text.toString()
-        username.visibility = View.GONE
-        changeNameBtn.visibility = View.GONE
-        changeNameField.visibility = View.VISIBLE
-        changeNameField.setText(name)
-
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        changeNameField.requestFocus()
-        imm.showSoftInput(changeNameField, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    // TODO: refine profile editing and saving functionality
-    private fun editProfile() {
-        changePicBtn.visibility = View.VISIBLE
-        changeNameBtn.visibility = View.VISIBLE
-        changePassField.visibility = View.VISIBLE
-        editProfileBtn.text = "Save Profile"
-        logoutBtn.alpha = 0.5f
-        logoutBtn.isEnabled = false
-    }
-
-    private fun saveProfile() {
-
-        val name = username.text
-
-        changePicBtn.visibility = View.GONE
-        changeNameBtn.visibility = View.GONE
-        changePassField.visibility = View.GONE
-        editProfileBtn.text = "Edit Profile"
-        logoutBtn.alpha = 1f
-        logoutBtn.isEnabled = true
-    }
 
     private fun logout() {
         val dialog = LogoutConfirmation(this)
@@ -136,6 +80,7 @@ class ProfilePage : AppCompatActivity() {
         }
 
         dialog.show()
+        SharedPrefManager.clear(this)
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
@@ -143,13 +88,6 @@ class ProfilePage : AppCompatActivity() {
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
             currentFocus!!.clearFocus()
-
-            val name = changeNameField.text.toString()
-            changeNameField.visibility = View.GONE
-
-            username.text = name
-            username.visibility = View.VISIBLE
-            changeNameBtn.visibility = View.VISIBLE
         }
         return super.dispatchTouchEvent(ev)
     }

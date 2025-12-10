@@ -2,7 +2,9 @@ package dev.komsay.panindamobile.ui.pages
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -12,8 +14,21 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.R
+import dev.komsay.panindamobile.backend.dto.UpdatePasswordDTO
+import dev.komsay.panindamobile.backend.dto.UserDTO
+import dev.komsay.panindamobile.backend.network.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ForgotPassPage : AppCompatActivity() {
+
+    private lateinit var etUsername: EditText
+    private lateinit var etNewPassword: EditText
+    private lateinit var etConfirmPassword: EditText
+    private lateinit var btnConfirm: Button
+    private lateinit var btnCancel: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -24,32 +39,99 @@ class ForgotPassPage : AppCompatActivity() {
             insets
         }
 
-        val username = findViewById<EditText>(R.id.editTextUsername)
-        val newpwd = findViewById<EditText>(R.id.editNewPassword)
-        val confirmpwd = findViewById<EditText>(R.id.editTextConfirmPassword)
-        val btnConfirm = findViewById<Button>(R.id.btnConfirm)
-        val btnCancel = findViewById<Button>(R.id.btnCancel)
+        etUsername = findViewById(R.id.editTextUsername)
+        etNewPassword = findViewById(R.id.editNewPassword)
+        etConfirmPassword = findViewById(R.id.editTextConfirmPassword)
+        btnConfirm = findViewById(R.id.btnConfirm)
+        btnCancel = findViewById(R.id.btnCancel)
 
         btnConfirm.setOnClickListener {
-            val user = username.text.toString()
-            val newpwd = newpwd.text.toString()
-            val cpwd = confirmpwd.text.toString()
-
-            if (user.isEmpty() || newpwd.isEmpty() || cpwd.isEmpty()){
-                Snackbar.make(findViewById(android.R.id.content), "Please fill all fields", Snackbar.LENGTH_SHORT).show()
-            }else if (newpwd != cpwd){
-                Snackbar.make(findViewById(android.R.id.content), "Password do not match please try again", Snackbar.LENGTH_SHORT).show()
-            }else{
-                Snackbar.make(findViewById(android.R.id.content), "Password Successfully Changed for $user", Snackbar.LENGTH_SHORT).show()
-            }
+            confirmButtonClick()
         }
 
         btnCancel.setOnClickListener {
-            Snackbar.make(findViewById(android.R.id.content), "Cancelled", Snackbar.LENGTH_SHORT).show()
             val intent = Intent(this, LoginPage::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
         }
+    }
+
+    private fun confirmButtonClick() {
+        val user = etUsername.text.toString().trim()
+        val newpass = etNewPassword.text.toString().trim()
+        val cpwd = etConfirmPassword.text.toString().trim()
+
+        if (user.isEmpty() || newpass.isEmpty() || cpwd.isEmpty()) {
+            if (user.isEmpty()) etUsername.requestFocus()
+            else if (newpass.isEmpty()) etNewPassword.requestFocus()
+            else if (cpwd.isEmpty()) etConfirmPassword.requestFocus()
+
+            Snackbar.make(
+                findViewById(android.R.id.content),
+                "Please fill all fields",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        if (newpass != cpwd) {
+            etConfirmPassword.requestFocus()
+            Snackbar.make(
+                findViewById(android.R.id.content),
+                "Passwords do not match, please try again",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        val updatedPassword = UpdatePasswordDTO(username = user, newPassword = newpass)
+
+        RetrofitClient.getApi(this).updatePassword(updatedPassword)
+            .enqueue(object : Callback<UserDTO> {
+
+                override fun onResponse(
+                    call: Call<UserDTO?>,
+                    response: Response<UserDTO?>
+                ) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val result = response.body()!!
+
+                        Snackbar.make(
+                            findViewById(android.R.id.content),
+                            "Password successfully changed for ${result.username}",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+
+                        // Redirect to LoginPage
+                        val intent = Intent(this@ForgotPassPage, LoginPage::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("ForgotPassPage", "Update failed: ${response.code()} - $errorBody")
+
+                        Snackbar.make(
+                            findViewById(android.R.id.content),
+                            "Password update failed: ${response.code()}",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<UserDTO?>,
+                    t: Throwable
+                ) {
+                    Log.e("ForgotPassPage", "Error: ${t.message}", t)
+
+                    Snackbar.make(
+                        findViewById(android.R.id.content),
+                        "Error: ${t.message}",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+            })
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {

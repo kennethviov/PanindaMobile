@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import dev.komsay.panindamobile.backend.dto.ProductsDTO
+import dev.komsay.panindamobile.backend.dto.SalesItemsDTO
 import dev.komsay.panindamobile.backend.service.SharedPrefManager
 import dev.komsay.panindamobile.ui.data.CartItem
 import dev.komsay.panindamobile.ui.pages.AddOrModifyProductPage
@@ -96,18 +97,14 @@ class ProductInventoryComponent {
     }
 
     @SuppressLint("DefaultLocale")
-    fun bind(item: CartItem) {
+    fun bind(item: SalesItemsDTO) {
 
         productTotal.visibility = View.VISIBLE
-        productTotal.text = String.format("₱%.2f", item.productPrice * item.productQuantity)
+        productTotal.text = String.format("₱%.2f", item.subtotal)
 
         productName.text = item.productName
-        productPrice.text = String.format("₱%.2f", item.productPrice)
-        productStock.text = item.productQuantity.toString()
-
-        item.imageResId?.let { resourceId ->
-            productImage.setImageResource(resourceId)
-        }
+        productPrice.text = String.format("₱%.2f", item.unitPrice)
+        productStock.text = item.quantity.toString()
 
         container.addView(view)
     }

@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import androidx.annotation.RequiresApi
+import dev.komsay.panindamobile.backend.dto.SalesDTO
 import dev.komsay.panindamobile.databinding.FragmentSalesDetailsBinding
 import dev.komsay.panindamobile.ui.components.ProductInventoryComponent
 import dev.komsay.panindamobile.ui.data.Sale
@@ -16,7 +17,7 @@ class SalesDetails(private val context: Context) {
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
-    fun show(sales: Sale) {
+    fun show(sales: SalesDTO) {
         val dialog = Dialog(context)
         val binding = FragmentSalesDetailsBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
@@ -26,12 +27,12 @@ class SalesDetails(private val context: Context) {
         // datetime format
         val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
         val dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
-        val dateTime = LocalDateTime.parse(sales.salesDate)
+        val dateTime = LocalDateTime.parse(sales.salesDate.toString())
 
         // display infos
         binding.txtTimeDate.text = dateTime.format(timeFormatter) + ", " + dateTime.format(dateFormatter)
-        binding.txtSalesId.text = sales.id
-        binding.txtSalesTotal.text = String.format("₱%.2f", sales.salesTotal())
+        binding.txtSalesId.text = sales.id.toString()
+        binding.txtSalesTotal.text = String.format("₱%.2f", sales.totalPrice)
 
         // dynamic container
         val container = binding.salesDetailsContainer
@@ -41,10 +42,10 @@ class SalesDetails(private val context: Context) {
 
         val compHeight = dummyComp.getView().layoutParams.height
 
-        layoutParam.height = setScrollViewHeight(compHeight, sales.salesItems.size)
+        layoutParam.height = setScrollViewHeight(compHeight, sales.items.size)
         scroller.layoutParams = layoutParam
 
-        for (item in sales.salesItems) {
+        for (item in sales.items) {
             val comp = ProductInventoryComponent(container, context)
             comp.bind(item)
         }

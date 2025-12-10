@@ -49,17 +49,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <ImageButton
-                android:id="@+id/editProfilePic"
-                android:src="@drawable/ic_camera"
-                android:scaleType="centerCrop"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@color/transparent"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@id/profilePicture"
-                app:layout_constraintBottom_toBottomOf="@id/profilePicture"/>
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -78,27 +67,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <EditText
-                    android:id="@+id/changeNameField"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/black"
-                    android:visibility="gone"/>
-
                 <Space
                     android:layout_width="4dp"
                     android:layout_height="match_parent" />
-
-                <ImageButton
-                    android:id="@+id/changeNameBtn"
-                    android:src="@drawable/ic_user_edit"
-                    android:scaleType="centerCrop"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:background="@color/transparent"
-                    android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -106,53 +77,20 @@
 
     </androidx.cardview.widget.CardView>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userCard">
 
-        <EditText
-            android:id="@+id/changePasswordField"
-            android:layout_width="320dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="16dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:background="@drawable/bg_product_seller"
-            android:hint="Change Password"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:textSize="14sp"
-            android:fontFamily="@font/inter_regular"
-            android:visibility="gone"/>
-
-        <Button
-            android:id="@+id/editProfileBtn"
-            android:text="Edit Profile"
-            android:textSize="14sp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/inter_bold"
-            android:backgroundTint="@color/black"
-            android:layout_width="320dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="16dp"/>
-
-        <Button
-            android:id="@+id/logoutBtn"
-            android:text="Logout"
-            android:textSize="14sp"
-            android:fontFamily="@font/inter_bold"
-            android:textColor="@color/black"
-            android:backgroundTint="#FEAC00"
-            android:layout_width="320dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="8dp"/>
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/logoutBtn"
+        android:text="Logout"
+        android:textSize="14sp"
+        android:fontFamily="@font/inter_bold"
+        android:textColor="@color/black"
+        android:backgroundTint="#FEAC00"
+        android:layout_width="320dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@id/userCard"
+        app:layout_constraintEnd_toEndOf="@id/userCard"
+        app:layout_constraintTop_toBottomOf="@id/userCard"/>
 
     <include
         android:id="@+id/navbar"

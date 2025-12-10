@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.widget.Button
 import android.widget.LinearLayout
@@ -18,11 +19,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.Paninda
 import dev.komsay.panindamobile.R
+import dev.komsay.panindamobile.backend.dto.SalesDTO
+import dev.komsay.panindamobile.backend.network.RetrofitClient
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import dev.komsay.panindamobile.ui.components.ProductSalesComponent
 import dev.komsay.panindamobile.ui.data.Sale
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -35,8 +41,7 @@ class SalesPage : AppCompatActivity() {
     private lateinit var pastMonthButton : Button
     private lateinit var allTimeButton : Button
 
-    private var sales: List<Sale> = mutableListOf()
-
+    private var sales: List<SalesDTO> = mutableListOf()
 
     private var selectedButton: Button? = null
 
@@ -64,19 +69,14 @@ class SalesPage : AppCompatActivity() {
         // Initialize views
         container = findViewById(R.id.productSalesContainer)
 
-        // +-------------+
-        // |  MOCK DATA  |
-        // +-------------+
-        val app = application as Paninda
-        val dataHelper = app.dataHelper
-
-        // get mock data
-        sales = dataHelper.getAllSales()
+        loadSales()
 
         // set up ui
         setUpTimeFilter()
         refreshSalesUI(this.sales)
     }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setUpTimeFilter() {
@@ -102,8 +102,6 @@ class SalesPage : AppCompatActivity() {
                 animateBackgroundTint(btn, defaultTint, selectedTint)
 
                 selectedButton = btn
-
-                // TODO: filtering logic here ->
 
                 val now = LocalDateTime.now()
 
@@ -139,12 +137,41 @@ class SalesPage : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun refreshSalesUI(sales: List<Sale>) {
+    override fun onResume() {
+        super.onResume()
+        loadSales()
+        refreshSalesUI(sales)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun loadSales() {
+        val salesApi = RetrofitClient.getSalesApi(this)
+
+        lifecycleScope.launch {
+            try {
+                val fetchedSales = salesApi.getAllSales()
+                sales = fetchedSales.reversed()
+
+                Log.d("SalesPage: loadSales()", "Sales fetched: $fetchedSales")
+
+                refreshSalesUI(sales)
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Failed to load sales: ${e.message}",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun refreshSalesUI(sales: List<SalesDTO>) {
         container.removeAllViews()
 
-        // add first data to container
-        var currDate = LocalDateTime.parse(sales[0].salesDate)
-        addDate(currDate, container)
+        var currDate = LocalDateTime.now()
 
         for (sale in sales) {
 
@@ -197,10 +224,4 @@ class SalesPage : AppCompatActivity() {
 
         button.setTag(R.id.animator_tag, animator)
     }
-
-    /* TODO:
-    *   - Convert main product container and cart container to
-    *           RecyclerView for better performance; great for large amounts of data
-    *   - SwipeRefreshLayout to refresh
-    * */
 }

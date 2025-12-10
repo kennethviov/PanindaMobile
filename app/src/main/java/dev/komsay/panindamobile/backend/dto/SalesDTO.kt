@@ -4,6 +4,8 @@ import java.time.LocalDateTime
 
 data class SalesDTO(
     val id: Long? = null,
-    val salesDate: LocalDateTime,
+    val salesDate: String,
     val totalPrice: Double,
+    val items: List<SalesItemsDTO>
+
 )

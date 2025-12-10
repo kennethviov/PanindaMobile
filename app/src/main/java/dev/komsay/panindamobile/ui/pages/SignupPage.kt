@@ -2,6 +2,7 @@ package dev.komsay.panindamobile.ui.pages
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -63,7 +64,6 @@ class SignupPage : AppCompatActivity() {
             }
 
             // Send data to Spring Boot API
-            // Send data to Spring Boot API
             val registerDto = RegisterUsersDTO(username = user, password = pwd)
             RetrofitClient.getApi(this).registerUser(registerDto).enqueue(object : Callback<UserDTO> {
                 override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
@@ -84,6 +84,7 @@ class SignupPage : AppCompatActivity() {
                             "Registration failed: ${response.code()}",
                             Snackbar.LENGTH_LONG
                         ).show()
+                        Log.e("SignupPage", "Registration failed: ${response.code()}")
                     }
                 }
 
@@ -93,6 +94,8 @@ class SignupPage : AppCompatActivity() {
                         "Error: ${t.message}",
                         Snackbar.LENGTH_LONG
                     ).show()
+
+                    Log.e("SignupPage", "Error: ${t.message}")
                 }
             })
 

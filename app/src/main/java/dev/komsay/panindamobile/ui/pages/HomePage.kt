@@ -25,25 +25,29 @@ import androidx.lifecycle.lifecycleScope
 import dev.komsay.panindamobile.ui.components.CartItemComponent
 import dev.komsay.panindamobile.ui.components.NavigationBarManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import dev.komsay.panindamobile.Paninda
 import dev.komsay.panindamobile.R
+import dev.komsay.panindamobile.backend.dto.CategoryDTO
 import dev.komsay.panindamobile.backend.dto.ProductsDTO
+import dev.komsay.panindamobile.backend.dto.SalesDTO
+import dev.komsay.panindamobile.backend.dto.SalesItemsDTO
 import dev.komsay.panindamobile.backend.network.RetrofitClient
 import dev.komsay.panindamobile.backend.service.SharedPrefManager
-import dev.komsay.panindamobile.ui.data.CartItem
-import dev.komsay.panindamobile.ui.data.Sale
-import dev.komsay.panindamobile.ui.utils.DataHelper
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class HomePage : AppCompatActivity() {
 
+    private lateinit var app: Paninda
     private lateinit var container: LinearLayout
     private lateinit var categorySlider: LinearLayout
-    private lateinit var app: Paninda
-    private lateinit var dataHelper: DataHelper
+    private lateinit var userTxtView: TextView
+    private lateinit var dateTime: TextView
     private var products: List<ProductsDTO> = mutableListOf()
-    private val cart: MutableList<CartItem> = mutableListOf()
-    private var categories: List<String> = mutableListOf()
+    private val cart: MutableList<SalesItemsDTO> = mutableListOf()
+    private var categories: List<CategoryDTO> = mutableListOf()
 
 
     @SuppressLint("SetTextI18n")
@@ -67,28 +71,15 @@ class HomePage : AppCompatActivity() {
         // Initialize views
         container = findViewById(R.id.productSellerContainer)
         categorySlider = findViewById(R.id.categorySlider)
+        userTxtView = findViewById(R.id.userTextView)
+        dateTime = findViewById(R.id.dateTimeView)
+
         val receivedUsername = SharedPrefManager.getUsername(this)
-        val userTxtView = findViewById<TextView>(R.id.userTextView)
-        val dateTime = findViewById<TextView>(R.id.dateTimeView)
         val cartCancel = findViewById<Button>(R.id.btn_cancel)
         val cartSell = findViewById<Button>(R.id.btn_sell)
 
-        // +-------------+
-        // |  MOCK DATA  |
-        // +-------------+
-        app = application as Paninda
-        dataHelper = app.dataHelper
-
         // Home Page  Greeting
-        val currentDateTime = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
-        val formattedDateTime = currentDateTime.format(formatter)
-
-        userTxtView.text = "Hello, ${receivedUsername ?: "Guest"}"
-        dateTime.text =formattedDateTime.toString()
-
-
-        val categories = dataHelper.getAllCategories()
+        setUpGreetings(receivedUsername)
 
         // load data
         loadProductsFromDB()
@@ -100,6 +91,13 @@ class HomePage : AppCompatActivity() {
         refreshProductUI(this.products)
         setUpCartBtn(cartCancel, cartSell)
         refreshCartUI()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+        loadProductsFromDB()
+        loadCategoriesFromDB()
     }
 
     @SuppressLint("DefaultLocale")
@@ -126,7 +124,7 @@ class HomePage : AppCompatActivity() {
         if (cart.any { it.productName == product.name }) {
             val cartItem = cart.find { it.productName == product.name }!!
 
-            if (cartItem.productQuantity + quantity > product.stocks) {
+            if (cartItem.quantity + quantity > product.stocks) {
                 Snackbar.make(
                     findViewById(android.R.id.content),
                     "Cannot add more than stock",
@@ -135,17 +133,17 @@ class HomePage : AppCompatActivity() {
                 return
             }
 
-            cartItem.productQuantity += quantity
+            cartItem.quantity += quantity
             refreshCartUI()
             return
         }
 
-        val cartItem = CartItem(
-            null,
-            product.imageUrl,
-            product.name,
-            product.price,
-            quantity
+        val cartItem = SalesItemsDTO(
+            productId = product.id,
+            productName = product.name,
+            quantity = quantity,
+            unitPrice = product.price,
+            subtotal = (product.price * quantity)
         )
         cart.add(cartItem)
         toggleCartVisibility("visible")
@@ -174,7 +172,7 @@ class HomePage : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun refreshCategoryUI(categories: List<String>) {
+    fun refreshCategoryUI(categories: List<CategoryDTO>) {
         categorySlider.removeAllViews()
 
         for (cat in categories) {
@@ -190,7 +188,7 @@ class HomePage : AppCompatActivity() {
                     marginEnd = (8 * scale * 0.5f).toInt()
                 }
 
-                text = cat
+                text = cat.categoryName
                 textSize = 12f
                 typeface = ResourcesCompat.getFont(this@HomePage, R.font.inter_regular)
                 setTextColor(ContextCompat.getColor(this@HomePage, R.color.black))
@@ -224,7 +222,7 @@ class HomePage : AppCompatActivity() {
         }
     }
 
-//    fun refreshTopSellingProducts(products: List<Product>) {
+//    fun refreshTopSellingProducts(products: List<SalesDTO>) {
 //        val topSellCont = findViewById<LinearLayout>(R.id.view_top_seller)
 //        topSellCont.removeAllViews()
 //        val topSellComp = TopSellingProductComponent(topSellCont)
@@ -240,42 +238,43 @@ class HomePage : AppCompatActivity() {
 
         sellBtn.setOnClickListener {
 
-            val numOfSales = dataHelper.getAllSales().size
+            val salesApi = RetrofitClient.getSalesApi(this)
 
-            val sale = Sale(
-                "100$numOfSales",
-                LocalDateTime.now().toString(),
-                ArrayList(cart)
-            )
+            lifecycleScope.launch {
+                try {
+                    salesApi.sellMultiple(createSalesDTO())
 
-            dataHelper.addSale(sale)
+                    setResult(RESULT_OK)
+                } catch (e: Exception) {
+                    Snackbar.make(
+                        findViewById(android.R.id.content),
+                        "Error: ${e.message}",
+                        Snackbar.LENGTH_LONG
+                    ).show()
 
-            for (item in cart) {
-                val product = products.find { it.name == item.productName }
-
-                if (product != null) {
-
-//                    product.stock -= item.productQuantity
-//
-//                    if (product.stock < 0) {
-//                        product.stock = 0
-//                    }
-
-                    //product.unitSold += item.productQuantity
-
-                    // dataHelper.updateProduct(product)
+                    Log.e("Add Sales", "Error", e)
                 }
             }
 
             cart.clear()
+            onResume()
             loadProductsFromDB()
             refreshProductUI(this.products)
             toggleCartVisibility("gone")
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createSalesDTO(): SalesDTO {
+        return SalesDTO(
+            salesDate = LocalDateTime.now().toString(),
+            totalPrice = cart.sumOf { it.subtotal },
+            items = cart
+        )
+    }
+
     private fun refreshCartUI() {
-        val sales = cart.sumOf { it.productPrice * it.productQuantity }
+        val sales = cart.sumOf { it.subtotal }
         val salesTotal = findViewById<TextView>(R.id.txt_total)
         val cartCont = findViewById<LinearLayout>(R.id.view_cart_items)
 
@@ -309,11 +308,11 @@ class HomePage : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val fetchedProducts = productsApi.getAllProducts()
+                Log.d("Home: loadProductsFromDB()", "Products fetched: $fetchedProducts")
 
                 products = fetchedProducts
 
                 refreshProductUI(products)
-                refreshCategoryUI(categories)
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -328,9 +327,42 @@ class HomePage : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun loadCategoriesFromDB() { categories = dataHelper.getAllCategories().sorted() }
+    private fun loadCategoriesFromDB() {
+
+        val catApi = RetrofitClient.getCategoryApi(this)
+
+        lifecycleScope.launch {
+            try {
+                val fetchedCategories = catApi.getAllCategories()
+                Log.d("Home: loadCategoriesFromDB()", "Categories fetched: $fetchedCategories")
+
+                categories = fetchedCategories
+
+                refreshCategoryUI(categories)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Failed to load categories: ${e.message}",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
 
     // private fun totalUnitSold(products: List<Product>): Int { return products.sumOf { it.unitSold } }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setUpGreetings(receivedUsername: String?) {
+        val currentDateTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
+        val formattedDateTime = currentDateTime.format(formatter)
+
+        userTxtView.text = "Hello, ${receivedUsername ?: "Guest"}"
+        dateTime.text =formattedDateTime.toString()
+    }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (currentFocus != null) {

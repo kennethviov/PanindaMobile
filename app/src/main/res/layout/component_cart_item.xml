@@ -9,23 +9,11 @@
     android:layout_marginTop="6dp"
     android:background="@drawable/bg_product_seller">
 
-    <!-- Product Image -->
-    <ImageView
-        android:id="@+id/productImage"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img_placeholder"
-        android:background="@drawable/bg_product_seller_photo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
     <!-- Product Name -->
     <TextView
         android:id="@+id/productName"
         android:text="@string/product_name"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textColor="@color/black"
         android:fontFamily="@font/inter_regular"
         android:layout_width="150dp"
@@ -33,7 +21,7 @@
         android:layout_marginStart="8dp"
         android:maxLines="2"
         android:ellipsize="end"
-        app:layout_constraintStart_toEndOf="@id/productImage"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -69,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.75">
+        app:layout_constraintHorizontal_bias="0.65">
 
         <TextView
             android:id="@+id/productPrice"

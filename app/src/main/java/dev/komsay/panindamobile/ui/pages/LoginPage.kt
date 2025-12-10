@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.EditText
 import android.widget.Button
+import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import dev.komsay.panindamobile.R
 import dev.komsay.panindamobile.backend.dto.LoginUsersDTO
@@ -23,6 +24,13 @@ import dev.komsay.panindamobile.backend.service.SharedPrefManager
 
 
 class LoginPage : AppCompatActivity() {
+
+    private lateinit var txtUsername: EditText
+    private lateinit var txtPassword: EditText
+    private lateinit var btnLogin: Button
+    private lateinit var btnSignUp: Button
+    private lateinit var linkForgotPassword: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,90 +51,101 @@ class LoginPage : AppCompatActivity() {
             insets
         }
 
-        val txtUsername = findViewById<EditText>(R.id.editTextUsername)
-        val txtPassword = findViewById<EditText>(R.id.editTextPassword)
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
-        val btnSignUp = findViewById<Button>(R.id.btnSignUp)
+        txtUsername = findViewById(R.id.editTextUsername)
+        txtPassword = findViewById(R.id.editTextPassword)
+        btnLogin = findViewById(R.id.btnLogin)
+        btnSignUp = findViewById(R.id.btnSignUp)
+        linkForgotPassword = findViewById(R.id.forgotPass)
 
         btnLogin.setOnClickListener {
-            val user = txtUsername.text.toString().trim()
-            val pwd = txtPassword.text.toString().trim()
-
-            if (user.isEmpty() || pwd.isEmpty()) {
-                Snackbar.make(
-                    findViewById(android.R.id.content),
-                    "Please fill all fields",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
-
-            SharedPrefManager.clear(this)
-
-            RetrofitClient.clear()
-
-            val loginDto = LoginUsersDTO(username = user, password = pwd)
-
-            RetrofitClient.getApi(this).loginUser(loginDto).enqueue(object : Callback<LoginResponseDTO> {
-                override fun onResponse(call: Call<LoginResponseDTO>, response: Response<LoginResponseDTO>) {
-
-                    Log.d("LoginPage", "Response code: ${response.code()}")
-                    Log.d("LoginPage", "Response body: ${response.body()}")
-                    Log.d("LoginPage", "Raw response: ${response.raw()}")
-
-                    if (response.isSuccessful && response.body() != null) {
-                        val loginResponse = response.body()!!
-
-                        Log.d("LoginPage", "Token received: ${loginResponse.token}")
-                        Log.d("LoginPage", "Username: ${loginResponse.username}")
-
-                        val saved = SharedPrefManager.saveLoginData(
-                            this@LoginPage,
-                            loginResponse.token,
-                            loginResponse.username
-                        )
-
-                        Log.d("LoginPage", "Login data saved: $saved")
-
-                        val retrievedToken = SharedPrefManager.getToken(this@LoginPage)
-                        val retrievedUsername = SharedPrefManager.getUsername(this@LoginPage)
-                        Log.d("LoginPage", "Retrieved token: $retrievedToken")
-                        Log.d("LoginPage", "Retrieved username: $retrievedUsername")
-
-                        Snackbar.make(
-                            findViewById(android.R.id.content),
-                            "Welcome ${loginResponse.username}",
-                            Snackbar.LENGTH_LONG
-                        ).show()
-
-                        val intent = Intent(this@LoginPage, HomePage::class.java)
-                        intent.putExtra("USERNAME_KEY", loginResponse.username)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        Snackbar.make(
-                            findViewById(android.R.id.content),
-                            "Invalid username or password",
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<LoginResponseDTO>, t: Throwable) {
-                    Snackbar.make(
-                        findViewById(android.R.id.content),
-                        "Error: ${t.message}",
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-            })
-
+            loginButtonClick()
         }
 
         btnSignUp.setOnClickListener {
             val intent = Intent(this, SignupPage::class.java)
             startActivity(intent)
         }
+
+        linkForgotPassword.setOnClickListener {
+            val intent = Intent(this, ForgotPassPage::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun loginButtonClick() {
+        val user = txtUsername.text.toString().trim()
+        val pwd = txtPassword.text.toString().trim()
+
+        if (user.isEmpty() || pwd.isEmpty()) {
+            Snackbar.make(
+                findViewById(android.R.id.content),
+                "Please fill all fields",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            if (user.isEmpty()) txtUsername.requestFocus()
+            if (pwd.isEmpty()) txtPassword.requestFocus()
+            return
+        }
+
+        SharedPrefManager.clear(this)
+
+        RetrofitClient.clear()
+
+        val loginDto = LoginUsersDTO(username = user, password = pwd)
+
+        RetrofitClient.getApi(this).loginUser(loginDto).enqueue(object : Callback<LoginResponseDTO> {
+            override fun onResponse(call: Call<LoginResponseDTO>, response: Response<LoginResponseDTO>) {
+
+                Log.d("LoginPage", "Response code: ${response.code()}")
+                Log.d("LoginPage", "Response body: ${response.body()}")
+                Log.d("LoginPage", "Raw response: ${response.raw()}")
+
+                if (response.isSuccessful && response.body() != null) {
+                    val loginResponse = response.body()!!
+
+                    Log.d("LoginPage", "Token received: ${loginResponse.token}")
+                    Log.d("LoginPage", "Username: ${loginResponse.username}")
+
+                    val saved = SharedPrefManager.saveLoginData(
+                        this@LoginPage,
+                        loginResponse.token,
+                        loginResponse.username
+                    )
+
+                    Log.d("LoginPage", "Login data saved: $saved")
+
+                    val retrievedToken = SharedPrefManager.getToken(this@LoginPage)
+                    val retrievedUsername = SharedPrefManager.getUsername(this@LoginPage)
+                    Log.d("LoginPage", "Retrieved token: $retrievedToken")
+                    Log.d("LoginPage", "Retrieved username: $retrievedUsername")
+
+                    Snackbar.make(
+                        findViewById(android.R.id.content),
+                        "Welcome ${loginResponse.username}",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+
+                    val intent = Intent(this@LoginPage, HomePage::class.java)
+                    intent.putExtra("USERNAME_KEY", loginResponse.username)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Snackbar.make(
+                        findViewById(android.R.id.content),
+                        "Invalid username or password",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponseDTO>, t: Throwable) {
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Error: ${t.message}",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        })
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {

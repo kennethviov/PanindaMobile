@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import java.time.format.DateTimeFormatter
 import dev.komsay.panindamobile.R
+import dev.komsay.panindamobile.backend.dto.SalesDTO
 import dev.komsay.panindamobile.ui.data.Sale
 import dev.komsay.panindamobile.ui.fragments.SalesDetails
 import java.time.LocalDateTime
@@ -39,14 +40,14 @@ class ProductSalesComponent {
 
     @SuppressLint("DefaultLocale")
     @RequiresApi(Build.VERSION_CODES.O)
-    fun bind(sales: Sale) {
+    fun bind(sales: SalesDTO) {
 
         val formatter = DateTimeFormatter.ofPattern("hh:mm a")
         val dateTime = LocalDateTime.parse(sales.salesDate)
 
         time.text = dateTime.format(formatter)
-        salesID.text = sales.id
-        productSales.text = String.format("₱%.2f",sales.salesTotal())
+        salesID.text = sales.id.toString()
+        productSales.text = String.format("₱%.2f",sales.totalPrice)
 
         view.setOnClickListener {
             val dialog = SalesDetails(context)

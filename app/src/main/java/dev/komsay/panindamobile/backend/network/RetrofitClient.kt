@@ -2,6 +2,7 @@ package dev.komsay.panindamobile.backend.network
 
 import android.content.Context
 import dev.komsay.panindamobile.backend.service.ApiService
+import dev.komsay.panindamobile.backend.service.CategoryApi
 import dev.komsay.panindamobile.backend.service.ProductsApi
 import dev.komsay.panindamobile.backend.service.SalesApi
 import dev.komsay.panindamobile.backend.service.SalesHistoryApi
@@ -35,12 +36,14 @@ object RetrofitClient {
                     val url = originalRequest.url.toString()
                     val isAuthEndpoint = url.contains("/auth/user/login") ||
                             url.contains("/auth/user/signup")
+                    val isPublicAuthEndpoint = url.contains("/auth/user/password")
+
 
                     val requestBuilder = originalRequest.newBuilder().apply {
                         header("Accept", "application/json")
 
                         // Only add Authorization header if NOT an auth endpoint
-                        if (token != null && !isAuthEndpoint) {
+                        if (token != null && !isAuthEndpoint && !isPublicAuthEndpoint) {
                             addHeader("Authorization", "Bearer $token")
                         }
                     }
@@ -65,6 +68,10 @@ object RetrofitClient {
 
     fun getApi(context: Context): ApiService {
         return getRetrofit(context).create(ApiService::class.java)
+    }
+
+    fun getCategoryApi(context: Context): CategoryApi {
+        return getRetrofit(context).create(CategoryApi::class.java)
     }
 
     fun getProductsApi(context: Context): ProductsApi {
